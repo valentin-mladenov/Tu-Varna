@@ -1,0 +1,4 @@
+Months: 70, with CalculatedInterest: 91.00 for LoanAccount with Balance: 10351.00, Interest: 15.30, Customer: Individual with Age: 22, EGN: 4212125632, Sex: Male, Name: Petur Petrov
+Months: 51, with CalculatedInterest: 734.40 for LoanAccount with Balance: 17345.00, Interest: 15.30, Customer: Company with Bulstat: 42121256334567, Name: Alex GMBH
+Months: 89, with CalculatedInterest: 439.90 for LoanAccount with Balance: 101216.00, Interest: 15.30, Customer: Company with Bulstat: 42121256333456, Name: Bg-SErvice LTD
+Months: 34, with CalculatedInterest: 102.00 for LoanAccount with Balance: 5303481.00, Interest: 15.30, Customer: Company with Bulstat: 42121256336666, Name: Telerik Co.

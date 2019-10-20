@@ -1,0 +1,18 @@
+Months: 70, with CalculatedInterest: 91.00 for DepositAccount with Balance: 15804.00, Interest: 1.20, Customer: Individual with Age: 22, EGN: 8212125632, Sex: Male, Name: Gosho Goshev
+Months: 51, with CalculatedInterest: 734.40 for DepositAccount with Balance: 116823.00, Interest: 1.30, Customer: Company with Bulstat: 42121256334567, Name: Alex GMBH
+Months: 89, with CalculatedInterest: 439.90 for DepositAccount with Balance: 239246.00, Interest: 1.30, Customer: Company with Bulstat: 42121256333456, Name: Bg-SErvice LTD
+Months: 34, with CalculatedInterest: 102.00 for DepositAccount with Balance: 245156.00, Interest: 1.30, Customer: Individual with Age: 22, EGN: 4212125632, Sex: Male, Name: Petur Petrov
+Months: 68, with CalculatedInterest: 799.50 for DepositAccount with Balance: 1499687.00, Interest: 1.30, Customer: Company with Bulstat: 42121256336666, Name: Telerik Co.
+Months: 3, with CalculatedInterest: 0.00 for MortgageAccount with Balance: 19604.00, Interest: 2.30, Customer: Individual with Age: 22, EGN: 4212125633, Sex: Female, Name: Mariq Marcheva
+Months: 8, with CalculatedInterest: 9.60 for DepositAccount with Balance: 20060.00, Interest: 2.30, Customer: Individual with Age: 22, EGN: 4212125633, Sex: Female, Name: Mariq Marcheva
+Months: 57, with CalculatedInterest: 610.20 for DepositAccount with Balance: 234952.00, Interest: 3.00, Customer: Individual with Age: 23, EGN: 7213125632, Sex: Male, Name: Mincho Michev
+Months: 62, with CalculatedInterest: 408.80 for MortgageAccount with Balance: 13779.00, Interest: 5.30, Customer: Individual with Age: 22, EGN: 4212125632, Sex: Male, Name: Petur Petrov
+Months: 93, with CalculatedInterest: 213.90 for MortgageAccount with Balance: 13550.00, Interest: 6.30, Customer: Individual with Age: 23, EGN: 7213125632, Sex: Male, Name: Mincho Michev
+Months: 19, with CalculatedInterest: 164.80 for MortgageAccount with Balance: 10156.00, Interest: 7.30, Customer: Individual with Age: 22, EGN: 9212125632, Sex: Male, Name: Dimo Dimov
+Months: 15, with CalculatedInterest: 20.70 for LoanAccount with Balance: 7310.00, Interest: 10.30, Customer: Individual with Age: 22, EGN: 9212125632, Sex: Male, Name: Dimo Dimov
+Months: 76, with CalculatedInterest: 98.80 for LoanAccount with Balance: 2609.00, Interest: 11.30, Customer: Individual with Age: 22, EGN: 8212125632, Sex: Male, Name: Gosho Goshev
+Months: 84, with CalculatedInterest: 1254.60 for LoanAccount with Balance: 5546.00, Interest: 12.30, Customer: Individual with Age: 23, EGN: 7213125632, Sex: Male, Name: Mincho Michev
+Months: 38, with CalculatedInterest: 49.40 for LoanAccount with Balance: 17345.00, Interest: 15.30, Customer: Company with Bulstat: 42121256334567, Name: Alex GMBH
+Months: 71, with CalculatedInterest: 1055.70 for LoanAccount with Balance: 101216.00, Interest: 15.30, Customer: Company with Bulstat: 42121256333456, Name: Bg-SErvice LTD
+Months: 82, with CalculatedInterest: 106.60 for LoanAccount with Balance: 10351.00, Interest: 15.30, Customer: Individual with Age: 22, EGN: 4212125632, Sex: Male, Name: Petur Petrov
+Months: 31, with CalculatedInterest: 443.70 for LoanAccount with Balance: 5303481.00, Interest: 15.30, Customer: Company with Bulstat: 42121256336666, Name: Telerik Co.
