@@ -1,0 +1,69 @@
+﻿@using Car.Rental.Web.App.ViewModels;
+@model Tuple<List<RentalMostRentedVehicle>, List<SelectListItem>, string>
+
+@{
+    ViewBag.Title = "Search Most Rented Vihicles";
+}
+
+<h2 class="m-5 text-center">Search Most Rented Vihicles</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="row mb-4">
+        @Html.DropDownList("count", new SelectList(Model.Item2, "Value", "Text"), htmlAttributes: new { @name = "count", @class = "col-10 form-control", id = "Models" })
+        <input class="btn btn-outline-primary col ml-3" type="submit" value="Filter" />
+    </div>
+}
+
+@if (Model != null && Model.Item1.Count != 0)
+{
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Item1[0].LicensePlate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item1[0].BrandAndModel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item1[0].PricePerDay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item1[0].TotalDaysRented)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item1[0].RentsCount)
+            </th>
+            <th>
+                <a href="@Model.Item3" target="_blank" download="Export.csv" class="btn btn-outline-info">Export</a>
+            </th>
+        </tr>
+
+        @foreach (var item in Model.Item1)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LicensePlate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BrandAndModel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PricePerDay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalDaysRented)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RentsCount)
+            </td>
+            <td></td>
+        </tr>
+        }
+    </table>
+}
+else
+{
+    <div>NO data to show</div>
+}
