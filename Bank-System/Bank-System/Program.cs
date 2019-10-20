@@ -33,9 +33,7 @@ namespace Bank_System
             });
 
             FileReadWriter.WriteAccountMonthCalculation(accounts, montClacs, "../../monthCalcs.txt");
-
-            var interestAccounts = searchForAccountsWithInterest(15.3M, accounts);
-
+            
             FileReadWriter.WriteAccountMonthCalculation(
                 accounts.Where(acc => acc.Interest == 15.3M).ToList(),
                 montClacs,
@@ -59,13 +57,6 @@ namespace Bank_System
                 "../../accountsOrderedByBalance.txt");
 
             Console.ReadKey();
-        }
-
-        static List<Account> searchForAccountsWithInterest(decimal interest, List<Account> accounts)
-        {
-            return accounts
-                .Where(acc => acc.Interest == interest)
-                .ToList();
         }
     }
 }

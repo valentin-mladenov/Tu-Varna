@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Shapes.Classes
 {
-    public interface IShape
+    public interface IShape : IComparable<IShape>
     {
         double CalculateSurface();
 

@@ -52,9 +52,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="files\shapes.csv" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="files\" />
+    <Content Include="files\shapesAsStrings.txt" />
+    <Content Include="files\shapesOrderedByLongestSide.txt" />
+    <Content Include="files\shapesOrderedByPerimeter.txt" />
+    <Content Include="files\shapesOrderedBySurface.txt" />
+    <Content Include="files\shapesSorted.txt" />
+    <Content Include="files\shapesWIthCommonPerimeter.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

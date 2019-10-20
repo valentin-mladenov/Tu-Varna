@@ -1,5 +1,7 @@
 using Shapes.Classes;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Shapes
 {
@@ -7,26 +9,33 @@ namespace Shapes
     {
         static void Main(string[] args)
         {
-            // The code provided will print ‘Hello World’ to the console.
-            // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
-            Console.WriteLine("Hello World!");
+            var shapes = new List<IShape>();
 
-            IShape[] shapes = new IShape[]
-            {
-                new Triangle(2.3, 5.6, 60),
-                new Rectangle(4.6, 6.2),
-                new Circle(6.3)
-            };
+            FileIO.ReadShapesFromFile(shapes, "../../files/shapes.csv");
 
-            foreach (var item in shapes)
-            {
-                Console.Write(item.GetType().Name + " with surface: ");
-                Console.WriteLine(Math.Round(item.CalculateSurface(), 2));
-            }
+            FileIO.WriteShapesAsStrings(shapes, "../../files/shapesAsStrings.txt");
+
+            shapes.Sort();
+
+            FileIO.WriteShapesAsStrings(shapes, "../../files/shapesSorted.txt");
+
+            FileIO.WriteShapesAsStrings(
+                shapes.Where(sh => sh.CalculatePerimeter() == 345.58).ToList(),
+                "../../files/shapesWIthCommonPerimeter.txt");
+            
+            FileIO.WriteShapesAsStrings(
+                shapes.OrderBy(sh => sh.CalculatePerimeter()).ToList(),
+                "../../files/shapesOrderedByPerimeter.txt");
+
+            FileIO.WriteShapesAsStrings(
+                shapes.OrderBy(sh => sh.CalculateSurface()).ToList(),
+                "../../files/shapesOrderedBySurface.txt");
+
+            FileIO.WriteShapesAsStrings(
+                shapes.OrderBy(sh => sh.LongestSide()).ToList(),
+                "../../files/shapesOrderedByLongestSide.txt");
 
             Console.ReadKey();
-
-            // Go to http://aka.ms/dotnet-get-started-console to continue learning how to build a console app! 
         }
     }
 }

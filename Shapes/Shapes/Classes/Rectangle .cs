@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+using System.Text;
 
 namespace Shapes.Classes
 {
@@ -40,7 +42,27 @@ namespace Shapes.Classes
 
         public override string ToString()
         {
-            return base.ToString();
+            var sb = new StringBuilder();
+
+            sb.Append("Rectangle with Width: ");
+            sb.Append(Width.ToString("0.00", CultureInfo.InvariantCulture));
+            sb.Append(", Height: ");
+            sb.Append(Height.ToString("0.00", CultureInfo.InvariantCulture));
+            sb.Append(", Surface: ");
+            sb.Append(CalculateSurface().ToString("0.00", CultureInfo.InvariantCulture));
+            sb.Append(" and Perimeter: ");
+            sb.Append(CalculatePerimeter().ToString("0.00", CultureInfo.InvariantCulture));
+
+            return sb.ToString();
+        }
+
+        public int CompareTo(IShape other)
+        {
+            var perimeterCheck = Math.Round(this.CalculatePerimeter(), 2).CompareTo(Math.Round(other.CalculatePerimeter(), 2));
+
+            return perimeterCheck == 0
+                ? Math.Round(this.CalculateSurface(), 2).CompareTo(Math.Round(other.CalculateSurface(), 2))
+                : perimeterCheck;
         }
     }
 }

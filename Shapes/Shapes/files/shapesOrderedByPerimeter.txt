@@ -1,0 +1,15 @@
+Circle with Radius: 7.00, Surface: 153.94 and Perimeter: 43.98
+Rectangle with Width: 11.80, Height: 25.00, Surface: 295.00 and Perimeter: 73.60
+Rectangle with Width: 22.20, Height: 15.30, Surface: 339.66 and Perimeter: 75.00
+Triangle with Side A: 22.00, Side B: 33.00, Side C: 29.10, Angle AB: 60.00, Angle BC: 40.89, Angle AC: 79.11, Surface: 314.37 and Perimeter: 84.10
+Triangle with Side A: 33.00, Side B: 33.00, Side C: 33.00, Angle AB: 60.00, Angle BC: 60.00, Angle AC: 60.00, Surface: 471.55 and Perimeter: 99.00
+Triangle with Side A: 11.00, Side B: 51.00, Side C: 41.84, Angle AB: 30.00, Angle BC: 7.55, Angle AC: 142.45, Surface: 140.25 and Perimeter: 103.84
+Circle with Radius: 21.39, Surface: 1437.38 and Perimeter: 134.40
+Rectangle with Width: 25.90, Height: 41.30, Surface: 1069.67 and Perimeter: 134.40
+Triangle with Side A: 24.00, Side B: 62.00, Side C: 66.48, Angle AB: 90.00, Angle BC: 21.16, Angle AC: 68.84, Surface: 744.00 and Perimeter: 152.48
+Triangle with Side A: 87.00, Side B: 55.00, Side C: 57.12, Angle AB: 40.00, Angle BC: 101.76, Angle AC: 38.24, Surface: 1537.87 and Perimeter: 199.12
+Rectangle with Width: 32.20, Height: 86.30, Surface: 2778.86 and Perimeter: 237.00
+Circle with Radius: 55.00, Surface: 9503.32 and Perimeter: 345.58
+Rectangle with Width: 100.00, Height: 72.79, Surface: 7279.00 and Perimeter: 345.58
+Circle with Radius: 56.00, Surface: 9852.03 and Perimeter: 351.86
+Circle with Radius: 102.00, Surface: 32685.13 and Perimeter: 640.88
