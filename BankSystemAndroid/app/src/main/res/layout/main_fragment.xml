@@ -14,20 +14,15 @@
         android:text="@string/add" />
 
     <Button
-        android:id="@+id/update"
+        android:id="@+id/back"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/update" />
-
-<!--    <Button-->
-<!--        android:id="@+id/view"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="@string/view" />-->
+        android:text="@string/back" />
 
     <fragment
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/output"
         class="com.vale.banksystem.fragment.ReadAccountsFragment"
-        android:id="@+id/output"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </LinearLayout>

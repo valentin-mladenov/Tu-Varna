@@ -1130,6 +1130,7 @@ id all
 id always
 id async
 id auto
+id back
 id balance
 id barrier
 id beginning
@@ -1433,10 +1434,13 @@ string abc_searchview_description_voice
 string abc_shareactionprovider_share_with
 string abc_shareactionprovider_share_with_application
 string abc_toolbar_collapse_description
+string acc_deleted
+string acc_updated
 string account_id
 string add
 string app_name
 string appbar_scrolling_view_behavior
+string back
 string balance
 string bottom_sheet_behavior
 string character_counter_content_description

@@ -12,7 +12,7 @@ import com.vale.banksystem.MainActivity;
 import com.vale.banksystem.R;
 
 public class MainFragment  extends Fragment {
-    Button add, update, delete, view;
+    Button add, update, back;
 
     public MainFragment() {
 
@@ -29,9 +29,8 @@ public class MainFragment  extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         add = view.findViewById(R.id.add);
-        //delete = view.findViewById(R.id.delete);
+        back = view.findViewById(R.id.back);
         update = view.findViewById(R.id.update);
-        // this.view = view.findViewById(R.id.view);
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,28 +39,11 @@ public class MainFragment  extends Fragment {
             }
         });
 
-//        delete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                MainActivity.fm.beginTransaction().replace(R.id.output, new DeleteAccountFragment()).addToBackStack(null).commit();
-//
-//            }
-//        });
-
-        update.setOnClickListener(new View.OnClickListener() {
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.fm.beginTransaction().replace(R.id.output, new UpdateAccountFragment()).addToBackStack(null).commit();
-
+                MainActivity.fm.beginTransaction().replace(R.id.output, new ReadAccountsFragment()).addToBackStack(null).commit();
             }
         });
-
-//        this.view.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                MainActivity.fm.beginTransaction().replace(R.id.output, new ReadAccountsFragment()).addToBackStack(null).commit();
-//
-//            }
-//        });
     }
 }
