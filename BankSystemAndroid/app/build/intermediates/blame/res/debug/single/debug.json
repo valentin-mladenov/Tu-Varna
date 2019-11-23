@@ -432,10 +432,6 @@
         "source": "C:\\Users\\hudso\\.gradle\\caches\\transforms-2\\files-2.1\\2946ca0ea6c89dab7d7d9fbc18e54292\\material-1.0.0\\res\\color\\mtrl_tabs_icon_color_selector_colored.xml"
     },
     {
-        "merged": "C:\\Users\\hudso\\source\\repos\\Tu-Varna\\BankSystemAndroid\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_delete_account.xml.flat",
-        "source": "C:\\Users\\hudso\\source\\repos\\Tu-Varna\\BankSystemAndroid\\app\\src\\main\\res\\layout\\fragment_delete_account.xml"
-    },
-    {
         "merged": "C:\\Users\\hudso\\source\\repos\\Tu-Varna\\BankSystemAndroid\\app\\build\\intermediates\\res\\merged\\debug\\drawable_tooltip_frame_light.xml.flat",
         "source": "C:\\Users\\hudso\\.gradle\\caches\\transforms-2\\files-2.1\\d74b5b498b35fd5cb32d0a6997bb1d3d\\appcompat-1.1.0\\res\\drawable\\tooltip_frame_light.xml"
     },

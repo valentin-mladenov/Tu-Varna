@@ -10,4 +10,6 @@
     <string name="acc_deleted">Account deleted successfull</string>
     <string name="acc_updated">Account updated successfull</string>
     <string name="back">Back</string>
+    <string name="client">Client</string>
+    <string name="acc_added">Account added successfully</string>
 </resources>

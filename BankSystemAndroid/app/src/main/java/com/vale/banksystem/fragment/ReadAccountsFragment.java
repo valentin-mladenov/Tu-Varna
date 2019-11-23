@@ -34,7 +34,6 @@ public class ReadAccountsFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_read_accounts, container, false);
 
-
         recyclerView = rootView.findViewById(R.id.account_list);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2 , StaggeredGridLayoutManager.VERTICAL));
 

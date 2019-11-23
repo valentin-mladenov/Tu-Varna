@@ -18,8 +18,8 @@ import com.vale.banksystem.MainActivity;
 import com.vale.banksystem.R;
 
 public class UpdateAccountFragment extends Fragment {
-    TextInputLayout id, balance, interest;
-    Button update_account, delete_account;
+    TextInputLayout id, balance, interest, client_name;
+    Button update_account, delete_account, back;
     private int accountId;
 
     public UpdateAccountFragment(int accountId) {
@@ -42,8 +42,10 @@ public class UpdateAccountFragment extends Fragment {
         id = view.findViewById(R.id.acc_id);
         interest = view.findViewById(R.id.interest);
         balance = view.findViewById(R.id.balance);
+        client_name = view.findViewById(R.id.client_name);
         update_account = view.findViewById(R.id.update);
         delete_account = view.findViewById(R.id.delete);
+        back = view.findViewById(R.id.back);
 
         MainActivity.appDatabase.accessInterface().getAccount(this.accountId).observe(this, new Observer<Account>() {
             @Override
@@ -52,7 +54,15 @@ public class UpdateAccountFragment extends Fragment {
                     id.getEditText().setText(String.format("%d", account.getId()));
                     balance.getEditText().setText(account.getBalance().toString());
                     interest.getEditText().setText(account.getInterest().toString());
+                    client_name.getEditText().setText(account.getName());
                 }
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.fm.beginTransaction().replace(R.id.output, new ReadAccountsFragment()).addToBackStack(null).commit();
             }
         });
 
@@ -63,6 +73,7 @@ public class UpdateAccountFragment extends Fragment {
                 account.setId(Integer.parseInt(id.getEditText().getText().toString()));
                 account.setBalance(Double.parseDouble(balance.getEditText().getText().toString()));
                 account.setInterest(Double.parseDouble(interest.getEditText().getText().toString()));
+                account.setName(client_name.getEditText().getText().toString());
 
                 MainActivity.appDatabase.accessInterface().updateAccount(account);
 
@@ -79,11 +90,12 @@ public class UpdateAccountFragment extends Fragment {
                 account.setId(Integer.parseInt(id.getEditText().getText().toString()));
                 account.setBalance(Double.parseDouble(balance.getEditText().getText().toString()));
                 account.setInterest(Double.parseDouble(interest.getEditText().getText().toString()));
+                account.setName(client_name.getEditText().getText().toString());
 
-                MainActivity.appDatabase.accessInterface().updateAccount(account);
+                MainActivity.appDatabase.accessInterface().deleteAccount(account);
 
                 Toast.makeText(getActivity(), R.string.acc_deleted, Toast.LENGTH_SHORT).show();
-                
+
                 MainActivity.fm.beginTransaction().replace(R.id.output, new ReadAccountsFragment()).addToBackStack(null).commit();
             }
         });

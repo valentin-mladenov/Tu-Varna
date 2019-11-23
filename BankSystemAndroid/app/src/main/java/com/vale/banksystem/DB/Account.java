@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Entity(tableName = "account")
 public class Account implements Serializable {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     @NonNull private int id;
 
@@ -16,6 +16,14 @@ public class Account implements Serializable {
 
     @ColumnInfo(name = "interest")
     private Double Interest;
+
+
+    @ColumnInfo(name = "name")
+    private String Name;
+
+    public String getName() { return Name; }
+
+    public void setName(String name) { this.Name = name; }
 
     public int getId() { return id; }
 

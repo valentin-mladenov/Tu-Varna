@@ -11,7 +11,7 @@ import java.util.List;
 public class AccountRepository {
 
 
-    private String DB_NAME = "db_account";
+    private String DB_NAME = "db_accounts";
 
     private AppDatabase appDatabase;
     public AccountRepository(Context context) {

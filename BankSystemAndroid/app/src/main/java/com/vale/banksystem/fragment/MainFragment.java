@@ -12,7 +12,7 @@ import com.vale.banksystem.MainActivity;
 import com.vale.banksystem.R;
 
 public class MainFragment  extends Fragment {
-    Button add, update, back;
+    Button add, back;
 
     public MainFragment() {
 
@@ -25,17 +25,22 @@ public class MainFragment  extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         add = view.findViewById(R.id.add);
         back = view.findViewById(R.id.back);
-        update = view.findViewById(R.id.update);
+
+        add.setVisibility(View.VISIBLE);
+        back.setVisibility(View.GONE);
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MainActivity.fm.beginTransaction().replace(R.id.output, new AddAccountFragment()).addToBackStack(null).commit();
+                add.setVisibility(View.GONE);
+                back.setVisibility(View.VISIBLE);
+
             }
         });
 
@@ -43,7 +48,15 @@ public class MainFragment  extends Fragment {
             @Override
             public void onClick(View v) {
                 MainActivity.fm.beginTransaction().replace(R.id.output, new ReadAccountsFragment()).addToBackStack(null).commit();
+                add.setVisibility(View.VISIBLE);
+                back.setVisibility(View.GONE);
+
             }
         });
+    }
+
+    public void toggleAddButton() {
+        add.setVisibility(View.GONE);
+        back.setVisibility(View.VISIBLE);
     }
 }
