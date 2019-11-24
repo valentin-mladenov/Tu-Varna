@@ -11,11 +11,11 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Counterparty.Address)
+            Counterparty
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Counterparty.Address)
+            @Html.Raw(Model.Counterparty.ToString())
         </dd>
 
         <dt>
@@ -33,10 +33,36 @@
         <dd>
             @Html.DisplayFor(model => model.DoneAt)
         </dd>
-
     </dl>
+    <table class="table">
+        <tr>
+            <th>
+                Medicine Name
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Quantity
+            </th>
+        </tr>
+        @foreach (var item in Model.DeliveredMedicines)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Medicine.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+            </tr>
+        }
+    </table>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, htmlAttributes: new { @class = "btn btn-outline-warning mx-1" })
+    @Html.ActionLink("Back to List", "Index", null, htmlAttributes: new { @class = "btn btn-outline-info mx-1" })
 </p>

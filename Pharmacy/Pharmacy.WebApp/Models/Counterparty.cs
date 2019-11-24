@@ -25,5 +25,10 @@ namespace Pharmacy.WebApp.Models
         [MinLength(10)]
         [Column(TypeName = "NVARCHAR")]
         public string Address { get; set; }
+
+        public override string ToString()
+        {
+            return $"Address: {Address}";
+        }
     }
 }

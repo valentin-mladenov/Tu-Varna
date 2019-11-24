@@ -16,10 +16,23 @@ namespace Pharmacy.WebApp.Controllers
         private PharmacyDbContext db = new PharmacyDbContext();
 
         // GET: Deliveries
-        public ActionResult Index()
+        public ActionResult Index(string searchString)
         {
-            var deliveries = db.Deliveries.Include(d => d.Counterparty);
-            return View(deliveries.ToList());
+            if (string.IsNullOrWhiteSpace(searchString))
+            {
+                searchString = "";
+            }
+
+            var deliveries = db.Deliveries
+                .Include(d => d.Counterparty)
+                .ToList()
+                .Where(d => d.Number.ToString().Contains(searchString)
+                    || d.Counterparty.ToString().Contains(searchString))
+                .OrderByDescending(d => d.DoneAt)
+                .ThenBy(d => d.Number)
+                .ToList();
+
+            return View(deliveries);
         }
 
         // GET: Deliveries/Details/5
