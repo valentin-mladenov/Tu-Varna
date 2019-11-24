@@ -8,25 +8,36 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-            </div>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+        @Html.ActionLink("Pharmacy", "Index", "Sells", new { area = "" }, new { @class = "navbar-brand" })
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item">@Html.ActionLink("Sells", "Index", "Sells", new { area = "" }, new { @class = "nav-link" })</li>
+                <li class="nav-item">@Html.ActionLink("SoldMedicines", "Index", "SoldMedicines", new { area = "" }, new { @class = "nav-link" })</li>
+                <li class="nav-item">@Html.ActionLink("Deliveries", "Index", "Deliveries", new { area = "" }, new { @class = "nav-link" })</li>
+                <li class="nav-item">@Html.ActionLink("DeliveredMedicines", "Index", "DeliveredMedicines", new { area = "" }, new { @class = "nav-link" })</li>
+                <li class="nav-item">@Html.ActionLink("Medicines", "Index", "Medicines", new { area = "" }, new { @class = "nav-link" })</li>
+                <li class="nav-item">@Html.ActionLink("People", "Index", "People", new { area = "" }, new { @class = "nav-link" })</li>
+                <li class="nav-item">@Html.ActionLink("Firms", "Index", "Firms", new { area = "" }, new { @class = "nav-link" })</li>
+                @*<li class="nav-item dropdown show">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Search For
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        @Html.ActionLink("Active Rentals By Vehicle Model", "SearchActiveRentalsByVehicleModel", "Inquiries", new { area = "" }, new { @class = "dropdown-item" })
+                        @Html.ActionLink("Active Rentals By Client", "SearchActiveRentalsByClient", "Inquiries", new { area = "" }, new { @class = "dropdown-item" })
+                        @Html.ActionLink("Most Profitable Client", "SearchMostProfitableClient", "Inquiries", new { area = "" }, new { @class = "dropdown-item" })
+                        @Html.ActionLink("Most Profitable Vehicles", "SearchMostProfitableVehicles", "Inquiries", new { area = "" }, new { @class = "dropdown-item" })
+                        @Html.ActionLink("Most Rented Vehicles", "SearchMostRentedVehicles", "Inquiries", new { area = "" }, new { @class = "dropdown-item" })
+                    </div>
+                </li>*@
+                <!-- Add links here -->
+            </ul>
         </div>
-    </div>
+    </nav>
     <div class="container body-content">
         @RenderBody()
         <hr />

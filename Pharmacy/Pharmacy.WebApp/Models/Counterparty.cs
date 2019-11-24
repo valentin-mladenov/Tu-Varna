@@ -25,7 +25,5 @@ namespace Pharmacy.WebApp.Models
         [MinLength(10)]
         [Column(TypeName = "NVARCHAR")]
         public string Address { get; set; }
-
-        public int CounterpartyType { get; set; }
     }
 }

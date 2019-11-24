@@ -7,7 +7,6 @@ namespace Pharmacy.WebApp.Models
 {
     public class Firm : Counterparty
     {
-
         [Required]
         [Index(IsUnique = true)]
         [Column(TypeName = "NVARCHAR")]

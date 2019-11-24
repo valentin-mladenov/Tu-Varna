@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Pharmacy.WebApp.Models.Sell>
+﻿@model IEnumerable<Pharmacy.WebApp.Models.SoldMedicine>
 
 @{
     ViewBag.Title = "Index";
@@ -12,13 +12,16 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Counterparty.Address)
+            @Html.DisplayNameFor(model => model.Medicine.Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Number)
+            @Html.DisplayNameFor(model => model.Sell.Id)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DoneAt)
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Quantity)
         </th>
         <th></th>
     </tr>
@@ -26,13 +29,16 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Counterparty.Address)
+            @Html.DisplayFor(modelItem => item.Medicine.Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Number)
+            @Html.DisplayFor(modelItem => item.Sell.Id)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.DoneAt)
+            @Html.DisplayFor(modelItem => item.Price)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Quantity)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id = item.Id }, htmlAttributes: new { @class = "btn btn-outline-warning mx-1" })

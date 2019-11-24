@@ -17,5 +17,9 @@ namespace Pharmacy.WebApp.Models
         [Required]
         public Guid MedicineId { get; set; }
         public virtual Medicine Medicine { get; set; }
+
+        [Required]
+        public Guid SellId { get; set; }
+        public virtual Sell Sell { get; set; }
     }
 }
