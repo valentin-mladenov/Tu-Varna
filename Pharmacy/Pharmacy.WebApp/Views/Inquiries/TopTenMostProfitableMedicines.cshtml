@@ -17,7 +17,9 @@
         <th>
             @Html.DisplayNameFor(model => model.AvailableQuantity)
         </th>
-        <th></th>
+        <th>
+            <a href="@ViewBag.CsvString" target="_blank" download="Export.csv" class="btn btn-info">Export</a>
+        </th>
     </tr>
 
 @foreach (var item in Model) {
