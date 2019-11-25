@@ -16,10 +16,23 @@ namespace Pharmacy.WebApp.Controllers
         private PharmacyDbContext db = new PharmacyDbContext();
 
         // GET: Sells
-        public ActionResult Index()
+        public ActionResult Index(string searchString)
         {
-            var sells = db.Sells.Include(s => s.Counterparty);
-            return View(sells.ToList());
+            if (string.IsNullOrWhiteSpace(searchString))
+            {
+                searchString = "";
+            }
+
+            var sells = db.Sells
+                .Include(d => d.Counterparty)
+                .ToList()
+                .Where(d => d.Number.ToString().Contains(searchString)
+                    || d.Counterparty.ToString().Contains(searchString))
+                .OrderByDescending(d => d.DoneAt)
+                .ThenBy(d => d.Number)
+                .ToList();
+
+            return View(sells);
         }
 
         // GET: Sells/Details/5
@@ -40,7 +53,7 @@ namespace Pharmacy.WebApp.Controllers
         // GET: Sells/Create
         public ActionResult Create()
         {
-            ViewBag.CounterpartyId = new SelectList(db.Counterparties, "Id", "Address");
+            ViewBag.CounterpartyId = new SelectList(db.Counterparties, "Id", "Stringed");
             return View();
         }
 
@@ -59,7 +72,7 @@ namespace Pharmacy.WebApp.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CounterpartyId = new SelectList(db.Counterparties, "Id", "Address", sell.CounterpartyId);
+            ViewBag.CounterpartyId = new SelectList(db.Counterparties, "Id", "Stringed", sell.CounterpartyId);
             return View(sell);
         }
 
@@ -75,7 +88,7 @@ namespace Pharmacy.WebApp.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.CounterpartyId = new SelectList(db.Counterparties, "Id", "Address", sell.CounterpartyId);
+            ViewBag.CounterpartyId = new SelectList(db.Counterparties, "Id", "Stringed", sell.CounterpartyId);
             return View(sell);
         }
 
@@ -92,7 +105,7 @@ namespace Pharmacy.WebApp.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CounterpartyId = new SelectList(db.Counterparties, "Id", "Address", sell.CounterpartyId);
+            ViewBag.CounterpartyId = new SelectList(db.Counterparties, "Id", "Stringed", sell.CounterpartyId);
             return View(sell);
         }
 
@@ -117,9 +130,19 @@ namespace Pharmacy.WebApp.Controllers
         public ActionResult DeleteConfirmed(Guid id)
         {
             Sell sell = db.Sells.Find(id);
-            db.Sells.Remove(sell);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                db.Sells.Remove(sell);
+                db.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            catch (InvalidOperationException ex)
+            {
+                ViewBag.Error = "Delete cannot be Done! Remove all releted deliveries and sells!";
+
+                return View(sell);
+            }
         }
 
         protected override void Dispose(bool disposing)

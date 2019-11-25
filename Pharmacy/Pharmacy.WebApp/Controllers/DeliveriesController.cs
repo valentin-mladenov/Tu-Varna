@@ -53,7 +53,7 @@ namespace Pharmacy.WebApp.Controllers
         // GET: Deliveries/Create
         public ActionResult Create()
         {
-            ViewBag.CounterpartyId = new SelectList(db.Counterparties, "Id", "Address");
+            ViewBag.CounterpartyId = new SelectList(db.Counterparties, "Id", "Stringed");
             return View();
         }
 
@@ -72,7 +72,7 @@ namespace Pharmacy.WebApp.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CounterpartyId = new SelectList(db.Counterparties, "Id", "Address", delivery.CounterpartyId);
+            ViewBag.CounterpartyId = new SelectList(db.Counterparties, "Id", "Stringed", delivery.CounterpartyId);
             return View(delivery);
         }
 
@@ -88,7 +88,7 @@ namespace Pharmacy.WebApp.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.CounterpartyId = new SelectList(db.Counterparties, "Id", "Address", delivery.CounterpartyId);
+            ViewBag.CounterpartyId = new SelectList(db.Counterparties, "Id", "Stringed", delivery.CounterpartyId);
             return View(delivery);
         }
 
@@ -105,7 +105,7 @@ namespace Pharmacy.WebApp.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CounterpartyId = new SelectList(db.Counterparties, "Id", "Address", delivery.CounterpartyId);
+            ViewBag.CounterpartyId = new SelectList(db.Counterparties, "Id", "Stringed", delivery.CounterpartyId);
             return View(delivery);
         }
 
@@ -130,9 +130,18 @@ namespace Pharmacy.WebApp.Controllers
         public ActionResult DeleteConfirmed(Guid id)
         {
             Delivery delivery = db.Deliveries.Find(id);
-            db.Deliveries.Remove(delivery);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                db.Deliveries.Remove(delivery);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch (InvalidOperationException ex)
+            {
+                ViewBag.Error = "Delete cannot be Done! Remove all releted deliveries and sells!";
+
+                return View(delivery);
+            }
         }
 
         protected override void Dispose(bool disposing)

@@ -31,8 +31,7 @@ namespace Pharmacy.WebApp.Controllers
                     || dm.Quantity.ToString().Contains(searchString)
                     || dm.Delivery.Counterparty.Address.Contains(searchString)
                     || dm.Price.ToString().Contains(searchString)
-                    || dm.Medicine.Name.Contains(searchString)
-                    || dm.Medicine.Code.ToString().Contains(searchString))
+                    || dm.Medicine.ToString().Contains(searchString))
                 .OrderByDescending(dm => dm.Delivery.DoneAt)
                 .ThenBy(dm => dm.Delivery.Number)
                 .ThenBy(dm => dm.Medicine.Name);

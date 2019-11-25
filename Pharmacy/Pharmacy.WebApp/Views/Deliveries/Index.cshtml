@@ -38,7 +38,7 @@
     {
         <tr>
             <td>
-                @Html.Raw(item.Counterparty.ToString())
+                @Html.DisplayFor(modelItem => item.Counterparty.Stringed)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Number)

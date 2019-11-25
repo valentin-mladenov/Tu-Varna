@@ -16,9 +16,26 @@ namespace Pharmacy.WebApp.Controllers
         private PharmacyDbContext db = new PharmacyDbContext();
 
         // GET: SoldMedicines
-        public ActionResult Index()
+        public ActionResult Index(string searchString)
         {
-            var soldMedicines = db.SoldMedicines.Include(s => s.Medicine).Include(s => s.Sell);
+            if (string.IsNullOrWhiteSpace(searchString))
+            {
+                searchString = "";
+            }
+
+            var soldMedicines = db.SoldMedicines
+                .Include(d => d.Sell)
+                .Include(d => d.Sell.Counterparty)
+                .Include(d => d.Medicine)
+                .Where(dm => dm.Sell.Number.ToString().Contains(searchString)
+                    || dm.Quantity.ToString().Contains(searchString)
+                    || dm.Sell.Counterparty.Address.Contains(searchString)
+                    || dm.Price.ToString().Contains(searchString)
+                    || dm.Medicine.ToString().Contains(searchString))
+                .OrderByDescending(dm => dm.Sell.DoneAt)
+                .ThenBy(dm => dm.Sell.Number)
+                .ThenBy(dm => dm.Medicine.Name);
+
             return View(soldMedicines.ToList());
         }
 

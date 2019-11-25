@@ -26,6 +26,16 @@ namespace Pharmacy.WebApp.Models
         [Column(TypeName = "NVARCHAR")]
         public string Address { get; set; }
 
+        [NotMapped]
+        public string Stringed
+        {
+            get
+            {
+                return this.ToString();
+            }
+            private set { }
+        }
+
         public override string ToString()
         {
             return $"Address: {Address}";

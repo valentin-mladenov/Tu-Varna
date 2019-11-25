@@ -16,9 +16,19 @@ namespace Pharmacy.WebApp.Controllers
         private PharmacyDbContext db = new PharmacyDbContext();
 
         // GET: Medicines
-        public ActionResult Index()
+        public ActionResult Index(string searchString)
         {
-            return View(db.Medicines.ToList());
+            if (string.IsNullOrWhiteSpace(searchString))
+            {
+                searchString = "";
+            }
+
+            var medicines = db.Medicines
+                .Where(f => f.ToString().Contains(searchString))
+                .OrderByDescending(f => f.ToString())
+                .ToList();
+
+            return View(medicines);
         }
 
         // GET: Medicines/Details/5
@@ -111,22 +121,20 @@ namespace Pharmacy.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
         {
-            var error = string.Empty;
             Medicine medicine = db.Medicines.Find(id);
-
             try
             {
                 db.Medicines.Remove(medicine);
                 db.SaveChanges();
+
+                return RedirectToAction("Index");
             }
             catch (InvalidOperationException ex)
             {
-                error = "Delete cannot be Done! Remove all releted deliveries and sells!";
-                ViewBag.Error = error;
+                ViewBag.Error = "Delete cannot be Done! Remove all releted deliveries and sells!";
+
                 return View(medicine);
             }
-
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

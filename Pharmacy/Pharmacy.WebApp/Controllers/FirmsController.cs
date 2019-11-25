@@ -16,9 +16,19 @@ namespace Pharmacy.WebApp.Controllers
         private PharmacyDbContext db = new PharmacyDbContext();
 
         // GET: Firms
-        public ActionResult Index()
+        public ActionResult Index(string searchString)
         {
-            return View(db.Firms.ToList());
+            if (string.IsNullOrWhiteSpace(searchString))
+            {
+                searchString = "";
+            }
+
+            var firms = db.Firms
+                .Where(f => f.ToString().Contains(searchString))
+                .OrderByDescending(f => f.Stringed)
+                .ToList();
+
+            return View(firms);
         }
 
         // GET: Firms/Details/5
@@ -112,9 +122,19 @@ namespace Pharmacy.WebApp.Controllers
         public ActionResult DeleteConfirmed(Guid id)
         {
             Firm firm = db.Firms.Find(id);
-            db.Firms.Remove(firm);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                db.Firms.Remove(firm);
+                db.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            catch (InvalidOperationException ex)
+            {
+                ViewBag.Error = "Delete cannot be Done! Remove all releted deliveries and sells!";
+
+                return View(firm);
+            }
         }
 
         protected override void Dispose(bool disposing)

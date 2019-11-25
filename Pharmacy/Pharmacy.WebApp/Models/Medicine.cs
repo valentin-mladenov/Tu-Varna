@@ -40,5 +40,10 @@ namespace Pharmacy.WebApp.Models
             }
             private set { }
         }
+
+        public override string ToString()
+        {
+            return $"Name: {Name}, Code: {Code}, AvailableQuantity: {AvailableQuantity}";
+        }
     }
 }
