@@ -137,6 +137,7 @@
     <Compile Include="Controllers\DeliveredMedicinesController.cs" />
     <Compile Include="Controllers\DeliveriesController.cs" />
     <Compile Include="Controllers\FirmsController.cs" />
+    <Compile Include="Controllers\InquiriesController.cs" />
     <Compile Include="Controllers\MedicinesController.cs" />
     <Compile Include="Controllers\PeopleController.cs" />
     <Compile Include="Controllers\SellsController.cs" />
@@ -316,6 +317,11 @@
     <Content Include="Views\SoldMedicines\Details.cshtml" />
     <Content Include="Views\SoldMedicines\Edit.cshtml" />
     <Content Include="Views\SoldMedicines\Index.cshtml" />
+    <Content Include="Views\Inquiries\LowestQuantityMedicines.cshtml" />
+    <Content Include="Views\Inquiries\TopTenMostSoldMedicines.cshtml" />
+    <Content Include="Views\Inquiries\TopTenMostProfitableMedicines.cshtml" />
+    <Content Include="Views\Inquiries\TopTenMostProfitableClients.cshtml" />
+    <Content Include="Views\Inquiries\MedicineLowestPricesWithSupplier.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
