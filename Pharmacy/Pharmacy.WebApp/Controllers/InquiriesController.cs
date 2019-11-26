@@ -19,7 +19,7 @@ namespace Pharmacy.WebApp.Controllers
         {
             var medicines = db.Medicines
                 .ToList()
-                .Where(f => f.AvailableQuantity <= 10)
+                .Where(f => f.AvailableQuantity <= 100)
                 .OrderBy(f => f.AvailableQuantity)
                 .ToList();
 
@@ -31,7 +31,7 @@ namespace Pharmacy.WebApp.Controllers
         public ActionResult TopTenMostSoldMedicines()
         {
             var medicines = db.Medicines
-                .OrderBy(f => f.SoldMedicines.Select(sm => sm.Quantity).Sum())
+                .OrderByDescending(f => f.SoldMedicines.Select(sm => sm.Quantity).Sum())
                 .Take(10)
                 .ToList();
 
@@ -43,7 +43,10 @@ namespace Pharmacy.WebApp.Controllers
         public ActionResult TopTenMostProfitableMedicines()
         {
             var medicines = db.Medicines
-                .OrderBy(m => m.SoldMedicines.Select(sm => sm.Quantity * sm.Price).Sum())
+                .OrderByDescending(m => 
+                    m.SoldMedicines.Select(sm => sm.Quantity * sm.Price).Sum() - 
+                    m.DeliveredMedicines.Select(sm => sm.Quantity * sm.Price).Sum()
+                )
                 .Take(10)
                 .ToList();
 
@@ -55,7 +58,7 @@ namespace Pharmacy.WebApp.Controllers
         public ActionResult TopTenMostProfitableClients()
         {
             var persons = db.Persons
-                .OrderBy(p => p.Sales.Select(s => s.SoldMedicines.Select(sm => sm.Quantity * sm.Price).Sum()).Sum())
+                .OrderByDescending(p => p.Sales.Select(s => s.SoldMedicines.Select(sm => sm.Quantity * sm.Price).Sum()).Sum())
                 .Take(10)
                 .ToList();
 

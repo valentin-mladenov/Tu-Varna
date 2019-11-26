@@ -24,6 +24,7 @@ namespace Pharmacy.WebApp.Controllers
             }
 
             var firms = db.Firms
+                .ToList()
                 .Where(f => f.ToString().Contains(searchString))
                 .OrderByDescending(f => f.Stringed)
                 .ToList();
@@ -59,6 +60,13 @@ namespace Pharmacy.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Address,Name,Code,EIK")] Firm firm)
         {
+            var found = db.Firms.Where(f => f.EIK == firm.EIK).FirstOrDefault();
+
+            if (found != null)
+            {
+                ModelState.AddModelError("EIK", "EIK already exists!!!");
+            }
+
             if (ModelState.IsValid)
             {
                 firm.Id = Guid.NewGuid();
@@ -92,6 +100,13 @@ namespace Pharmacy.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Address,Name,Code,EIK")] Firm firm)
         {
+            var found = db.Firms.Where(f => f.EIK == firm.EIK && f.Id != firm.Id).FirstOrDefault();
+
+            if (found != null)
+            {
+                ModelState.AddModelError("EIK", "EIK already exists!!!");
+            }
+
             if (ModelState.IsValid)
             {
                 db.Entry(firm).State = EntityState.Modified;

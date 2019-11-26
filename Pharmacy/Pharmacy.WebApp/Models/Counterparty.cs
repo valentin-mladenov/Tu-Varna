@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace Pharmacy.WebApp.Models
 {
@@ -25,6 +26,24 @@ namespace Pharmacy.WebApp.Models
         [MinLength(10)]
         [Column(TypeName = "NVARCHAR")]
         public string Address { get; set; }
+
+        [NotMapped]
+        public int SalesCount
+        {
+            get
+            {
+                return this.Sales.Count;
+            }
+        }
+
+        [NotMapped]
+        public decimal MoneyFromSales
+        {
+            get
+            {
+                return this.Sales.Select(s => s.SoldMedicines.Select(sm => sm.Quantity * sm.Price).Sum()).Sum();
+            }
+        }
 
         [NotMapped]
         public string Stringed

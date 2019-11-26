@@ -27,6 +27,7 @@ namespace Pharmacy.WebApp.Controllers
                 .Include(d => d.Delivery)
                 .Include(d => d.Delivery.Counterparty)
                 .Include(d => d.Medicine)
+                .ToList()
                 .Where(dm => dm.Delivery.Number.ToString().Contains(searchString)
                     || dm.Quantity.ToString().Contains(searchString)
                     || dm.Delivery.Counterparty.Address.Contains(searchString)

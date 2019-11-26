@@ -27,7 +27,9 @@ namespace Pharmacy.WebApp.Models.DataAccessLayer
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Counterparty>().ToTable("Counterparty");
+            modelBuilder.Entity<Counterparty>().ToTable("Counterparty")
+                .Map<Person>(m => m.Requires("Discriminator").HasValue<long>(1))
+                .Map<Firm>(m => m.Requires("Discriminator").HasValue<long>(2));
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();

@@ -11,9 +11,11 @@ namespace Pharmacy.WebApp.Models
         public Guid Id { get; set; }
 
         [Required]
+        [Range(typeof(decimal), "0", "10000000")]
         public decimal Price { get; set; }
 
         [Required]
+        [Range(typeof(decimal),"0", "10000000")]
         public decimal Quantity { get; set; }
 
         [Required]

@@ -24,13 +24,13 @@ namespace Pharmacy.WebApp.Controllers
             }
 
             var sells = db.Sells
-                .Include(d => d.Counterparty)
-                .ToList()
-                .Where(d => d.Number.ToString().Contains(searchString)
-                    || d.Counterparty.ToString().Contains(searchString))
-                .OrderByDescending(d => d.DoneAt)
-                .ThenBy(d => d.Number)
-                .ToList();
+                .Include(d => d.Counterparty);
+            //    .ToList()
+            //    .Where(d => d.Number.ToString().Contains(searchString)
+            //        || d.Counterparty.ToString().Contains(searchString))
+            //    .OrderByDescending(d => d.DoneAt)
+            //    .ThenBy(d => d.Number)
+            //    .ToList();
 
             return View(sells);
         }
@@ -64,6 +64,13 @@ namespace Pharmacy.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Number,DoneAt,CounterpartyId")] Sell sell)
         {
+            var found = db.Sells.Where(s => s.Number == sell.Number).FirstOrDefault();
+
+            if (found != null)
+            {
+                ModelState.AddModelError("Number", "Number already exists!!!");
+            }
+
             if (ModelState.IsValid)
             {
                 sell.Id = Guid.NewGuid();
@@ -99,6 +106,13 @@ namespace Pharmacy.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Number,DoneAt,CounterpartyId")] Sell sell)
         {
+            var found = db.Sells.Where(s => s.Number == sell.Number && s.Id != sell.Id).FirstOrDefault();
+
+            if (found != null)
+            {
+                ModelState.AddModelError("Number", "Number already exists in different sell!!!");
+            }
+
             if (ModelState.IsValid)
             {
                 db.Entry(sell).State = EntityState.Modified;

@@ -64,6 +64,13 @@ namespace Pharmacy.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Number,DoneAt,CounterpartyId")] Delivery delivery)
         {
+            var found = db.Deliveries.Where(s => s.Number == delivery.Number).FirstOrDefault();
+
+            if (found != null)
+            {
+                ModelState.AddModelError("Number", "Number already exists in different delivery!!!");
+            }
+
             if (ModelState.IsValid)
             {
                 delivery.Id = Guid.NewGuid();
@@ -99,6 +106,13 @@ namespace Pharmacy.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Number,DoneAt,CounterpartyId")] Delivery delivery)
         {
+            var found = db.Deliveries.Where(s => s.Number == delivery.Number && s.Id != delivery.Id).FirstOrDefault();
+
+            if (found != null)
+            {
+                ModelState.AddModelError("Number", "Number already exists in different delivery!!!");
+            }
+
             if (ModelState.IsValid)
             {
                 db.Entry(delivery).State = EntityState.Modified;

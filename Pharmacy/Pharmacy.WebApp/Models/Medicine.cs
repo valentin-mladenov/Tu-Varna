@@ -41,6 +41,72 @@ namespace Pharmacy.WebApp.Models
             private set { }
         }
 
+        [NotMapped]
+        public decimal SoldMedicineCount
+        {
+            get
+            {
+                return this.SoldMedicines.Select(sm => sm.Quantity).Sum();
+            }
+        }
+
+        [NotMapped]
+        public decimal DeliveredMedicineCount
+        {
+            get
+            {
+                return this.DeliveredMedicines.Select(sm => sm.Quantity).Sum();
+            }
+        }
+
+        [NotMapped]
+        public decimal TotalSoldMedicineSum
+        {
+            get
+            {
+                return this.SoldMedicines.Select(sm => sm.Quantity * sm.Price).Sum();
+            }
+        }
+
+        [NotMapped]
+        public decimal TotalDeliveryMedicineSum
+        {
+            get
+            {
+                return this.DeliveredMedicines.Select(sm => sm.Quantity * sm.Price).Sum();
+            }
+        }
+
+        [NotMapped]
+        public decimal TotalEarnedSum
+        {
+            get
+            {
+                return this.TotalSoldMedicineSum - this.TotalDeliveryMedicineSum;
+            }
+        }
+
+        [NotMapped]
+        public decimal CheapestDelivered
+        {
+            get
+            {
+                return this.DeliveredMedicines.Min(sm => sm.Price);
+            }
+        }
+
+        [NotMapped]
+        public string CheapestDeliveredSupplier
+        {
+            get
+            {
+                return this.DeliveredMedicines
+                    .Where(dm => dm.Price == this.CheapestDelivered)
+                    .FirstOrDefault()
+                    .Delivery.Counterparty.ToString();
+            }
+        }
+
         public override string ToString()
         {
             return $"Name: {Name}, Code: {Code}, AvailableQuantity: {AvailableQuantity}";

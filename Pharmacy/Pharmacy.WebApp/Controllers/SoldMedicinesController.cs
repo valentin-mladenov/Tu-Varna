@@ -27,6 +27,7 @@ namespace Pharmacy.WebApp.Controllers
                 .Include(d => d.Sell)
                 .Include(d => d.Sell.Counterparty)
                 .Include(d => d.Medicine)
+                .ToList()
                 .Where(dm => dm.Sell.Number.ToString().Contains(searchString)
                     || dm.Quantity.ToString().Contains(searchString)
                     || dm.Sell.Counterparty.Address.Contains(searchString)
@@ -58,7 +59,7 @@ namespace Pharmacy.WebApp.Controllers
         public ActionResult Create()
         {
             ViewBag.MedicineId = new SelectList(db.Medicines, "Id", "Name");
-            ViewBag.SellId = new SelectList(db.Sells, "Id", "Id");
+            ViewBag.SellId = new SelectList(db.Sells, "Id", "Number");
             return View();
         }
 
@@ -69,6 +70,13 @@ namespace Pharmacy.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Price,Quantity,MedicineId,SellId")] SoldMedicine soldMedicine)
         {
+            var found = db.Medicines.Find(soldMedicine.MedicineId).AvailableQuantity - soldMedicine.Quantity;
+
+            if (found < 0)
+            {
+                ModelState.AddModelError("Quantity", "Quantity too low!!!");
+            }
+
             if (ModelState.IsValid)
             {
                 soldMedicine.Id = Guid.NewGuid();
@@ -78,7 +86,7 @@ namespace Pharmacy.WebApp.Controllers
             }
 
             ViewBag.MedicineId = new SelectList(db.Medicines, "Id", "Name", soldMedicine.MedicineId);
-            ViewBag.SellId = new SelectList(db.Sells, "Id", "Id", soldMedicine.SellId);
+            ViewBag.SellId = new SelectList(db.Sells, "Id", "Number", soldMedicine.SellId);
             return View(soldMedicine);
         }
 
@@ -95,7 +103,7 @@ namespace Pharmacy.WebApp.Controllers
                 return HttpNotFound();
             }
             ViewBag.MedicineId = new SelectList(db.Medicines, "Id", "Name", soldMedicine.MedicineId);
-            ViewBag.SellId = new SelectList(db.Sells, "Id", "Id", soldMedicine.SellId);
+            ViewBag.SellId = new SelectList(db.Sells, "Id", "Number", soldMedicine.SellId);
             return View(soldMedicine);
         }
 
@@ -106,6 +114,13 @@ namespace Pharmacy.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Price,Quantity,MedicineId,SellId")] SoldMedicine soldMedicine)
         {
+            var found = db.Medicines.Find(soldMedicine.MedicineId).AvailableQuantity - soldMedicine.Quantity;
+
+            if (found < 0)
+            {
+                ModelState.AddModelError("Quantity", "Quantity too low!!!");
+            }
+
             if (ModelState.IsValid)
             {
                 db.Entry(soldMedicine).State = EntityState.Modified;
@@ -113,7 +128,7 @@ namespace Pharmacy.WebApp.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.MedicineId = new SelectList(db.Medicines, "Id", "Name", soldMedicine.MedicineId);
-            ViewBag.SellId = new SelectList(db.Sells, "Id", "Id", soldMedicine.SellId);
+            ViewBag.SellId = new SelectList(db.Sells, "Id", "Number", soldMedicine.SellId);
             return View(soldMedicine);
         }
 

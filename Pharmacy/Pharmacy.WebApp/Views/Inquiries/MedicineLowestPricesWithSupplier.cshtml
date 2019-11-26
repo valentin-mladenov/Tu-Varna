@@ -18,6 +18,12 @@
             @Html.DisplayNameFor(model => model.AvailableQuantity)
         </th>
         <th>
+            Cheapest Price
+        </th>
+        <th>
+            Supplier
+        </th>
+        <th>
             <a href="@ViewBag.CsvString" target="_blank" download="Export.csv" class="btn btn-info">Export</a>
         </th>
     </tr>
@@ -34,10 +40,10 @@
             @Html.DisplayFor(modelItem => item.AvailableQuantity)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.Id }, htmlAttributes: new { @class = "btn btn-outline-warning mx-1" })
-            @Html.ActionLink("Details", "Details", new { id = item.Id }, htmlAttributes: new { @class = "btn btn-outline-info mx-1" })
-            @Html.ActionLink("Delete", "Delete", new { id = item.Id }, htmlAttributes: new { @class = "btn btn-outline-danger mx-1" })
+            @Html.DisplayFor(modelItem => item.CheapestDelivered)
         </td>
+        <td>@Html.DisplayFor(modelItem => item.CheapestDeliveredSupplier)</td>
+        <td></td>
     </tr>
 }
 

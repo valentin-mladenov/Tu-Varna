@@ -24,9 +24,11 @@ namespace Pharmacy.WebApp.Controllers
             }
 
             var persons = db.Persons
+                .ToList()
                 .Where(f => f.ToString().Contains(searchString))
                 .OrderByDescending(f => f.Stringed)
                 .ToList();
+            
 
             return View(persons);
         }
@@ -59,6 +61,13 @@ namespace Pharmacy.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Address,FirstName,LastName,EGN")] Person person)
         {
+            var found = db.Persons.Where(p => p.EGN == person.EGN).FirstOrDefault();
+
+            if (found != null)
+            {
+                ModelState.AddModelError("EGN", "ENG already exists!!!");
+            }
+
             if (ModelState.IsValid)
             {
                 person.Id = Guid.NewGuid();
@@ -92,6 +101,13 @@ namespace Pharmacy.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Address,FirstName,LastName,EGN")] Person person)
         {
+            var found = db.Persons.Where(f => f.EGN == person.EGN && f.Id != person.Id).FirstOrDefault();
+
+            if (found != null)
+            {
+                ModelState.AddModelError("EGN", "EGN already exists!!!");
+            }
+
             if (ModelState.IsValid)
             {
                 db.Entry(person).State = EntityState.Modified;

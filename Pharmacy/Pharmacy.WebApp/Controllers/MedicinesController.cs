@@ -24,6 +24,7 @@ namespace Pharmacy.WebApp.Controllers
             }
 
             var medicines = db.Medicines
+                .ToList()
                 .Where(f => f.ToString().Contains(searchString))
                 .OrderByDescending(f => f.ToString())
                 .ToList();
