@@ -160,5 +160,58 @@ namespace Pharmacy.WebApp.Controllers
             }
             base.Dispose(disposing);
         }
+
+        private bool IsRealEGN(long egn)
+        {
+            var egnIntArray = Array.ConvertAll(egn.ToString().ToCharArray(), c => (int)Char.GetNumericValue(c));
+            
+
+
+            var result = (decimal)egnIntArray.Select((value, index) =>
+            {
+                if (index == egnIntArray.Length - 1) return 0;
+
+                return (decimal)value * (index + 1);
+            }).Sum() / 11;
+
+            if (result > 10)
+            {
+                return false;
+            }
+
+            if (result == 10)
+            {
+                var result2 = (decimal)egnIntArray.Select((value, index) =>
+                {
+                    if (index == egnIntArray.Length - 1) return 0;
+
+                    return (decimal)value * (index + 3);
+                }).Sum() / 11;
+
+                if (result2 > 10)
+                {
+                    return false;
+                }
+
+                if (result2 == 10 && (decimal)egnIntArray[egnIntArray.Length - 1] == 0)
+                {
+                    return true;
+                }
+
+                if (result2 == (decimal)egnIntArray[egnIntArray.Length - 1])
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            if (result == (decimal)egnIntArray[egnIntArray.Length - 1])
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

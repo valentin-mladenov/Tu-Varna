@@ -67,6 +67,11 @@ namespace Pharmacy.WebApp.Controllers
                 ModelState.AddModelError("EIK", "EIK already exists!!!");
             }
 
+            if (!this.IsRealEIK(firm.EIK))
+            {
+                ModelState.AddModelError("EIK", "EIK is fake!!!");
+            }
+
             if (ModelState.IsValid)
             {
                 firm.Id = Guid.NewGuid();
@@ -105,6 +110,11 @@ namespace Pharmacy.WebApp.Controllers
             if (found != null)
             {
                 ModelState.AddModelError("EIK", "EIK already exists!!!");
+            }
+
+            if (!this.IsRealEIK(firm.EIK))
+            {
+                ModelState.AddModelError("EIK", "EIK is fake!!!");
             }
 
             if (ModelState.IsValid)
@@ -159,6 +169,57 @@ namespace Pharmacy.WebApp.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private bool IsRealEIK(long eik)
+        {
+            var eikIntArray = Array.ConvertAll(eik.ToString().ToCharArray(), c => (int)Char.GetNumericValue(c));
+
+            var result = (decimal)eikIntArray.Select((value, index) =>
+            {
+                if (index == eikIntArray.Length - 1) return 0;
+
+                return (decimal)value * (index + 1);
+            }).Sum() / 11;
+
+            if (result > 10)
+            {
+                return false;
+            }
+
+            if (result == 10)
+            {
+                var result2 = (decimal)eikIntArray.Select((value, index) =>
+                {
+                    if (index == eikIntArray.Length - 1) return 0;
+
+                    return (decimal)value * (index + 3);
+                }).Sum() / 11;
+
+                if (result2 > 10)
+                {
+                    return false;
+                }
+
+                if (result2 == 10 && (decimal)eikIntArray[eikIntArray.Length - 1] == 0)
+                {
+                    return true;
+                }
+
+                if (result2 == (decimal)eikIntArray[eikIntArray.Length - 1])
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            if (result == (decimal)eikIntArray[eikIntArray.Length - 1])
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
