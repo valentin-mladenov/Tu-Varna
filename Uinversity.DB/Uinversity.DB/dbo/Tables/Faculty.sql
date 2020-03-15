@@ -1,0 +1,6 @@
+﻿CREATE TABLE [dbo].[Faculty] (
+    [Id]   UNIQUEIDENTIFIER CONSTRAINT [DF_Faculty_Id] DEFAULT (newid()) NOT NULL,
+    [Name] NVARCHAR (50)    NOT NULL,
+    CONSTRAINT [PK_Faculty] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+

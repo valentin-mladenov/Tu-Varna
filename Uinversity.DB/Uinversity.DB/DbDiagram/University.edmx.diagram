@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="8840713aad86457a9f132b1572152f3b" Name="Diagram1">
+        <EntityTypeShape EntityType="University.DB.Answer" Width="1.5" PointX="12.75" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="University.DB.Class" Width="1.5" PointX="5.5" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="University.DB.Faculty" Width="1.5" PointX="1.5" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="University.DB.Question" Width="1.5" PointX="12.5" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="University.DB.QuestionNumber" Width="1.5" PointX="10.375" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="University.DB.SelectedAnswer" Width="1.5" PointX="10.5" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="University.DB.Student" Width="1.5" PointX="8.125" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="University.DB.Subject" Width="1.5" PointX="6.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="University.DB.sysdiagrams" Width="1.5" PointX="15.5" PointY="10.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="University.DB.Teacher" Width="1.5" PointX="3.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="University.DB.Test" Width="1.5" PointX="8.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="University.DB.TestAttempt" Width="1.5" PointX="10.25" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="University.DB.QuestionVariant" Width="1.5" PointX="12.875" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="University.DB.TestAtmptData_View" Width="1.5" PointX="3.25" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="University.DB.TestData_View" Width="1.5" PointX="1.125" PointY="5.375" IsExpanded="true" />
+        <AssociationConnector Association="University.DB.FK_Answer_Question" ManuallyRouted="false" />
+        <AssociationConnector Association="University.DB.FK_SelectedAnswer_Answer" ManuallyRouted="false" />
+        <AssociationConnector Association="University.DB.FK_Student_Class" ManuallyRouted="false" />
+        <AssociationConnector Association="University.DB.FK_Subject_Class" ManuallyRouted="false" />
+        <AssociationConnector Association="University.DB.FK_Teacher_Faculty" ManuallyRouted="false" />
+        <AssociationConnector Association="University.DB.FK_Question_Test" ManuallyRouted="false" />
+        <AssociationConnector Association="University.DB.FK_VarainantsQuestions_Question" ManuallyRouted="false" />
+        <AssociationConnector Association="University.DB.FK_QuestionNumber_Test" ManuallyRouted="false" />
+        <AssociationConnector Association="University.DB.FK_VarainantsQuestions_QuestionVariant" ManuallyRouted="false" />
+        <AssociationConnector Association="University.DB.FK_SelectedAnswer_TestAttempt" ManuallyRouted="false" />
+        <AssociationConnector Association="University.DB.FK_TestAttempt_Student" ManuallyRouted="false" />
+        <AssociationConnector Association="University.DB.FK_Subject_Teacher" ManuallyRouted="false" />
+        <AssociationConnector Association="University.DB.FK_Test_Subject" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

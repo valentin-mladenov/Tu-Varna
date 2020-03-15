@@ -1,0 +1,1362 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="University.DB.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Answer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Data" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="IsCorrect" Type="bit" Nullable="false" />
+          <Property Name="QuestionId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Class">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Faculty">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Data" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="TestId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="QuestionNumber">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Number" Type="int" Nullable="false" />
+          <Property Name="TestId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'University.DB.dbo.QuestionVariant' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="QuestionVariant">
+          <Key>
+            <PropertyRef Name="NumberId" />
+            <PropertyRef Name="Variant" />
+            <PropertyRef Name="QuestionId" />
+          </Key>
+          <Property Name="NumberId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Variant" Type="int" Nullable="false" />
+          <Property Name="QuestionId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SelectedAnswer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TestAttemptId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AnswerId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="FacultyNumber" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="255" />
+          <Property Name="ClassId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Subject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Semester" Type="int" Nullable="false" />
+          <Property Name="ClassId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TeacherId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Teacher">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FacultyId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Test">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SubjectId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="QuestionCount" Type="int" Nullable="false" />
+          <Property Name="QuestionVariations" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TestAttempt">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="StudentId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Date" Type="datetime2" Precision="1" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'University.DB.dbo.TestAtmptData_View' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="TestAtmptData_View">
+          <Key>
+            <PropertyRef Name="TestAttemptId" />
+            <PropertyRef Name="Date" />
+            <PropertyRef Name="Subject" />
+            <PropertyRef Name="TestId" />
+            <PropertyRef Name="Test" />
+            <PropertyRef Name="QuestionId" />
+            <PropertyRef Name="Question" />
+            <PropertyRef Name="Answer" />
+            <PropertyRef Name="IsCorrect" />
+            <PropertyRef Name="TestSemester" />
+            <PropertyRef Name="Teacher" />
+            <PropertyRef Name="SubjectClass" />
+            <PropertyRef Name="Faculty" />
+            <PropertyRef Name="Student" />
+            <PropertyRef Name="FacultyNumber" />
+            <PropertyRef Name="StudentClass" />
+          </Key>
+          <Property Name="TestAttemptId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Date" Type="datetime2" Precision="1" Nullable="false" />
+          <Property Name="Subject" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="TestId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Test" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="QuestionId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Question" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Answer" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="IsCorrect" Type="bit" Nullable="false" />
+          <Property Name="TestSemester" Type="int" Nullable="false" />
+          <Property Name="Teacher" Type="nvarchar" MaxLength="101" Nullable="false" />
+          <Property Name="SubjectClass" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Faculty" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Student" Type="nvarchar" MaxLength="101" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="255" />
+          <Property Name="FacultyNumber" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="StudentClass" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'University.DB.dbo.TestData_View' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="TestData_View">
+          <Key>
+            <PropertyRef Name="TestName" />
+            <PropertyRef Name="QuestionCount" />
+            <PropertyRef Name="QuestionVariations" />
+            <PropertyRef Name="SubjectName" />
+            <PropertyRef Name="Semester" />
+            <PropertyRef Name="TeacherName" />
+            <PropertyRef Name="FacultyName" />
+            <PropertyRef Name="ClassName" />
+            <PropertyRef Name="TestId" />
+            <PropertyRef Name="Variant" />
+            <PropertyRef Name="Number" />
+            <PropertyRef Name="Question" />
+            <PropertyRef Name="Answer" />
+            <PropertyRef Name="IsCorrect" />
+          </Key>
+          <Property Name="TestName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="QuestionCount" Type="int" Nullable="false" />
+          <Property Name="QuestionVariations" Type="int" Nullable="false" />
+          <Property Name="SubjectName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Semester" Type="int" Nullable="false" />
+          <Property Name="TeacherName" Type="nvarchar" MaxLength="101" Nullable="false" />
+          <Property Name="FacultyName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ClassName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="TestId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Variant" Type="int" Nullable="false" />
+          <Property Name="Number" Type="int" Nullable="false" />
+          <Property Name="Question" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Answer" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="IsCorrect" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Answer_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="1" />
+          <End Role="Answer" Type="Self.Answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Answer">
+              <PropertyRef Name="QuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Question_Test">
+          <End Role="Test" Type="Self.Test" Multiplicity="1" />
+          <End Role="Question" Type="Self.Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Test">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="TestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestionNumber_Test">
+          <End Role="Test" Type="Self.Test" Multiplicity="1" />
+          <End Role="QuestionNumber" Type="Self.QuestionNumber" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Test">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="QuestionNumber">
+              <PropertyRef Name="TestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SelectedAnswer_Answer">
+          <End Role="Answer" Type="Self.Answer" Multiplicity="1" />
+          <End Role="SelectedAnswer" Type="Self.SelectedAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Answer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SelectedAnswer">
+              <PropertyRef Name="AnswerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SelectedAnswer_TestAttempt">
+          <End Role="TestAttempt" Type="Self.TestAttempt" Multiplicity="1" />
+          <End Role="SelectedAnswer" Type="Self.SelectedAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TestAttempt">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SelectedAnswer">
+              <PropertyRef Name="TestAttemptId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_Class">
+          <End Role="Class" Type="Self.Class" Multiplicity="1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="ClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subject_Class">
+          <End Role="Class" Type="Self.Class" Multiplicity="1" />
+          <End Role="Subject" Type="Self.Subject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Subject">
+              <PropertyRef Name="ClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subject_Teacher">
+          <End Role="Teacher" Type="Self.Teacher" Multiplicity="1" />
+          <End Role="Subject" Type="Self.Subject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teacher">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Subject">
+              <PropertyRef Name="TeacherId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Teacher_Faculty">
+          <End Role="Faculty" Type="Self.Faculty" Multiplicity="1" />
+          <End Role="Teacher" Type="Self.Teacher" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Faculty">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Teacher">
+              <PropertyRef Name="FacultyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Test_Subject">
+          <End Role="Subject" Type="Self.Subject" Multiplicity="1" />
+          <End Role="Test" Type="Self.Test" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Test">
+              <PropertyRef Name="SubjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TestAttempt_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="TestAttempt" Type="Self.TestAttempt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TestAttempt">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VarainantsQuestions_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="1" />
+          <End Role="QuestionVariant" Type="Self.QuestionVariant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="QuestionVariant">
+              <PropertyRef Name="QuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VarainantsQuestions_QuestionVariant">
+          <End Role="QuestionNumber" Type="Self.QuestionNumber" Multiplicity="1" />
+          <End Role="QuestionVariant" Type="Self.QuestionVariant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuestionNumber">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="QuestionVariant">
+              <PropertyRef Name="NumberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="FindTestAttemtCountForPeriodBySubject" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FromDate" Type="datetime2" Mode="In" />
+          <Parameter Name="ToDate" Type="datetime2" Mode="In" />
+          <Parameter Name="Subject" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="FindTestAttemtForStudentByFacultyNumberAndTestName" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FacultyNumber" Type="nvarchar" Mode="In" />
+          <Parameter Name="TestName" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="FindTestAttemtsForSubject" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SubjectName" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="FindTestAttemtsUnderSuccessRate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SuccessRate" Type="int" Mode="In" />
+        </Function>
+        <Function Name="FindTestsForStudentByFacultyNumber" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FacultyNumber" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="GetCorrectAnswersByTestIdVarantAndNumber" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TestId" Type="nvarchar" Mode="In" />
+          <Parameter Name="Variant" Type="int" Mode="In" />
+          <Parameter Name="Number" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="UniversityDBStoreContainer">
+          <EntitySet Name="Answer" EntityType="Self.Answer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Class" EntityType="Self.Class" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Faculty" EntityType="Self.Faculty" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QuestionNumber" EntityType="Self.QuestionNumber" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SelectedAnswer" EntityType="Self.SelectedAnswer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Subject" EntityType="Self.Subject" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Teacher" EntityType="Self.Teacher" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Test" EntityType="Self.Test" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TestAttempt" EntityType="Self.TestAttempt" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QuestionVariant" EntityType="Self.QuestionVariant" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [QuestionVariant].[NumberId] AS [NumberId], 
+    [QuestionVariant].[Variant] AS [Variant], 
+    [QuestionVariant].[QuestionId] AS [QuestionId]
+    FROM [dbo].[QuestionVariant] AS [QuestionVariant]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="TestAtmptData_View" EntityType="Self.TestAtmptData_View" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [TestAtmptData_View].[TestAttemptId] AS [TestAttemptId], 
+    [TestAtmptData_View].[Date] AS [Date], 
+    [TestAtmptData_View].[Subject] AS [Subject], 
+    [TestAtmptData_View].[TestId] AS [TestId], 
+    [TestAtmptData_View].[Test] AS [Test], 
+    [TestAtmptData_View].[QuestionId] AS [QuestionId], 
+    [TestAtmptData_View].[Question] AS [Question], 
+    [TestAtmptData_View].[Answer] AS [Answer], 
+    [TestAtmptData_View].[IsCorrect] AS [IsCorrect], 
+    [TestAtmptData_View].[TestSemester] AS [TestSemester], 
+    [TestAtmptData_View].[Teacher] AS [Teacher], 
+    [TestAtmptData_View].[SubjectClass] AS [SubjectClass], 
+    [TestAtmptData_View].[Faculty] AS [Faculty], 
+    [TestAtmptData_View].[Student] AS [Student], 
+    [TestAtmptData_View].[Email] AS [Email], 
+    [TestAtmptData_View].[FacultyNumber] AS [FacultyNumber], 
+    [TestAtmptData_View].[StudentClass] AS [StudentClass]
+    FROM [dbo].[TestAtmptData_View] AS [TestAtmptData_View]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="TestData_View" EntityType="Self.TestData_View" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [TestData_View].[TestName] AS [TestName], 
+    [TestData_View].[QuestionCount] AS [QuestionCount], 
+    [TestData_View].[QuestionVariations] AS [QuestionVariations], 
+    [TestData_View].[SubjectName] AS [SubjectName], 
+    [TestData_View].[Semester] AS [Semester], 
+    [TestData_View].[TeacherName] AS [TeacherName], 
+    [TestData_View].[FacultyName] AS [FacultyName], 
+    [TestData_View].[ClassName] AS [ClassName], 
+    [TestData_View].[TestId] AS [TestId], 
+    [TestData_View].[Variant] AS [Variant], 
+    [TestData_View].[Number] AS [Number], 
+    [TestData_View].[Question] AS [Question], 
+    [TestData_View].[Answer] AS [Answer], 
+    [TestData_View].[IsCorrect] AS [IsCorrect]
+    FROM [dbo].[TestData_View] AS [TestData_View]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Answer_Question" Association="Self.FK_Answer_Question">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="Answer" EntitySet="Answer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Question_Test" Association="Self.FK_Question_Test">
+            <End Role="Test" EntitySet="Test" />
+            <End Role="Question" EntitySet="Question" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestionNumber_Test" Association="Self.FK_QuestionNumber_Test">
+            <End Role="Test" EntitySet="Test" />
+            <End Role="QuestionNumber" EntitySet="QuestionNumber" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SelectedAnswer_Answer" Association="Self.FK_SelectedAnswer_Answer">
+            <End Role="Answer" EntitySet="Answer" />
+            <End Role="SelectedAnswer" EntitySet="SelectedAnswer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SelectedAnswer_TestAttempt" Association="Self.FK_SelectedAnswer_TestAttempt">
+            <End Role="TestAttempt" EntitySet="TestAttempt" />
+            <End Role="SelectedAnswer" EntitySet="SelectedAnswer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_Class" Association="Self.FK_Student_Class">
+            <End Role="Class" EntitySet="Class" />
+            <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subject_Class" Association="Self.FK_Subject_Class">
+            <End Role="Class" EntitySet="Class" />
+            <End Role="Subject" EntitySet="Subject" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subject_Teacher" Association="Self.FK_Subject_Teacher">
+            <End Role="Teacher" EntitySet="Teacher" />
+            <End Role="Subject" EntitySet="Subject" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Teacher_Faculty" Association="Self.FK_Teacher_Faculty">
+            <End Role="Faculty" EntitySet="Faculty" />
+            <End Role="Teacher" EntitySet="Teacher" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Test_Subject" Association="Self.FK_Test_Subject">
+            <End Role="Subject" EntitySet="Subject" />
+            <End Role="Test" EntitySet="Test" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TestAttempt_Student" Association="Self.FK_TestAttempt_Student">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="TestAttempt" EntitySet="TestAttempt" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VarainantsQuestions_Question" Association="Self.FK_VarainantsQuestions_Question">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="QuestionVariant" EntitySet="QuestionVariant" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VarainantsQuestions_QuestionVariant" Association="Self.FK_VarainantsQuestions_QuestionVariant">
+            <End Role="QuestionNumber" EntitySet="QuestionNumber" />
+            <End Role="QuestionVariant" EntitySet="QuestionVariant" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="University.DB" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Answer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Data" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsCorrect" Type="Boolean" Nullable="false" />
+          <Property Name="QuestionId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Question" Relationship="Self.FK_Answer_Question" FromRole="Answer" ToRole="Question" />
+          <NavigationProperty Name="SelectedAnswer" Relationship="Self.FK_SelectedAnswer_Answer" FromRole="Answer" ToRole="SelectedAnswer" />
+        </EntityType>
+        <EntityType Name="Class">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Student" Relationship="Self.FK_Student_Class" FromRole="Class" ToRole="Student" />
+          <NavigationProperty Name="Subject" Relationship="Self.FK_Subject_Class" FromRole="Class" ToRole="Subject" />
+        </EntityType>
+        <EntityType Name="Faculty">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Teacher" Relationship="Self.FK_Teacher_Faculty" FromRole="Faculty" ToRole="Teacher" />
+        </EntityType>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Data" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TestId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Answer" Relationship="Self.FK_Answer_Question" FromRole="Question" ToRole="Answer" />
+          <NavigationProperty Name="Test" Relationship="Self.FK_Question_Test" FromRole="Question" ToRole="Test" />
+          <NavigationProperty Name="QuestionVariant" Relationship="Self.FK_VarainantsQuestions_Question" FromRole="Question" ToRole="QuestionVariant" />
+        </EntityType>
+        <EntityType Name="QuestionNumber">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Number" Type="Int32" Nullable="false" />
+          <Property Name="TestId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Test" Relationship="Self.FK_QuestionNumber_Test" FromRole="QuestionNumber" ToRole="Test" />
+          <NavigationProperty Name="QuestionVariant" Relationship="Self.FK_VarainantsQuestions_QuestionVariant" FromRole="QuestionNumber" ToRole="QuestionVariant" />
+        </EntityType>
+        <EntityType Name="SelectedAnswer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="TestAttemptId" Type="Guid" Nullable="false" />
+          <Property Name="AnswerId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Answer" Relationship="Self.FK_SelectedAnswer_Answer" FromRole="SelectedAnswer" ToRole="Answer" />
+          <NavigationProperty Name="TestAttempt" Relationship="Self.FK_SelectedAnswer_TestAttempt" FromRole="SelectedAnswer" ToRole="TestAttempt" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="FacultyNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ClassId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Class" Relationship="Self.FK_Student_Class" FromRole="Student" ToRole="Class" />
+          <NavigationProperty Name="TestAttempt" Relationship="Self.FK_TestAttempt_Student" FromRole="Student" ToRole="TestAttempt" />
+        </EntityType>
+        <EntityType Name="Subject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Semester" Type="Int32" Nullable="false" />
+          <Property Name="ClassId" Type="Guid" Nullable="false" />
+          <Property Name="TeacherId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Class" Relationship="Self.FK_Subject_Class" FromRole="Subject" ToRole="Class" />
+          <NavigationProperty Name="Teacher" Relationship="Self.FK_Subject_Teacher" FromRole="Subject" ToRole="Teacher" />
+          <NavigationProperty Name="Test" Relationship="Self.FK_Test_Subject" FromRole="Subject" ToRole="Test" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Teacher">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FacultyId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Faculty" Relationship="Self.FK_Teacher_Faculty" FromRole="Teacher" ToRole="Faculty" />
+          <NavigationProperty Name="Subject" Relationship="Self.FK_Subject_Teacher" FromRole="Teacher" ToRole="Subject" />
+        </EntityType>
+        <EntityType Name="Test">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SubjectId" Type="Guid" Nullable="false" />
+          <Property Name="QuestionCount" Type="Int32" Nullable="false" />
+          <Property Name="QuestionVariations" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Question" Relationship="Self.FK_Question_Test" FromRole="Test" ToRole="Question" />
+          <NavigationProperty Name="QuestionNumber" Relationship="Self.FK_QuestionNumber_Test" FromRole="Test" ToRole="QuestionNumber" />
+          <NavigationProperty Name="Subject" Relationship="Self.FK_Test_Subject" FromRole="Test" ToRole="Subject" />
+        </EntityType>
+        <EntityType Name="TestAttempt">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="StudentId" Type="Guid" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="1" />
+          <NavigationProperty Name="SelectedAnswer" Relationship="Self.FK_SelectedAnswer_TestAttempt" FromRole="TestAttempt" ToRole="SelectedAnswer" />
+          <NavigationProperty Name="Student" Relationship="Self.FK_TestAttempt_Student" FromRole="TestAttempt" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="QuestionVariant">
+          <Key>
+            <PropertyRef Name="NumberId" />
+            <PropertyRef Name="Variant" />
+            <PropertyRef Name="QuestionId" />
+          </Key>
+          <Property Name="NumberId" Type="Guid" Nullable="false" />
+          <Property Name="Variant" Type="Int32" Nullable="false" />
+          <Property Name="QuestionId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Question" Relationship="Self.FK_VarainantsQuestions_Question" FromRole="QuestionVariant" ToRole="Question" />
+          <NavigationProperty Name="QuestionNumber" Relationship="Self.FK_VarainantsQuestions_QuestionVariant" FromRole="QuestionVariant" ToRole="QuestionNumber" />
+        </EntityType>
+        <EntityType Name="TestAtmptData_View">
+          <Key>
+            <PropertyRef Name="TestAttemptId" />
+            <PropertyRef Name="Date" />
+            <PropertyRef Name="Subject" />
+            <PropertyRef Name="TestId" />
+            <PropertyRef Name="Test" />
+            <PropertyRef Name="QuestionId" />
+            <PropertyRef Name="Question" />
+            <PropertyRef Name="Answer" />
+            <PropertyRef Name="IsCorrect" />
+            <PropertyRef Name="TestSemester" />
+            <PropertyRef Name="Teacher" />
+            <PropertyRef Name="SubjectClass" />
+            <PropertyRef Name="Faculty" />
+            <PropertyRef Name="Student" />
+            <PropertyRef Name="FacultyNumber" />
+            <PropertyRef Name="StudentClass" />
+          </Key>
+          <Property Name="TestAttemptId" Type="Guid" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="1" />
+          <Property Name="Subject" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TestId" Type="Guid" Nullable="false" />
+          <Property Name="Test" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="QuestionId" Type="Guid" Nullable="false" />
+          <Property Name="Question" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Answer" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsCorrect" Type="Boolean" Nullable="false" />
+          <Property Name="TestSemester" Type="Int32" Nullable="false" />
+          <Property Name="Teacher" Type="String" MaxLength="101" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SubjectClass" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Faculty" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Student" Type="String" MaxLength="101" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FacultyNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StudentClass" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TestData_View">
+          <Key>
+            <PropertyRef Name="TestName" />
+            <PropertyRef Name="QuestionCount" />
+            <PropertyRef Name="QuestionVariations" />
+            <PropertyRef Name="SubjectName" />
+            <PropertyRef Name="Semester" />
+            <PropertyRef Name="TeacherName" />
+            <PropertyRef Name="FacultyName" />
+            <PropertyRef Name="ClassName" />
+            <PropertyRef Name="TestId" />
+            <PropertyRef Name="Variant" />
+            <PropertyRef Name="Number" />
+            <PropertyRef Name="Question" />
+            <PropertyRef Name="Answer" />
+            <PropertyRef Name="IsCorrect" />
+          </Key>
+          <Property Name="TestName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="QuestionCount" Type="Int32" Nullable="false" />
+          <Property Name="QuestionVariations" Type="Int32" Nullable="false" />
+          <Property Name="SubjectName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Semester" Type="Int32" Nullable="false" />
+          <Property Name="TeacherName" Type="String" MaxLength="101" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FacultyName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ClassName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TestId" Type="Guid" Nullable="false" />
+          <Property Name="Variant" Type="Int32" Nullable="false" />
+          <Property Name="Number" Type="Int32" Nullable="false" />
+          <Property Name="Question" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Answer" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsCorrect" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Answer_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="1" />
+          <End Role="Answer" Type="Self.Answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Answer">
+              <PropertyRef Name="QuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SelectedAnswer_Answer">
+          <End Role="Answer" Type="Self.Answer" Multiplicity="1" />
+          <End Role="SelectedAnswer" Type="Self.SelectedAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Answer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SelectedAnswer">
+              <PropertyRef Name="AnswerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_Class">
+          <End Role="Class" Type="Self.Class" Multiplicity="1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="ClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subject_Class">
+          <End Role="Class" Type="Self.Class" Multiplicity="1" />
+          <End Role="Subject" Type="Self.Subject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Subject">
+              <PropertyRef Name="ClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Teacher_Faculty">
+          <End Role="Faculty" Type="Self.Faculty" Multiplicity="1" />
+          <End Role="Teacher" Type="Self.Teacher" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Faculty">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Teacher">
+              <PropertyRef Name="FacultyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Question_Test">
+          <End Role="Test" Type="Self.Test" Multiplicity="1" />
+          <End Role="Question" Type="Self.Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Test">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="TestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VarainantsQuestions_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="1" />
+          <End Role="QuestionVariant" Type="Self.QuestionVariant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="QuestionVariant">
+              <PropertyRef Name="QuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestionNumber_Test">
+          <End Role="Test" Type="Self.Test" Multiplicity="1" />
+          <End Role="QuestionNumber" Type="Self.QuestionNumber" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Test">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="QuestionNumber">
+              <PropertyRef Name="TestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VarainantsQuestions_QuestionVariant">
+          <End Role="QuestionNumber" Type="Self.QuestionNumber" Multiplicity="1" />
+          <End Role="QuestionVariant" Type="Self.QuestionVariant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuestionNumber">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="QuestionVariant">
+              <PropertyRef Name="NumberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SelectedAnswer_TestAttempt">
+          <End Role="TestAttempt" Type="Self.TestAttempt" Multiplicity="1" />
+          <End Role="SelectedAnswer" Type="Self.SelectedAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TestAttempt">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SelectedAnswer">
+              <PropertyRef Name="TestAttemptId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TestAttempt_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="TestAttempt" Type="Self.TestAttempt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TestAttempt">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subject_Teacher">
+          <End Role="Teacher" Type="Self.Teacher" Multiplicity="1" />
+          <End Role="Subject" Type="Self.Subject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teacher">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Subject">
+              <PropertyRef Name="TeacherId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Test_Subject">
+          <End Role="Subject" Type="Self.Subject" Multiplicity="1" />
+          <End Role="Test" Type="Self.Test" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Test">
+              <PropertyRef Name="SubjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Answer" EntityType="Self.Answer" />
+          <EntitySet Name="Class" EntityType="Self.Class" />
+          <EntitySet Name="Faculty" EntityType="Self.Faculty" />
+          <EntitySet Name="Question" EntityType="Self.Question" />
+          <EntitySet Name="QuestionNumber" EntityType="Self.QuestionNumber" />
+          <EntitySet Name="SelectedAnswer" EntityType="Self.SelectedAnswer" />
+          <EntitySet Name="Student" EntityType="Self.Student" />
+          <EntitySet Name="Subject" EntityType="Self.Subject" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Teacher" EntityType="Self.Teacher" />
+          <EntitySet Name="Test" EntityType="Self.Test" />
+          <EntitySet Name="TestAttempt" EntityType="Self.TestAttempt" />
+          <EntitySet Name="QuestionVariant" EntityType="Self.QuestionVariant" />
+          <EntitySet Name="TestAtmptData_View" EntityType="Self.TestAtmptData_View" />
+          <EntitySet Name="TestData_View" EntityType="Self.TestData_View" />
+          <AssociationSet Name="FK_Answer_Question" Association="Self.FK_Answer_Question">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="Answer" EntitySet="Answer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SelectedAnswer_Answer" Association="Self.FK_SelectedAnswer_Answer">
+            <End Role="Answer" EntitySet="Answer" />
+            <End Role="SelectedAnswer" EntitySet="SelectedAnswer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_Class" Association="Self.FK_Student_Class">
+            <End Role="Class" EntitySet="Class" />
+            <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subject_Class" Association="Self.FK_Subject_Class">
+            <End Role="Class" EntitySet="Class" />
+            <End Role="Subject" EntitySet="Subject" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Teacher_Faculty" Association="Self.FK_Teacher_Faculty">
+            <End Role="Faculty" EntitySet="Faculty" />
+            <End Role="Teacher" EntitySet="Teacher" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Question_Test" Association="Self.FK_Question_Test">
+            <End Role="Test" EntitySet="Test" />
+            <End Role="Question" EntitySet="Question" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VarainantsQuestions_Question" Association="Self.FK_VarainantsQuestions_Question">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="QuestionVariant" EntitySet="QuestionVariant" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestionNumber_Test" Association="Self.FK_QuestionNumber_Test">
+            <End Role="Test" EntitySet="Test" />
+            <End Role="QuestionNumber" EntitySet="QuestionNumber" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VarainantsQuestions_QuestionVariant" Association="Self.FK_VarainantsQuestions_QuestionVariant">
+            <End Role="QuestionNumber" EntitySet="QuestionNumber" />
+            <End Role="QuestionVariant" EntitySet="QuestionVariant" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SelectedAnswer_TestAttempt" Association="Self.FK_SelectedAnswer_TestAttempt">
+            <End Role="TestAttempt" EntitySet="TestAttempt" />
+            <End Role="SelectedAnswer" EntitySet="SelectedAnswer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TestAttempt_Student" Association="Self.FK_TestAttempt_Student">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="TestAttempt" EntitySet="TestAttempt" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subject_Teacher" Association="Self.FK_Subject_Teacher">
+            <End Role="Teacher" EntitySet="Teacher" />
+            <End Role="Subject" EntitySet="Subject" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Test_Subject" Association="Self.FK_Test_Subject">
+            <End Role="Subject" EntitySet="Subject" />
+            <End Role="Test" EntitySet="Test" />
+          </AssociationSet>
+          <FunctionImport Name="FindTestAttemtCountForPeriodBySubject" ReturnType="Collection(Int32)">
+            <Parameter Name="FromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
+            <Parameter Name="Subject" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="FindTestAttemtForStudentByFacultyNumberAndTestName" ReturnType="Collection(University.DB.FindTestAttemtForStudentByFacultyNumberAndTestName_Result)">
+            <Parameter Name="FacultyNumber" Mode="In" Type="String" />
+            <Parameter Name="TestName" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="FindTestAttemtsForSubject" ReturnType="Collection(University.DB.FindTestAttemtsForSubject_Result)">
+            <Parameter Name="SubjectName" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="FindTestAttemtsUnderSuccessRate" ReturnType="Collection(University.DB.FindTestAttemtsUnderSuccessRate_Result)">
+            <Parameter Name="SuccessRate" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="FindTestsForStudentByFacultyNumber" ReturnType="Collection(University.DB.FindTestsForStudentByFacultyNumber_Result)">
+            <Parameter Name="FacultyNumber" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetCorrectAnswersByTestIdVarantAndNumber" ReturnType="Collection(Int32)">
+            <Parameter Name="TestId" Mode="In" Type="String" />
+            <Parameter Name="Variant" Mode="In" Type="Int32" />
+            <Parameter Name="Number" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(University.DB.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(University.DB.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+        </EntityContainer>
+        <ComplexType Name="FindTestAttemtForStudentByFacultyNumberAndTestName_Result">
+          <Property Type="DateTime" Name="Date" Nullable="false" />
+          <Property Type="String" Name="Subject" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Test" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Question" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Answer" Nullable="false" MaxLength="255" />
+          <Property Type="Boolean" Name="IsCorrect" Nullable="false" />
+          <Property Type="Int32" Name="TestSemester" Nullable="false" />
+          <Property Type="String" Name="Teacher" Nullable="false" MaxLength="101" />
+          <Property Type="String" Name="SubjectClass" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Student" Nullable="false" MaxLength="101" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="FacultyNumber" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="StudentClass" Nullable="false" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="FindTestAttemtsForSubject_Result">
+          <Property Type="DateTime" Name="Date" Nullable="false" />
+          <Property Type="String" Name="Subject" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Test" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Question" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Answer" Nullable="false" MaxLength="255" />
+          <Property Type="Boolean" Name="IsCorrect" Nullable="false" />
+          <Property Type="Int32" Name="TestSemester" Nullable="false" />
+          <Property Type="String" Name="Teacher" Nullable="false" MaxLength="101" />
+          <Property Type="String" Name="SubjectClass" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Student" Nullable="false" MaxLength="101" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="FacultyNumber" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="StudentClass" Nullable="false" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="FindTestAttemtsUnderSuccessRate_Result">
+          <Property Type="String" Name="Test" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Success" Nullable="false" MaxLength="14" />
+        </ComplexType>
+        <ComplexType Name="FindTestsForStudentByFacultyNumber_Result">
+          <Property Type="DateTime" Name="Date" Nullable="false" />
+          <Property Type="String" Name="Subject" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Test" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Question" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Answer" Nullable="false" MaxLength="255" />
+          <Property Type="Boolean" Name="IsCorrect" Nullable="false" />
+          <Property Type="Int32" Name="TestSemester" Nullable="false" />
+          <Property Type="String" Name="Teacher" Nullable="false" MaxLength="101" />
+          <Property Type="String" Name="SubjectClass" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Student" Nullable="false" MaxLength="101" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="FacultyNumber" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="StudentClass" Nullable="false" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="UniversityDBStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Answer">
+            <EntityTypeMapping TypeName="University.DB.Answer">
+              <MappingFragment StoreEntitySet="Answer">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="IsCorrect" ColumnName="IsCorrect" />
+                <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Class">
+            <EntityTypeMapping TypeName="University.DB.Class">
+              <MappingFragment StoreEntitySet="Class">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Faculty">
+            <EntityTypeMapping TypeName="University.DB.Faculty">
+              <MappingFragment StoreEntitySet="Faculty">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Question">
+            <EntityTypeMapping TypeName="University.DB.Question">
+              <MappingFragment StoreEntitySet="Question">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="TestId" ColumnName="TestId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QuestionNumber">
+            <EntityTypeMapping TypeName="University.DB.QuestionNumber">
+              <MappingFragment StoreEntitySet="QuestionNumber">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="TestId" ColumnName="TestId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SelectedAnswer">
+            <EntityTypeMapping TypeName="University.DB.SelectedAnswer">
+              <MappingFragment StoreEntitySet="SelectedAnswer">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="TestAttemptId" ColumnName="TestAttemptId" />
+                <ScalarProperty Name="AnswerId" ColumnName="AnswerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Student">
+            <EntityTypeMapping TypeName="University.DB.Student">
+              <MappingFragment StoreEntitySet="Student">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FacultyNumber" ColumnName="FacultyNumber" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subject">
+            <EntityTypeMapping TypeName="University.DB.Subject">
+              <MappingFragment StoreEntitySet="Subject">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Semester" ColumnName="Semester" />
+                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+                <ScalarProperty Name="TeacherId" ColumnName="TeacherId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="University.DB.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Teacher">
+            <EntityTypeMapping TypeName="University.DB.Teacher">
+              <MappingFragment StoreEntitySet="Teacher">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FacultyId" ColumnName="FacultyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Test">
+            <EntityTypeMapping TypeName="University.DB.Test">
+              <MappingFragment StoreEntitySet="Test">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="SubjectId" ColumnName="SubjectId" />
+                <ScalarProperty Name="QuestionCount" ColumnName="QuestionCount" />
+                <ScalarProperty Name="QuestionVariations" ColumnName="QuestionVariations" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TestAttempt">
+            <EntityTypeMapping TypeName="University.DB.TestAttempt">
+              <MappingFragment StoreEntitySet="TestAttempt">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QuestionVariant">
+            <EntityTypeMapping TypeName="University.DB.QuestionVariant">
+              <MappingFragment StoreEntitySet="QuestionVariant">
+                <ScalarProperty Name="NumberId" ColumnName="NumberId" />
+                <ScalarProperty Name="Variant" ColumnName="Variant" />
+                <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TestAtmptData_View">
+            <EntityTypeMapping TypeName="University.DB.TestAtmptData_View">
+              <MappingFragment StoreEntitySet="TestAtmptData_View">
+                <ScalarProperty Name="TestAttemptId" ColumnName="TestAttemptId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="TestId" ColumnName="TestId" />
+                <ScalarProperty Name="Test" ColumnName="Test" />
+                <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+                <ScalarProperty Name="Question" ColumnName="Question" />
+                <ScalarProperty Name="Answer" ColumnName="Answer" />
+                <ScalarProperty Name="IsCorrect" ColumnName="IsCorrect" />
+                <ScalarProperty Name="TestSemester" ColumnName="TestSemester" />
+                <ScalarProperty Name="Teacher" ColumnName="Teacher" />
+                <ScalarProperty Name="SubjectClass" ColumnName="SubjectClass" />
+                <ScalarProperty Name="Faculty" ColumnName="Faculty" />
+                <ScalarProperty Name="Student" ColumnName="Student" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="FacultyNumber" ColumnName="FacultyNumber" />
+                <ScalarProperty Name="StudentClass" ColumnName="StudentClass" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TestData_View">
+            <EntityTypeMapping TypeName="University.DB.TestData_View">
+              <MappingFragment StoreEntitySet="TestData_View">
+                <ScalarProperty Name="TestName" ColumnName="TestName" />
+                <ScalarProperty Name="QuestionCount" ColumnName="QuestionCount" />
+                <ScalarProperty Name="QuestionVariations" ColumnName="QuestionVariations" />
+                <ScalarProperty Name="SubjectName" ColumnName="SubjectName" />
+                <ScalarProperty Name="Semester" ColumnName="Semester" />
+                <ScalarProperty Name="TeacherName" ColumnName="TeacherName" />
+                <ScalarProperty Name="FacultyName" ColumnName="FacultyName" />
+                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="TestId" ColumnName="TestId" />
+                <ScalarProperty Name="Variant" ColumnName="Variant" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="Question" ColumnName="Question" />
+                <ScalarProperty Name="Answer" ColumnName="Answer" />
+                <ScalarProperty Name="IsCorrect" ColumnName="IsCorrect" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="FindTestAttemtCountForPeriodBySubject" FunctionName="University.DB.Store.FindTestAttemtCountForPeriodBySubject" />
+          <FunctionImportMapping FunctionImportName="FindTestAttemtForStudentByFacultyNumberAndTestName" FunctionName="University.DB.Store.FindTestAttemtForStudentByFacultyNumberAndTestName">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="University.DB.FindTestAttemtForStudentByFacultyNumberAndTestName_Result">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="Test" ColumnName="Test" />
+                <ScalarProperty Name="Question" ColumnName="Question" />
+                <ScalarProperty Name="Answer" ColumnName="Answer" />
+                <ScalarProperty Name="IsCorrect" ColumnName="IsCorrect" />
+                <ScalarProperty Name="TestSemester" ColumnName="TestSemester" />
+                <ScalarProperty Name="Teacher" ColumnName="Teacher" />
+                <ScalarProperty Name="SubjectClass" ColumnName="SubjectClass" />
+                <ScalarProperty Name="Student" ColumnName="Student" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="FacultyNumber" ColumnName="FacultyNumber" />
+                <ScalarProperty Name="StudentClass" ColumnName="StudentClass" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FindTestAttemtsForSubject" FunctionName="University.DB.Store.FindTestAttemtsForSubject">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="University.DB.FindTestAttemtsForSubject_Result">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="Test" ColumnName="Test" />
+                <ScalarProperty Name="Question" ColumnName="Question" />
+                <ScalarProperty Name="Answer" ColumnName="Answer" />
+                <ScalarProperty Name="IsCorrect" ColumnName="IsCorrect" />
+                <ScalarProperty Name="TestSemester" ColumnName="TestSemester" />
+                <ScalarProperty Name="Teacher" ColumnName="Teacher" />
+                <ScalarProperty Name="SubjectClass" ColumnName="SubjectClass" />
+                <ScalarProperty Name="Student" ColumnName="Student" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="FacultyNumber" ColumnName="FacultyNumber" />
+                <ScalarProperty Name="StudentClass" ColumnName="StudentClass" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FindTestAttemtsUnderSuccessRate" FunctionName="University.DB.Store.FindTestAttemtsUnderSuccessRate">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="University.DB.FindTestAttemtsUnderSuccessRate_Result">
+                <ScalarProperty Name="Test" ColumnName="Test" />
+                <ScalarProperty Name="Success" ColumnName="Success" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FindTestsForStudentByFacultyNumber" FunctionName="University.DB.Store.FindTestsForStudentByFacultyNumber">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="University.DB.FindTestsForStudentByFacultyNumber_Result">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="Test" ColumnName="Test" />
+                <ScalarProperty Name="Question" ColumnName="Question" />
+                <ScalarProperty Name="Answer" ColumnName="Answer" />
+                <ScalarProperty Name="IsCorrect" ColumnName="IsCorrect" />
+                <ScalarProperty Name="TestSemester" ColumnName="TestSemester" />
+                <ScalarProperty Name="Teacher" ColumnName="Teacher" />
+                <ScalarProperty Name="SubjectClass" ColumnName="SubjectClass" />
+                <ScalarProperty Name="Student" ColumnName="Student" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="FacultyNumber" ColumnName="FacultyNumber" />
+                <ScalarProperty Name="StudentClass" ColumnName="StudentClass" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetCorrectAnswersByTestIdVarantAndNumber" FunctionName="University.DB.Store.GetCorrectAnswersByTestIdVarantAndNumber" />
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="University.DB.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="University.DB.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="University.DB.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="University.DB.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="University.DB.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="University.DB.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="University.DB.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="University.DB.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="University.DB.Store.sp_upgraddiagrams" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
