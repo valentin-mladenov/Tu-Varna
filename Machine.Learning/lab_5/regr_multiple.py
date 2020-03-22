@@ -21,8 +21,8 @@ y_df = pd.DataFrame(data.price / 10000)
 m = len(y_df)
 
 #Задача 3. Експериментирайте с iterations и alpha
-iterations = 1500
-alpha = 0.01
+iterations = 300
+alpha = 0.3
 
 ## Добавя колона от 1-ци към вектора X
 X_df['intercept'] = 1
