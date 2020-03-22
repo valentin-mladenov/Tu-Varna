@@ -157,6 +157,84 @@
     <Compile Include="DbDiagram\DriverLicense.cs">
       <DependentUpon>CarRental.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbDiagram\UNI\Answer.cs">
+      <DependentUpon>University.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbDiagram\UNI\Class.cs">
+      <DependentUpon>University.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbDiagram\UNI\Faculty.cs">
+      <DependentUpon>University.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbDiagram\UNI\FindTestAttemtForStudentByFacultyNumberAndTestName_Result.cs">
+      <DependentUpon>University.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbDiagram\UNI\FindTestAttemtsForSubject_Result.cs">
+      <DependentUpon>University.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbDiagram\UNI\FindTestAttemtsUnderSuccessRate_Result.cs">
+      <DependentUpon>University.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbDiagram\UNI\FindTestsForStudentByFacultyNumber_Result.cs">
+      <DependentUpon>University.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbDiagram\UNI\Question.cs">
+      <DependentUpon>University.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbDiagram\UNI\QuestionNumber.cs">
+      <DependentUpon>University.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbDiagram\UNI\QuestionVariant.cs">
+      <DependentUpon>University.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbDiagram\UNI\SelectedAnswer.cs">
+      <DependentUpon>University.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbDiagram\UNI\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>University.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbDiagram\UNI\sp_helpdiagrams_Result.cs">
+      <DependentUpon>University.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbDiagram\UNI\Student.cs">
+      <DependentUpon>University.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbDiagram\UNI\Subject.cs">
+      <DependentUpon>University.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbDiagram\UNI\sysdiagrams.cs">
+      <DependentUpon>University.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbDiagram\UNI\Teacher.cs">
+      <DependentUpon>University.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbDiagram\UNI\Test.cs">
+      <DependentUpon>University.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbDiagram\UNI\TestAtmptData_View.cs">
+      <DependentUpon>University.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbDiagram\UNI\TestAttempt.cs">
+      <DependentUpon>University.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbDiagram\UNI\TestData_View.cs">
+      <DependentUpon>University.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbDiagram\UNI\University.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>University.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbDiagram\UNI\University.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>University.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbDiagram\UNI\University.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>University.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Models\DataAccessLayer\CarRentalDbContext.cs" />
     <Compile Include="Models\DataAccessLayer\CarRentalInitializer.cs" />
@@ -204,6 +282,16 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="DbDiagram\UNI\University.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>University.edmx</DependentUpon>
+      <LastGenOutput>University.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="DbDiagram\UNI\University.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>University.edmx</DependentUpon>
+      <LastGenOutput>University.cs</LastGenOutput>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -235,6 +323,13 @@
     </EntityDeploy>
     <Content Include="DbDiagram\CarRental.edmx.diagram">
       <DependentUpon>CarRental.edmx</DependentUpon>
+    </Content>
+    <EntityDeploy Include="DbDiagram\UNI\University.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>University.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="DbDiagram\UNI\University.edmx.diagram">
+      <DependentUpon>University.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
