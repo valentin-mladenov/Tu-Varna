@@ -83,26 +83,17 @@ def one_vs_all(features, classes, n_labels, reg):
     return all_theta
 
 
-# np.place(y, y == 10, 0)  # replace the label 10 with 0
-# numExamples = X.shape[0]  # 5000 examples
-# numFeatures = X.shape[1]  # 400 features
-# numLabels = 10   # digits from 0 to 9
-
 # Задача 4 - Попълнете параметрите при извикване на функцията
-theta_all = one_vs_all(X[1], X[0], 10, 0.1)
+theta_all = one_vs_all(X, y, 10, 0.1)
 
 
 def predict_one_vs_all(all_theta, features):
     # Задача 5 - Изчислете вероятностите за принадлежност към всеки клас. Използвайте сигмоидната функция */
-    probabilities = sigmoid(np.dot(all_theta, np.transpose(features)))
-
-    # probs Е добавено от мен.
-    probs = np.c_[np.ones((data['X'].shape[0], 1)), probabilities.T]
-
+    probabilities = sigmoid(np.dot(features, np.transpose(all_theta)))
 
     # Добавяне на 1, защото Python използва 0-базирано индексиране на 10 колони (0-9),
     # а 10-те класа са номерирани от 1 до 9.
-    return np.argmax(probs, axis=1) + 1
+    return np.argmax(probabilities, axis=1) + 1
 
 
 # Задача 6 - Попълнете параметрите при извиквания на функцията */
@@ -118,9 +109,9 @@ def predict(theta_1, theta_2, features):
     a2 = np.c_[np.ones((data['X'].shape[0], 1)), sigmoid(z2).T]
 
     # Задача 7 - Изчислете стойността z3 в скрития слой
+    z3 = np.dot(a2, theta_2.transpose())
     # Задача 7 - Изчислете стойността a3 в скрития слой
-    z3 = np.dot(theta_2, np.transpose(a2))
-    a3 = sigmoid(z3).T
+    a3 = sigmoid(z3)
 
     return np.argmax(a3, axis=1) + 1
 
