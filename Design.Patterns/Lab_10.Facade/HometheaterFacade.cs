@@ -1,36 +1,42 @@
-﻿namespace FacadePattern
+﻿namespace Lab_09.Facade
 {
     public class HomeTheatreFacade
     {
-        private Dimmer _dimmer;
-        private Dvd _dvd;
-        private DvdPlayer _dvdPlayer;
+        private Dimmer dimmer;
+        private Dvd dvd;
+        private DvdPlayer dvdPlayer;
         
-        public HomeTheatreFacade(Dimmer dimmer,Dvd dvd, DvdPlayer dvdPlayer)
+        public HomeTheatreFacade(
+            Dimmer dimmer, Dvd dvd, DvdPlayer dvdPlayer)
         {
-            _dvd = dvd;
-            _dimmer = dimmer;
-            _dvdPlayer = dvdPlayer;
+            this.dvd = dvd;
+            this.dimmer = dimmer;
+            this.dvdPlayer = dvdPlayer;
         }
 
         public void WatchMovie()
         {
-            _dimmer.Dim(5);
-            _dvdPlayer.On();
-            _dvdPlayer.Insert(_dvd);
-            _dvdPlayer.Play();
+            this.dimmer.Dim(5);
+            this.dvdPlayer.On();
+            this.dvdPlayer.Insert(this.dvd);
+            this.dvdPlayer.Play();
         }
 
         public void Pause()
         {
-            _dimmer.Dim(10);
-            _dvdPlayer.Pause();
+            this.dimmer.Dim(10);
+            this.dvdPlayer.Pause();
         }
 
         public void Resume()
         {
-            _dimmer.Dim(5);
-            _dvdPlayer.Resume();
+            this.dimmer.Dim(5);
+            this.dvdPlayer.Resume();
+        }
+        public void Stop()
+        {
+            this.dimmer.Dim(10);
+            this.dvdPlayer.Stop();
         }
     }
 }

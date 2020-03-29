@@ -4,15 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FacadePattern
+namespace Lab_09.Facade
 {
     public class Dimmer
     {
         internal void Dim(int val)
         {
-            Console.WriteLine(val == 10 ? "Turning Lights On" : $"Dimming lights to {val}");
+            var dimmed = val == 10
+                ? "Включване на светлините на пълна мощност"
+                : $"Светлината настроена на ниво {val}";
+
+            Console.WriteLine(dimmed);
         }
 
-        internal void Off() => Console.WriteLine("Switching off lights");
+        internal void Off() => Console.WriteLine("Светлините са изключени");
     }
 }

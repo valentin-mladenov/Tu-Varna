@@ -1,4 +1,4 @@
-﻿namespace FacadePattern
+﻿namespace Lab_09.Facade
 {
     public class Dvd
     {

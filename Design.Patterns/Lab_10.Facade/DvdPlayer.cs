@@ -1,30 +1,36 @@
 ﻿using System;
 
-namespace FacadePattern
+namespace Lab_09.Facade
 {
     public class DvdPlayer
     {
-        private Dvd _dvd;
-        private int _time = 0;
-        public void On() => Console.WriteLine("DVD Player powered on");
+        private Dvd dvd;
+        private int time = 0;
+        public void On() => Console.WriteLine("ДВД усреойстворо е включено");
 
         public void Insert(Dvd dvd)
         {
-            _dvd = dvd;
-            Console.WriteLine($"Inserting {dvd.Movie}");
+            this.dvd = dvd;
+            Console.WriteLine($"Вкарване на диск: {dvd.Movie}");
             
         }
 
-        public void Play() => Console.WriteLine($"Playing {_dvd.Movie}");
+        public void Play() => Console.WriteLine($"Пускане на: {this.dvd.Movie}");
 
         public void Pause()
         {
-            Console.WriteLine($"Pausing at {_time = (new Random()).Next(_time,_time + 120)}");
+            Console.WriteLine($"Пауза на: {this.time = (new Random()).Next(this.time, this.time + 120)}");
         }
 
         public void Resume()
         {
-            Console.WriteLine($"Resuming from {_time}");
+            Console.WriteLine($"Продължаване от: {this.time}");
+        }
+
+        public void Stop()
+        {
+            this.time = 0;
+            Console.WriteLine($"Спиране");
         }
     }
 }
