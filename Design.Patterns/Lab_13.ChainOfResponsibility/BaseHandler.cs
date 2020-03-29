@@ -1,11 +1,14 @@
-﻿namespace ChainOfResponsibilityPattern {
-    public abstract class BaseHandler : IHandler {
-        public void AddChain(IHandler handler) {
-            _nextInLine = handler;    
+﻿namespace Lab_13.ChainOfResponsibility
+{
+    public abstract class BaseHandler : IHandler
+    {
+        public void AddChain(IHandler handler)
+        {
+            nextInLine = handler;
         }
 
-        public abstract double? Handle(double[] values, string action);
+        public abstract double? Handle(double[] values, Action action);
 
-        protected IHandler _nextInLine;
+        protected IHandler nextInLine;
     }
 }

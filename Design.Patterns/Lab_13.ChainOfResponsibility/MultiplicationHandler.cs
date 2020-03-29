@@ -1,16 +1,20 @@
-﻿namespace ChainOfResponsibilityPattern {
-    public class MultiplicationHandler : BaseHandler {
-        public override double? Handle(double[] values, string action) {
-            if (action.ToLower() == "multiply") {
+﻿namespace Lab_13.ChainOfResponsibility
+{
+    public class MultiplicationHandler : BaseHandler
+    {
+        public override double? Handle(double[] values, Action action)
+        {
+            if (action == Action.Multiplication)
+            {
                 var result = 1.0;
-                foreach (var value in values) {
+                foreach (var value in values)
+                {
                     result *= value;
                 }
                 return result;
             }
-            else {
-                return _nextInLine?.Handle(values, action);
-            }
+
+            return base.nextInLine?.Handle(values, action);
         }
     }
 }
