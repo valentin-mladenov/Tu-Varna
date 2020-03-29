@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lab._01.Singleton.Pattern;
+using System;
 
 namespace Lab._01.Singleton
 {
