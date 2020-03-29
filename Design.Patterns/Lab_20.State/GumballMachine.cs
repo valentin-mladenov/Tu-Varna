@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StatePattern
+namespace Lab_20.State
 {
     public class GumballMachine
     {
@@ -46,7 +46,7 @@ namespace StatePattern
 
         public void ReleaseBall()
         {
-            Console.WriteLine("A ball comes rolling down");
+            Console.WriteLine("Топка се излиза навън");
             if (Count == 0) return;
             Count--;
         }

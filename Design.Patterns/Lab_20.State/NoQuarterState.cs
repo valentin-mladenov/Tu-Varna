@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StatePattern
+namespace Lab_20.State
 {
     public class NoQuarterState : IState
     {
@@ -12,23 +12,23 @@ namespace StatePattern
         }
         public void InsertQuarter()
         {
-            Console.WriteLine("Inserted a quarter");
+            Console.WriteLine("Вкарайте монета");
             Machine.State = Machine.HasQuarterState;
         }
 
         public void EjectQuarter()
         {
-            Console.Write("Can't eject anything");
+            Console.Write("Няма вкарана монета");
         }
 
         public void TurnCrank()
         {
-           Console.WriteLine("Can't turn crank without a quarter");
+           Console.WriteLine("Без монета няма врътка");
         }
 
         public void Dispense()
         {
-            Console.WriteLine("Can't dispense");
+            Console.WriteLine("Не може да се изпълни");
         }
     }
 }

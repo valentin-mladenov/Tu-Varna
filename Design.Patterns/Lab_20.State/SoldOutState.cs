@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StatePattern
+namespace Lab_20.State
 {
     public class SoldOutState : IState
     {
@@ -13,22 +13,22 @@ namespace StatePattern
 
         public void InsertQuarter()
         {
-            Console.WriteLine("Sorry! Sold Out");
+            Console.WriteLine("Съжалявам! Всички са продадени");
         }
 
         public void EjectQuarter()
         {
-            Console.WriteLine("Can't eject when sold out");
+            Console.WriteLine("Не мога да изкарам монета след като няма");
         }
 
         public void TurnCrank()
         {
-            Console.WriteLine("turning crank achieves nothing");
+            Console.WriteLine("Завъртането на колелото не е разрешено");
         }
 
         public void Dispense()
         {
-            Console.WriteLine("Can't dispense when out of stock");
+            Console.WriteLine("Не мога да изкарам топка след като няма");
         }
     }
 }

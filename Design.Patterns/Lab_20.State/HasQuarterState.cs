@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StatePattern
+namespace Lab_20.State
 {
     public class HasQuarterState : IState
     {
@@ -14,18 +14,18 @@ namespace StatePattern
 
         public void InsertQuarter()
         {
-            Console.WriteLine("Can't insert more than one");
+            Console.WriteLine("Не може да се вкарате повече от една монета");
         }
 
         public void EjectQuarter()
         {
-            Console.WriteLine("Quarter returned");
+            Console.WriteLine("Връщане на монета");
             Machine.State = Machine.NoQuarterState;
         }
 
         public void TurnCrank()
         {
-            Console.WriteLine("You turned the crank");
+            Console.WriteLine("Завъртяхте ръчката");
             var winner = _random.Next(10);
             if ((winner == 5) && (Machine.Count > 1))
                 Machine.State = Machine.WinnerState;
@@ -33,11 +33,11 @@ namespace StatePattern
             {
                 Machine.State = Machine.SoldState;
             }
-                            }
+        }
 
         public void Dispense()
         {
-            Console.WriteLine("Can't do that");
+            Console.WriteLine("Не може да правиш така");
         }
     }
 }

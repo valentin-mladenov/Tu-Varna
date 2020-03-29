@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StatePattern
+namespace Lab_20.State
 {
     public class SoldState : IState
     {
@@ -13,17 +13,17 @@ namespace StatePattern
 
         public void InsertQuarter()
         {
-            Console.WriteLine("Please wait, already in progress");
+            Console.WriteLine("Моля изчакайте, вече се изпълнява");
         }
 
         public void EjectQuarter()
         {
-           Console.WriteLine("Can't eject, already turned the crank");
+           Console.WriteLine("Не може да изкарате монетата, колелото се върти");
         }
 
         public void TurnCrank()
         {
-            Console.WriteLine("Turning twice achieves nothing");
+            Console.WriteLine("Само едно завъртане е разрешено");
         }
 
         public void Dispense()
@@ -35,7 +35,7 @@ namespace StatePattern
             }
             else
             {
-                Console.WriteLine("Oops! No more gumballs");
+                Console.WriteLine("Опааа! Няма повече гумени топки");
                 Machine.State = Machine.SoldOutState;
             }
         }
