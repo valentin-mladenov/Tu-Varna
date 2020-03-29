@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 
-namespace ObserverPattern
+namespace Lab_19.Observer
 {
     sealed class WeatherMonitor : IObserver<Weather>
     {
         private IDisposable _cancellation;
         private readonly string _name;
+        private readonly List<WeaterCharecteristic> options;
 
         public void Subscribe(WeatherSupplier provider)
         {
@@ -17,45 +19,50 @@ namespace ObserverPattern
             _cancellation.Dispose();
         }
 
-        public WeatherMonitor(string name)
+        public WeatherMonitor(string name, List<WeaterCharecteristic> options)
         {
             _name = name;
-        }
-        
-        public void OnCompleted()
-        {
-            throw new NotImplementedException();
+            this.options = options;
         }
 
         public void OnError(Exception error)
         {
-            Console.WriteLine("Error has occured");
+            Console.WriteLine(error.Message);
         }
 
         public void OnNext(Weather value)
         {
             Console.WriteLine(_name);
-            if (_name.Contains("T"))
+
+            if (options.Contains(WeaterCharecteristic.Temperature))
             {
-                string op = $"| Temperature : {value.Temperature} Celsius |";
+                string op = $"| Температура : {value.Temperature} Целзий |";
                 Console.Write(op);
                 
             }
-            if (_name.Contains("P"))
+            if (options.Contains(WeaterCharecteristic.Pressure))
             {
-                string op = $"| Pressure : {value.Pressure} atm |";
+                string op = $"| Налягане : {value.Pressure} bar |";
                 Console.Write(op);
             }
-            if (_name.Contains("H"))
+            if (options.Contains(WeaterCharecteristic.Humidity))
             {
-                string op = $"| Humidity : {value.Humidity*100} % |";
+                string op = $"| ВЛажност : {value.Humidity*100} % |";
                 Console.Write(op);
             }
-            if (!(_name.Contains("T") || _name.Contains("P") || _name.Contains("H")))
+
+            if (!(options.Contains(WeaterCharecteristic.Temperature) 
+                || options.Contains(WeaterCharecteristic.Pressure) 
+                || options.Contains(WeaterCharecteristic.Humidity)))
             {
-                OnError(new Exception());
+                OnError(new Exception("Опааа... Грешка. Няма такава мерна еденица. "));
             }
             Console.WriteLine();
+        }
+
+        public void OnCompleted()
+        {
+            Console.WriteLine("Завърших работа");
         }
     }
 }
