@@ -1,7 +1,8 @@
-﻿namespace FactoryPattern
+﻿namespace Lab_05.Abstract.Factory.Ingrediants
 {
-    internal class Cucumber : IVeggies
+    using Lab_05.Abstract.Factory.Ingrediants.Interfaces;
+    internal class Cucumber : IVeggie
     {
-        public string Name => "Cucumber";
+        public string Name => "Краставица";
     }
 }

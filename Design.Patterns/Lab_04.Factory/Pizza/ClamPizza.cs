@@ -1,22 +1,31 @@
 ﻿using System;
 
-namespace FactoryPattern
+namespace Lab_04.Factory.Pizza
 {
-    class ClamPizza : Pizza
-    {
-        readonly IIngredientsFactory _ingredients;
+    using Lab_05.Abstract.Factory;
+    using System.Linq;
+    using System.Text;
 
-        public ClamPizza(IIngredientsFactory ing)
+    class ClamPizza : AbstractPizza
+    {
+        readonly IIngredientsFactory ingredients;
+
+        public ClamPizza(IIngredientsFactory ingredients)
         {
-            _ingredients = ing;
+            this.ingredients = ingredients;
         }
 
         internal override void Prepare()
         {
-            Console.WriteLine("Preparing " + Name + " Using");
-            Console.Write("Dough: " + _ingredients.CreateDough().Name + ", Clam: " + _ingredients.CreateClam().Name + ", Sauce: " + _ingredients.CreateSauce().Name + ", Cheese: " + _ingredients.CreateCheese().Name);
-            Console.WriteLine();
+            var sb = new StringBuilder();
 
+            sb.Append($"Тесто: {this.ingredients.CreateDough().Name}, ");
+            sb.Append($"Миди: {this.ingredients.CreateClam().Name}, ");
+            sb.Append($"Сос: {this.ingredients.CreateSauce().Name}, ");
+            sb.Append($"Кашкавал: {this.ingredients.CreateCheese().Name}");
+
+            base.Prepare();
+            Console.WriteLine(sb.ToString());
         }
     }
 }

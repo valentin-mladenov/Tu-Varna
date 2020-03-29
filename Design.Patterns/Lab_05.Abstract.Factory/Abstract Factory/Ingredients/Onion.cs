@@ -1,11 +1,9 @@
-﻿namespace FactoryPattern
+﻿namespace Lab_05.Abstract.Factory.Ingrediants
 {
-    internal class Onion : IVeggies
-    {
-        public Onion()
-        {
-        }
+    using Lab_05.Abstract.Factory.Ingrediants.Interfaces;
 
-        public string Name => "Onions";
+    internal class Onion : IVeggie
+    {
+        public string Name => "Лук";
     }
 }

@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 
-namespace FactoryPattern
+namespace Lab_05.Abstract.Factory
 {
-    internal class NyIngredientsFactory : IIngredientsFactory
+    using Lab_05.Abstract.Factory.Ingrediants;
+    using Lab_05.Abstract.Factory.Ingrediants.Interfaces;
+    
+    public class DominosIngredientsFactory : IIngredientsFactory
     {
         ICheese IIngredientsFactory.CreateCheese()
         {
@@ -24,10 +27,9 @@ namespace FactoryPattern
             return new CherryTomato();
         }
 
-        IEnumerable<IVeggies> IIngredientsFactory.CreateVeggies()
+        IEnumerable<IVeggie> IIngredientsFactory.CreateVeggies()
         {
-            IVeggies[] arr = { new Onion(), new Pepper(), new Olive() };
-            return arr;
+            return new IVeggie[]{ new Onion(), new Pepper(), new Olive() };
         }
     }
 }

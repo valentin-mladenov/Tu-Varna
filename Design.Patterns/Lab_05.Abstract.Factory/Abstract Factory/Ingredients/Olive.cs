@@ -1,7 +1,9 @@
-﻿namespace FactoryPattern
+﻿namespace Lab_05.Abstract.Factory.Ingrediants
 {
-    internal class Olive : IVeggies
+    using Lab_05.Abstract.Factory.Ingrediants.Interfaces;
+
+    internal class Olive : IVeggie
     {
-        public string Name => "Olives";
+        public string Name => "Маслина";
     }
 }

@@ -1,8 +1,9 @@
-﻿namespace FactoryPattern
+﻿namespace Lab_05.Abstract.Factory.Ingrediants
 {
-    internal class Pepper : IVeggies
-    {
+    using Lab_05.Abstract.Factory.Ingrediants.Interfaces;
 
-        public string Name => "Bell Peppers";
+    internal class Pepper : IVeggie
+    {
+        public string Name => "Чер пипер";
     }
 }

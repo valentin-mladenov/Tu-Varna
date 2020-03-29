@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 
-namespace FactoryPattern
+namespace Lab_05.Abstract.Factory
 {
-    interface IIngredientsFactory
+    using Lab_05.Abstract.Factory.Ingrediants.Interfaces;
+
+    public interface IIngredientsFactory
     {
         IDough CreateDough();
-        IEnumerable<IVeggies> CreateVeggies();
+        IEnumerable<IVeggie> CreateVeggies();
         ISauce CreateSauce();
         ICheese CreateCheese();
         IClam CreateClam();
