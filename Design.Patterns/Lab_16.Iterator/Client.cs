@@ -1,34 +1,22 @@
-﻿using System;
-using System.Collections;
-
-namespace IteratorPattern
+﻿namespace Lab_16.Iterator
 {
+    using System.Collections.Generic;
+    using Lab_08.Composite;
+
     public class Client
     {
-        private IEnumerable _breakfast;
-        private IEnumerable _dinner;
+        private IEnumerable<IMenuComponent> dishes;
 
-        public Client(BreakfastMenu breakfast, DinnerMenu dinner)
+        public Client(IEnumerable<IMenuComponent> dishes)
         {
-            this._breakfast = breakfast.Items;
-            this._dinner = dinner.Items;
+            this.dishes = dishes;
         }
 
         public void PrintMenu()
         {
-            var breakfast = _breakfast;
-            PrintMenu(breakfast);
-            var dinner = _dinner;
-            PrintMenu(dinner);
-        }
-
-        private void PrintMenu(IEnumerable iter)
-        {
-            foreach (var item in iter)
+            foreach (var dish in dishes)
             {
-                var i = (Menu) item;
-                Console.WriteLine($"{i.Name}  Rs. {i.Price} {  (i.Vegetarian ? "*" : "x") } \n {i.Description} ");
-
+                dish.Print();
             }
         }
     }

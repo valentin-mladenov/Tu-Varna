@@ -1,11 +1,20 @@
-﻿using System;
-
-namespace Lab_07.Composite
+﻿namespace Lab_08.Composite
 {
     class Program
     {
         static void Main(string[] args)
         {
+            // Lab_16.Iterator използва итератора
+            // Той и тук се ползава, ама да сме живи и здрави, пък...
+            var menu = CreateMenu.Get();
+
+            menu.Print();
+        }
+    }
+
+    public static class CreateMenu
+    {
+        public static Menu Get() {
 
             var menu = new Menu("Маню", "При Вальо");
             var breakfast = new Menu("Закуска", "Горещи напитки, палачинки и плодова салата");
@@ -42,7 +51,7 @@ namespace Lab_07.Composite
             dinner.Add(dessert);
             lunch.Add(dessert);
 
-            menu.Print();
+            return menu;
         }
     }
 }

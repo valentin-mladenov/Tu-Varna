@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lab_07.Composite
+namespace Lab_08.Composite
 {
     public class MenuItem : IMenuComponent
     {
@@ -20,9 +20,14 @@ namespace Lab_07.Composite
             Vegetarian = isveg;
         }
 
+        public string GetName()
+        {
+            return this.Name;
+        }
+
         public void Print()
         {
-            Console.WriteLine($"{Name} : {Price}  {(Vegetarian ? "Вегетарианско" : string.Empty)} \n {Description}");
+            Console.WriteLine($"{Name} : {Price} лв. {(Vegetarian ? "Вегетарианско" : string.Empty)} \n {Description}");
         }
     }
 }
