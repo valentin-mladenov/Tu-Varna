@@ -1,9 +1,17 @@
 ﻿using System;
 
-namespace CompositePattern
+namespace Lab_07.Composite
 {
-    public class MenuItem : MenuComponent
+    public class MenuItem : IMenuComponent
     {
+        public string Name { get; private set; }
+
+        public string Description { get; private set; }
+
+        public double Price { get; private set; }
+
+        public bool Vegetarian { get; private set; }
+
         public MenuItem(string name, string description, double price, bool isveg)
         {
             Name = name;
@@ -12,17 +20,9 @@ namespace CompositePattern
             Vegetarian = isveg;
         }
 
-        public override string Name { get; }
-
-        public override string Description { get; }
-
-        public override double Price { get; }
-
-        public override  bool Vegetarian { get; }
-
-        public override void Print()
+        public void Print()
         {
-            Console.WriteLine($"{Name} : {Price}  {(Vegetarian ? '+' : '*')} \n {Description}");
+            Console.WriteLine($"{Name} : {Price}  {(Vegetarian ? "Вегетарианско" : string.Empty)} \n {Description}");
         }
     }
 }

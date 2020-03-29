@@ -1,17 +1,17 @@
-﻿namespace CompositePattern
+﻿namespace Lab_07.Composite
 {
     public class Client
     {
-        private readonly MenuComponent _menus;
+        private readonly IMenuComponent menus;
 
-        public Client(MenuComponent menus)
+        public Client(IMenuComponent menus)
         {
-            _menus = menus;
+            this.menus = menus;
         }
 
         public void Print()
         {
-            _menus.Print();
+            menus.Print();
         }
     }
 }

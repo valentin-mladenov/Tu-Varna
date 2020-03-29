@@ -1,47 +1,59 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
-namespace CompositePattern
+namespace Lab_07.Composite
 {
-    public class Menu : MenuComponent
+    public class Menu : IMenuComponent, IEnumerable
     {
-        List<MenuComponent> _components = new List<MenuComponent>();
+        public string Name { get; private set; }
+        public string Description { get; private set; }
+
+        List<IMenuComponent> components = new List<IMenuComponent>();
 
         public Menu(string name, string description)
         {
             Name = name;
             Description = description;
-
         }
 
-        public override void Add(MenuComponent component)
+        public void Add(IMenuComponent component)
         {
-            _components.Add(component);
+            components.Add(component);
         }
 
-        public override void Remove(MenuComponent component)
+        public void Remove(IMenuComponent component)
         {
-            _components.Remove(component);
+            components.Remove(component);
         }
 
-        public override MenuComponent GetChild(int i)
+        public IMenuComponent GetChild(int i)
         {
-            return  _components[i];
+            return components[i];
         }
 
-        public override string Name { get; }
-
-        public override string Description { get; }
-
-        public override void Print()
+        public void Print()
         {
             Console.WriteLine(Name);
             Console.WriteLine("___________");
-            foreach (var menuComponent in _components)
+            foreach (var menuComponent in components)
             {
                 menuComponent.Print();
             }
             Console.WriteLine();
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            foreach (IMenuComponent child in components)
+            {
+                yield return child;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }
