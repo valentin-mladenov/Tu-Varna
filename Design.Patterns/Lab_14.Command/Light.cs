@@ -1,24 +1,24 @@
 ﻿using System;
 
-namespace CommandPattern
+namespace Lab_14.Command
 {
     public class Light
     {
-        private readonly string _name;
+        private readonly string name;
 
         public Light(string name)
         {
-            _name = name;
+            this.name = name;
         }
 
         internal void On()
         {
-            Console.WriteLine($"{_name} Light On");
+            Console.WriteLine($"{this.name}:\tСветлини включени");
         }
 
         internal void Off()
         {
-            Console.WriteLine($"{_name} Light Off");
+            Console.WriteLine($"{this.name}:\tСветлини изключени");
         }
     }
 }

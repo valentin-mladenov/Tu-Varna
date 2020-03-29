@@ -1,24 +1,24 @@
 ﻿using System;
 
-namespace CommandPattern
+namespace Lab_14.Command
 {
     internal class Garage
     {
-        private readonly string _name;
+        private readonly string name;
 
         public Garage(string name)
         {
-            _name = name;
+            this.name = name;
         }
 
         internal void Open()
         {
-            Console.WriteLine($"{_name} Garage Opened");
+            Console.WriteLine($"{this.name}:\tГаражът е отворен");
         }
 
         internal void Close()
         {
-            Console.WriteLine($"{_name} Garage Closed");
+            Console.WriteLine($"{this.name}:\tГаражът е затворен");
         }
     }
 }

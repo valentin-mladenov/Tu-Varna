@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace CommandPattern
+namespace Lab_14.Command
 {
     internal class NoCommand : ICommand
     {
         public void Execute()
         {
-            Console.WriteLine("No Command Assigned");
+            Console.WriteLine("Няма избрана команда");
         }
 
         public void Undo()

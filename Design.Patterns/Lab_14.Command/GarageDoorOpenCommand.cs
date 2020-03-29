@@ -1,22 +1,22 @@
-﻿namespace CommandPattern
+﻿namespace Lab_14.Command
 {
     internal class GarageDoorOpenCommand : ICommand
     {
-        private readonly Garage _garage;
+        private readonly Garage garage;
 
         public GarageDoorOpenCommand(Garage g)
         {
-            _garage = g;
+            this.garage = g;
         }
 
         public void Execute()
         {
-            _garage.Open();
+            this.garage.Open();
         }
 
         public void Undo()
         {
-            _garage.Close();
+            this.garage.Close();
         }
     }
 }

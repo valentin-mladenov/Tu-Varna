@@ -1,22 +1,22 @@
-﻿namespace CommandPattern
+﻿namespace Lab_14.Command
 {
     internal class LightOnCommand : ICommand
     {
-        private readonly Light _light;
+        private readonly Light light;
 
         public LightOnCommand(Light l)
         {
-            _light = l;
+            this.light = l;
         }
 
         public void Execute()
         {
-            _light.On();
+            this.light.On();
         }
 
         public void Undo()
         {
-            _light.Off();
+            this.light.Off();
         }
     }
 }
