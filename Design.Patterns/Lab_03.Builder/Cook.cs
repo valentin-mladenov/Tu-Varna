@@ -1,26 +1,35 @@
-﻿namespace BuilderPattern {
+﻿namespace Lab_03.Builder
+{
+    /// <summary>
+    /// This class can also be called the Director
+    /// </summary>
+    public class Cook
+    {
+        private IBuilder builder;
 
-    // This class can also be called the Director
-    public class Cook {
-        private IBuilder _builder;
-        public Cook(IBuilder builder) {
+        public Cook(IBuilder builder)
+        {
             AcceptBuilder(builder);
         }
 
-        public void ChangeBuilder(IBuilder builder) {
+        public void ChangeBuilder(IBuilder builder)
+        {
             AcceptBuilder(builder);
         }
 
-        public  Hamburger Build() {
-            _builder.AddIngredients();
-            _builder.AddShape();
-            _builder.AddSize();
-            return _builder.Build();
+        public Hamburger Build()
+        {
+            this.builder.AddIngredients();
+            this.builder.AddShape();
+            this.builder.AddSize();
+            return this.builder.Build();
         }
 
-        private void AcceptBuilder(IBuilder builder) {
-            _builder = builder;
-            _builder.Reset();
+        private void AcceptBuilder(IBuilder builder)
+        {
+            this.builder = builder;
+
+            this.builder.Reset();
         }
     }
 }
