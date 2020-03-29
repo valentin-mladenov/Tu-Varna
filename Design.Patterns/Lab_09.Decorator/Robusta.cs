@@ -1,10 +1,10 @@
-﻿namespace DecoratorPattern
+﻿namespace Lab_08.Decorator
 {
-    class HouseBlend : Beverage
+    class Robusta : Beverage
     {
-        public HouseBlend()
+        public Robusta()
         {
-            _description = "House Blend";
+            _description = "кафе Робуста";
         }
 
         public override string Description => _description;

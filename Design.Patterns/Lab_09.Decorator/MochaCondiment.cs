@@ -1,4 +1,4 @@
-﻿namespace DecoratorPattern
+﻿namespace Lab_08.Decorator
 {
     class MochaCondiment : CondimentDecorator
     {
@@ -12,12 +12,12 @@
         public override string Description {
            get
             {
-                if (_beverage.Description.StartsWith("Mocha"))
+                if (_beverage.Description.StartsWith("Моча"))
                 {
-                    return "Double " + _beverage.Description;
+                    return "Двойно " + _beverage.Description;
                 }
-                else
-                    return "Mocha " + _beverage.Description;
+
+                return "Моча " + _beverage.Description;
             }
         }
 

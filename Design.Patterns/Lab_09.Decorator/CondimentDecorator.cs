@@ -1,4 +1,4 @@
-﻿namespace DecoratorPattern
+﻿namespace Lab_08.Decorator
 {
     abstract class CondimentDecorator : Beverage
     {

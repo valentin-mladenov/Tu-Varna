@@ -1,4 +1,4 @@
-﻿namespace DecoratorPattern
+﻿namespace Lab_08.Decorator
 {
     class WhipCondiment : CondimentDecorator
     {
@@ -13,12 +13,12 @@
         {
             get
             { 
-                if (_beverage.Description.StartsWith("Whip"))
+                if (_beverage.Description.StartsWith("Късо"))
                 {
-                    return "Double " + _beverage.Description;
+                    return "Двойно " + _beverage.Description;
                 }
-                else
-                    return "Whip " + _beverage.Description;
+
+                return "Късо " + _beverage.Description;
             }
         }
 

@@ -1,10 +1,10 @@
-﻿namespace DecoratorPattern
+﻿namespace Lab_08.Decorator
 {
-    internal class DarkRoast : Beverage
+    internal class Arabica : Beverage
     {
-        public DarkRoast()
+        public Arabica()
         {
-            _description = "Dark Roast";
+            _description = "кафе Арабика";
         }
 
         public override string Description => _description;
