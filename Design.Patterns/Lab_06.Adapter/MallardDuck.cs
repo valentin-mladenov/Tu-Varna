@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace AdapterPattern
+namespace Lab_06.Adapter
 {
     class MallardDuck : IDuck
     {
         public void Quack()
         {
-            Console.WriteLine("Quack Quack Quack");
+            Console.WriteLine("Кряк Кряк Кряк");
         }
 
         public void Fly()
         {
-            Console.WriteLine("Flies 500 Metres");
+            Console.WriteLine("Прелита 500 мтера");
         }
     }
 }

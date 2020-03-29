@@ -4,9 +4,18 @@ namespace Lab_06.Adapter
 {
     class Program
     {
-        static void Main(string[] args)
+        private static void Main()
         {
-            Console.WriteLine("Hello World!");
+            var turkey = new WildTurkey();
+            var adapter = new TurkeyAdapter(turkey);
+
+            Tester(adapter);
+        }
+
+        private static void Tester(IDuck duck)
+        {
+            duck.Fly();
+            duck.Quack();
         }
     }
 }

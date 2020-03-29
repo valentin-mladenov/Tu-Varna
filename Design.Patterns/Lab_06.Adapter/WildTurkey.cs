@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace AdapterPattern
+namespace Lab_06.Adapter
 {
     class WildTurkey : ITurkey
     {
         public void Gobble()
         {
-            Console.WriteLine("Gobble Gobble Gobble");
+            Console.WriteLine("Гулю Гулю Гулю");
         }
 
         public void Fly()
         {
-            Console.WriteLine("Flies 100 Metres");
+            Console.WriteLine("Прелита 100 метра");
         }
     }
 }
