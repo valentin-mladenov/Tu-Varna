@@ -1,8 +1,8 @@
 using System;
 
-namespace BridgePattern
+namespace Lab_07.Bridge
 {
-    public class Sword:IWeapon
+    public class Sword : IWeapon
     {
         private readonly IEnchantment _enchantment;
 
@@ -13,19 +13,19 @@ namespace BridgePattern
 
         public void Wield()
         {
-            Console.WriteLine("The sword is wielded.");
+            Console.WriteLine("Мечът е изваден.");
             _enchantment.OnActivate();
         }
 
         public void Swing()
         {
-            Console.WriteLine("The sword is swinged.");
+            Console.WriteLine("Замахване с меча.");
             _enchantment.Apply();
         }
 
         public void Unwield()
         {
-            Console.WriteLine("The sword is unwielded.");
+            Console.WriteLine("Мечът е прибран.");
             _enchantment.OnDeactivate();
         }
 

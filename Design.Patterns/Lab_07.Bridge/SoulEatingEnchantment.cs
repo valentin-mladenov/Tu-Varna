@@ -1,22 +1,22 @@
 using System;
 
-namespace BridgePattern
+namespace Lab_07.Bridge
 {
     public class SoulEatingEnchantment:IEnchantment
     {
         public void OnActivate()
         {
-            Console.WriteLine("The item spreads bloodlust.");
+            Console.WriteLine("Елементът разпространява кръвожадност.");
         }
 
         public void Apply()
         {
-            Console.WriteLine("The item eats the soul of enemies.");
+            Console.WriteLine("Елементът изяжда душите на врагове.");
         }
 
         public void OnDeactivate()
         {
-            Console.WriteLine("Bloodlust slowly disappears.");
+            Console.WriteLine("Кръвожадността бавно изчезва.");
         }
     }
 }

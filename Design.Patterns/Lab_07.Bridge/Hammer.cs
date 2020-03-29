@@ -1,8 +1,8 @@
 using System;
 
-namespace BridgePattern
+namespace Lab_07.Bridge
 {
-    public class Hammer:IWeapon
+    public class Hammer : IWeapon
     {
         private readonly IEnchantment _enchantment;
         public Hammer(IEnchantment enchantment)
@@ -12,19 +12,19 @@ namespace BridgePattern
 
         public void Wield()
         {
-            Console.WriteLine("The hammer is wielded.");
+            Console.WriteLine("Чукът е изваден.");
             _enchantment.OnActivate();
         }
 
         public void Swing()
         {
-            Console.WriteLine("The hammer is swinged.");
+            Console.WriteLine("Замах с чукът.");
             _enchantment.Apply();
         }
 
         public void Unwield()
         {
-            Console.WriteLine("The hammer is unwielded.");
+            Console.WriteLine("Чукът е прибран.");
             _enchantment.OnDeactivate();
         }
 

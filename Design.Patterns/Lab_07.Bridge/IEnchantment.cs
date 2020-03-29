@@ -1,4 +1,4 @@
-namespace BridgePattern
+namespace Lab_07.Bridge
 {
     public interface IEnchantment
     {
