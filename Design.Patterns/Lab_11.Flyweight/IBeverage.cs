@@ -1,4 +1,4 @@
-namespace FlyweightPattern
+namespace Lab_11.Flyweight
 {
     public interface IBeverage
     {

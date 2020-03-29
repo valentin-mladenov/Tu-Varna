@@ -1,7 +1,10 @@
-namespace FlyweightPattern
+namespace Lab_11.Flyweight
 {
     public enum BeverageType
     {
-        BubbleMilk, FoamMilk, OolongMilk, CoconutMilk
+        BubbleMilk,
+        FoamMilk,
+        OolongMilk,
+        CoconutMilk
     }
 }

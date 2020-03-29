@@ -1,17 +1,17 @@
 using System;
 
-namespace FlyweightPattern
+namespace Lab_11.Flyweight
 {
-    public class BubbleMilkTea: IBeverage
+    public class BubbleMilkTea : IBeverage
     {
         public BubbleMilkTea()
         {
-            Console.WriteLine("Initializing a Bubble Milk Tea instance");
+            Console.WriteLine("Създаване на мехурчест чай с мляко");
         }
 
         public void Drink()
         {
-            Console.WriteLine("hmmm... this is bubble milk tea");
+            Console.WriteLine("Даммм... това е мехурчест чай с мляко");
         }
     }
 }

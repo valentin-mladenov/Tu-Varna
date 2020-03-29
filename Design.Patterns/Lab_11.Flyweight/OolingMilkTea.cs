@@ -1,18 +1,18 @@
 using System;
 
-namespace FlyweightPattern
+namespace Lab_11.Flyweight
 {
     public class OolingMilkTea: IBeverage
     {
 
         public OolingMilkTea()
         {
-            Console.WriteLine("Initializing an Oolong Milk Tea instance");
+            Console.WriteLine("Създаване на Улунг чай с мляко");
         }
 
         public void Drink()
         {
-            Console.WriteLine("hmmm... this is oolong milk tea");
+            Console.WriteLine("Даммм... това е Улунг чай с мляко");
         }
     }
 }

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
 
-namespace FlyweightPattern
+namespace Lab_11.Flyweight
 {
     public class BubbleTeaShop
     {
@@ -28,7 +28,7 @@ namespace FlyweightPattern
 
         public void Enumerate()
         {
-            Console.WriteLine("Enumerating take away orders\n");
+            Console.WriteLine("Итерираме поръчките\n");
             foreach (var beverage in takeAwayOrders)
             {
                 beverage.Drink();

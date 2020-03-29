@@ -6,7 +6,9 @@ namespace Lab_11.Flyweight
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var teaShop = new BubbleTeaShop();
+
+            teaShop.Enumerate();
         }
     }
 }
