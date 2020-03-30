@@ -6,7 +6,18 @@ namespace Lab_21.Strategy
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var mallard = new MallardDuck();
+
+            mallard.Quacker = new QuackNormal();
+            mallard.Display();
+            Console.WriteLine();
+
+            mallard.Flyer = new FlyWings();
+            mallard.Display();
+            Console.WriteLine();
+
+            mallard.Quacker = new QuackNope();
+            mallard.Display();
         }
     }
 }

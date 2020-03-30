@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace Ducks
+namespace Lab_21.Strategy
 {
     class QuackNormal : IQuackBehaviour
     {
         public void Quack()
         {
-            Console.WriteLine("Quack Quack");
+            Console.WriteLine("Квак квак");
         }      
     }
 }

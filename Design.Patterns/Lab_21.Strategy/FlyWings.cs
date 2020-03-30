@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace Ducks
+namespace Lab_21.Strategy
 {
     class FlyWings : IFlyBehaviour
     {
         public void Fly()
         {
-            Console.WriteLine("Flap Flap");
+            Console.WriteLine("Пляс пляс");
         }
     }
 }

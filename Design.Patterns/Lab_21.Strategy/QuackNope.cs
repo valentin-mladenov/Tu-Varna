@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ducks
+namespace Lab_21.Strategy
 {
     internal class QuackNope : IQuackBehaviour
     {

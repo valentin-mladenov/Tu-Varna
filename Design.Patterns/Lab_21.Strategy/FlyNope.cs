@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace Ducks
+namespace Lab_21.Strategy
 {
     class FlyNope : IFlyBehaviour
     {
         public void Fly()
         {
-            Console.WriteLine("I can't fly");
+            Console.WriteLine("Не ме занимавай");
         }
     }
 }
