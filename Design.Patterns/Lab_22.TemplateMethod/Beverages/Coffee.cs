@@ -1,18 +1,36 @@
 ﻿using System;
 
-namespace TemplatePattern
+namespace Lab_22.TemplateMethod
 {
-    class Coffee : Beverage
+    class Coffee : IBeverage
     {
-        protected override void Brew()
+        public int Sugar { get; set; }
+
+        public bool HasCondiments { private get; set; }
+
+        public void Brew()
         {
-            Console.WriteLine("Add Coffee Grounds to water and boil");
+            Console.WriteLine("Добавяне на смляно кафе към водата и затопляне");
         }
 
-        protected override void AddCondiments()
+        public void AddCondiments()
         {
-            Console.WriteLine("Add Milk and Sugar");
+            Console.WriteLine($"Добавяне на мляко и {this.Sugar} лъжички захар");
         }
 
+        public void Boil()
+        {
+            Console.WriteLine("Загряване на водата в джезве");
+        }
+
+        public void Pour()
+        {
+            Console.WriteLine("Сипване в кафена чаша");
+        }
+
+        public bool WantsCondiments()
+        {
+            return this.HasCondiments;
+        }
     }
 }

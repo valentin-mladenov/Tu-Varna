@@ -1,40 +1,17 @@
 ﻿using System;
 
-namespace TemplatePattern
+namespace Lab_22.TemplateMethod
 {
-    public abstract class Beverage
+    public interface IBeverage
     {
-        // ReSharper disable once InconsistentNaming
-        protected int _sugar;
-        public void Prepare()
-        {
-            Boil();
-            Brew();
-            Pour();
-            if (WantsCondiments)
-                AddCondiments();
+        public bool WantsCondiments();
 
-        }
+        public void Brew();
 
-        public bool WantsCondiments { private get; set; }
+        public void Boil();
 
+        public void Pour();
 
-        protected abstract void Brew();
-
-        private void Boil()
-        {
-            Console.WriteLine("Boling Water");
-        }
-
-        private void Pour()
-        {
-            Console.WriteLine("Pouring in Cup");
-        }
-
-        protected abstract void AddCondiments();
-
-        public int AddSugar { get; set; }
-
-        protected void Sugar() { }
+        public void AddCondiments();
     }
 }

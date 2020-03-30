@@ -1,28 +1,35 @@
 ﻿using System;
 
-namespace TemplatePattern
+namespace Lab_22.TemplateMethod
 {
-    class Tea : Beverage
+    class Tea : IBeverage
     {
-        protected override void Brew()
+        public int Sugar { get; set; }
+        public bool HasCondiments { get; set; }
+
+        public void Brew()
         {
-            Console.WriteLine("Adding tea leaves to water and boil");
+            Console.WriteLine("Добавяне на чаени листа към водата и загряване");
         }
 
-        protected override void AddCondiments()
+        public void AddCondiments()
         {
-            Console.WriteLine("Adding Lemon and Sugar");
-            Sugar();
+            Console.WriteLine($"Добавяне на лимон и {this.Sugar} лъжички захар");
         }
 
-        private new void Sugar()
+        public void Boil()
         {
-            Console.WriteLine($"adding {_sugar} spoons of sugar");
+            Console.WriteLine("Загряване на водата е чайник");
         }
 
-        public new int AddSugar
+        public void Pour()
         {
-            set { _sugar = value; }
+            Console.WriteLine("Сипване в чаена чаша");
+        }
+
+        public bool WantsCondiments()
+        {
+            return this.HasCondiments;
         }
     }
 }
