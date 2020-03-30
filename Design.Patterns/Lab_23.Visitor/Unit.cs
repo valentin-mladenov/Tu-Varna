@@ -1,4 +1,4 @@
-namespace VisitorPattern
+namespace Lab_23.Visitor
 {
     public abstract class Unit
     {

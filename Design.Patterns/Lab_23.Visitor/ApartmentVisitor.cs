@@ -1,24 +1,15 @@
 using System;
 
-namespace VisitorPattern
+namespace Lab_23.Visitor
 {
     public class ApartmentVisitor: IUnitVisitor
     {
-        public void VisitApartment(Apartment apartment)
+        public void Visit(Unit apartment)
         {
-            Console.WriteLine("This is an apartment");
-        }
-
-        public void VisitStudio(Studio studio)
-        {
-        }
-
-        public void VisitBedroom(Bedroom bedroom)
-        {
-        }
-
-        public void VisitLivingRoom(LivingRoom livingRoom)
-        {
+            if(apartment.GetType() == typeof(Apartment))
+            {
+                Console.WriteLine("Добре дошъл в: " + apartment.ToString());
+            }
         }
     }
 }

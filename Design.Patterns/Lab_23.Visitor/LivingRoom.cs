@@ -1,4 +1,4 @@
-namespace VisitorPattern
+namespace Lab_23.Visitor
 {
     public class LivingRoom: Unit
     {
@@ -8,13 +8,13 @@ namespace VisitorPattern
 
         public override void Accept(IUnitVisitor visitor)
         {
-            visitor.VisitLivingRoom(this);
+            visitor.Visit(this);
             base.Accept(visitor);
         }
 
         public override string ToString()
         {
-            return "Living Room";
+            return "Всекидневна";
         }
     }
 }
