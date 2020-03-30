@@ -2,16 +2,16 @@ namespace Lab_23.Visitor
 {
     public abstract class Unit
     {
-        private Unit[] _units;
+        private Unit[] units;
 
         public Unit(params Unit[] units)
         {
-            _units = units;
+            this.units = units;
         }
 
         public virtual void Accept(IUnitVisitor visitor)
         {
-            foreach (var unit in _units)
+            foreach (var unit in this.units)
             {
                 unit.Accept(visitor);
             }
