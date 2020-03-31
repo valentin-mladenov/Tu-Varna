@@ -1,56 +1,31 @@
 ﻿using System;
 
-namespace lab._02.Prototype
+namespace Lab_02.Prototype
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-        }
-    }
+            ColorManager colormanager = new ColorManager();
 
-    abstract class Prototype
+            colormanager["червено"] = new Color(255, 0, 0);
+            colormanager["зелено"] = new Color(0, 255, 0);
+            colormanager["синьо"] = new Color(0, 0, 255);
 
-    {
-        public string Id { get; private set; }
+            colormanager["гневно"] = new Color(255, 54, 0);
+            colormanager["мирно"] = new Color(128, 211, 128);
+            colormanager["пламък"] = new Color(211, 34, 20);
 
-        // Constructor
+            Console.WriteLine(colormanager.ToString());
 
-        public Prototype(string id)
-        {
-            this.Id = id;
-        }
-
-        public abstract Prototype Clone();
-    }
-
-    class ConcretePrototype1 : Prototype
-
-    {
-        // Constructor
-
-        public ConcretePrototype1(string id)
-          : base(id)
-        {
-        }
-
-        public override Prototype Clone()
-        {
-            return (Prototype)this.MemberwiseClone();
-        }
-    }
-
-    class ConcretePrototype2 : Prototype
-    {
-        public ConcretePrototype2(string id)
-          : base(id)
-        {
-        }
-
-        public override Prototype Clone()
-        {
-            return (Prototype)this.MemberwiseClone();
+            Color color1 = colormanager["червено"].Clone() as Color;
+            Color color2 = colormanager["мирно"].Clone() as Color;
+            Color color3 = colormanager["пламък"].Clone() as Color;
+            
+            Console.WriteLine();
+            Console.WriteLine(color1);
+            Console.WriteLine(color2);
+            Console.WriteLine(color3);
         }
     }
 }
