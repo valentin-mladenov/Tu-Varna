@@ -25,29 +25,29 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lab_10.Facade", "Lab_10.Fac
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lab_11.Flyweight", "Lab_11.Flyweight\Lab_11.Flyweight.csproj", "{8AE2842A-DED5-4800-AD81-FF81583A4F67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab_12.Proxy", "Lab_12.Proxy\Lab_12.Proxy.csproj", "{B5402A82-ACE3-4DAC-B3C7-601CBD6B2749}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lab_12.Proxy", "Lab_12.Proxy\Lab_12.Proxy.csproj", "{B5402A82-ACE3-4DAC-B3C7-601CBD6B2749}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab_13.ChainOfResponsibility", "Lab_13.ChainOfResponsibility\Lab_13.ChainOfResponsibility.csproj", "{552FAD26-9013-494D-A8A7-B61E888B9439}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lab_13.ChainOfResponsibility", "Lab_13.ChainOfResponsibility\Lab_13.ChainOfResponsibility.csproj", "{552FAD26-9013-494D-A8A7-B61E888B9439}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab_14.Command", "Lab_14.Command\Lab_14.Command.csproj", "{61523F78-0598-4F2C-BC24-FFAD36D210DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lab_14.Command", "Lab_14.Command\Lab_14.Command.csproj", "{61523F78-0598-4F2C-BC24-FFAD36D210DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab_15.Interpret", "Lab_15.Interpret\Lab_15.Interpret.csproj", "{85052D53-D794-4D0E-AF46-8AF56D070CF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lab_15.Interpreter", "Lab_15.Interpret\Lab_15.Interpreter.csproj", "{85052D53-D794-4D0E-AF46-8AF56D070CF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab_16.Iterator", "Lab_16.Iterator\Lab_16.Iterator.csproj", "{3194488A-B2AF-47D9-8FA4-28730CF8BC36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lab_16.Iterator", "Lab_16.Iterator\Lab_16.Iterator.csproj", "{3194488A-B2AF-47D9-8FA4-28730CF8BC36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab_17.Mediator", "Lab_17.Mediator\Lab_17.Mediator.csproj", "{E501A0D2-21DF-4B0D-98AA-84F84324709E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lab_17.Mediator", "Lab_17.Mediator\Lab_17.Mediator.csproj", "{E501A0D2-21DF-4B0D-98AA-84F84324709E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab_18.Memento", "Lab_18.Memento\Lab_18.Memento.csproj", "{4142ABC8-CF8B-4349-B807-C5637FBA7774}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lab_18.Memento", "Lab_18.Memento\Lab_18.Memento.csproj", "{4142ABC8-CF8B-4349-B807-C5637FBA7774}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab_19.Observer", "Lab_19.Observer\Lab_19.Observer.csproj", "{F8326F66-C38A-4163-A321-54CA4D41F281}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lab_19.Observer", "Lab_19.Observer\Lab_19.Observer.csproj", "{F8326F66-C38A-4163-A321-54CA4D41F281}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab_20.State", "Lab_20.State\Lab_20.State.csproj", "{CBEBA77F-4BF8-4AD3-A2E6-ABDB10A08BDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lab_20.State", "Lab_20.State\Lab_20.State.csproj", "{CBEBA77F-4BF8-4AD3-A2E6-ABDB10A08BDB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab_21.Strategy", "Lab_21.Strategy\Lab_21.Strategy.csproj", "{FD59E54D-A323-4460-817D-8F8D8B5729B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lab_21.Strategy", "Lab_21.Strategy\Lab_21.Strategy.csproj", "{FD59E54D-A323-4460-817D-8F8D8B5729B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab_22.TemplateMethod", "Lab_22.TemplateMethod\Lab_22.TemplateMethod.csproj", "{0B91D61C-5C89-447D-92FB-15B4635B7ACF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lab_22.TemplateMethod", "Lab_22.TemplateMethod\Lab_22.TemplateMethod.csproj", "{0B91D61C-5C89-447D-92FB-15B4635B7ACF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab_23.Visitor", "Lab_23.Visitor\Lab_23.Visitor.csproj", "{3FCD2F6A-E145-48B7-80FE-7CA9517A032C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lab_23.Visitor", "Lab_23.Visitor\Lab_23.Visitor.csproj", "{3FCD2F6A-E145-48B7-80FE-7CA9517A032C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
