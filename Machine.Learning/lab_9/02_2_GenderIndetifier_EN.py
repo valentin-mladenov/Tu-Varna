@@ -7,7 +7,6 @@
 
 import nltk
 from nltk.classify.naivebayes import NaiveBayesClassifier
-from nltk.classify.scikitlearn import SklearnClassifier
 from nltk.corpus import names
 import random
 
