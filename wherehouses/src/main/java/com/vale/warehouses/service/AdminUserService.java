@@ -1,7 +1,7 @@
 package com.vale.warehouses.service;
 
-import com.vale.warehouses.model.UserEntity;
-import com.vale.warehouses.repository.UserRepository;
+import com.vale.warehouses.auth.models.UserEntity;
+import com.vale.warehouses.auth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class AdminUserService {
     @Autowired
     UserRepository repository;
 
