@@ -1,14 +1,12 @@
 package com.vale.warehouses.auth.service;
 
 import com.vale.warehouses.auth.models.UserEntity;
-import com.vale.warehouses.auth.repository.UserRepository;
 import com.vale.warehouses.auth.repository.RoleRepository;
+import com.vale.warehouses.auth.repository.UserRepository;
 import com.vale.warehouses.auth.service.interfaces.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.HashSet;
 
 @Service
 public class UserService implements UserServiceInterface {
@@ -20,10 +18,20 @@ public class UserService implements UserServiceInterface {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public void save(UserEntity user) {
+    public UserEntity save(UserEntity user) {
+        if (!user.getPassword().equals(user.getPasswordConfirm())) {
+            throw new IllegalArgumentException("PAss and pass confirm doesn't match");
+        }
+
+        if (user.getRoles().isEmpty()) {
+            throw new IllegalArgumentException("User need at least 1 role");
+        }
+
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setRoles(new HashSet<>(roleRepository.findAll()));
-        userRepository.save(user);
+        user.setPasswordConfirm("");
+        user = userRepository.save(user);
+
+        return user;
     }
 
     @Override

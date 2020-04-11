@@ -12,12 +12,6 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="first_name")
-    private String firstName;
-
-    @Column(name="last_name")
-    private String lastName;
-
     @Column(name="email", nullable=false, length=200)
     private String email;
 
@@ -28,14 +22,6 @@ public class UserEntity {
     @JsonManagedReference
     @ManyToMany
     private Set<RoleEntity> roles;
-
-//    @JsonManagedReference
-//    @OneToMany(
-//            mappedBy = "user",
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true
-//    )
-//    private Set<TokenEntity> tokens = new HashSet<>();
 
     @Transient
     private String passwordConfirm;
@@ -48,32 +34,12 @@ public class UserEntity {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getFullName() {
-        return this.getFirstName() + " " + this.getLastName();
     }
 
     public String getUsername() {
@@ -107,20 +73,4 @@ public class UserEntity {
     public void setRoles(Set<RoleEntity> roles) {
         this.roles = roles;
     }
-
-//    public Set<TokenEntity> getTokens() {
-//        return tokens;
-//    }
-//
-//    public void setTokens(Set<TokenEntity> tokens) {
-//        this.tokens = tokens;
-//    }
-//
-//    public void addToken(TokenEntity token) {
-//        this.tokens.add(token);
-//    }
-//
-//    public void removeToken(TokenEntity token) {
-//        this.tokens.remove(token);
-//    }
 }

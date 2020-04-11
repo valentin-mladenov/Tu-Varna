@@ -1,7 +1,8 @@
-package com.vale.warehouses.service;
+package com.vale.warehouses.app.service;
 
 import com.vale.warehouses.auth.models.UserEntity;
 import com.vale.warehouses.auth.repository.UserRepository;
+import com.vale.warehouses.auth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,9 @@ public class AdminUserService {
     @Autowired
     UserRepository repository;
 
+    @Autowired
+    UserService userService;
+
     public List<UserEntity> getUsers()
     {
         List<UserEntity> employeeList = repository.findAll();
@@ -21,7 +25,7 @@ public class AdminUserService {
         if(employeeList.size() > 0) {
             return employeeList;
         } else {
-            return new ArrayList<UserEntity>();
+            return new ArrayList<>();
         }
     }
 
@@ -38,14 +42,14 @@ public class AdminUserService {
 
     public UserEntity createUser(UserEntity entity)
     {
-        Optional<UserEntity> user = repository.findById(entity.getId());
+        // Optional<UserEntity> user = repository.findById(entity.getId());
 
-        if(user.isPresent())
+        if(repository.existsById(entity.getId()))
         {
             throw new IllegalArgumentException("User with that ID already exists");
         }
 
-        entity = repository.save(entity);
+        entity = userService.save(entity);
 
         return entity;
     }
@@ -61,8 +65,6 @@ public class AdminUserService {
 
         UserEntity newEntity = user.get();
         newEntity.setEmail(entity.getEmail());
-        newEntity.setFirstName(entity.getFirstName());
-        newEntity.setLastName(entity.getLastName());
 
         newEntity = repository.save(newEntity);
 

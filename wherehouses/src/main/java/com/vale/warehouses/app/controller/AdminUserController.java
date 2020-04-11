@@ -1,7 +1,7 @@
-package com.vale.warehouses.controller;
+package com.vale.warehouses.app.controller;
 
 import com.vale.warehouses.auth.models.UserEntity;
-import com.vale.warehouses.service.AdminUserService;
+import com.vale.warehouses.app.service.AdminUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;

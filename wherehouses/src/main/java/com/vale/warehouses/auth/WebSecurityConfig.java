@@ -61,7 +61,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationProvider(provider)
                 .addFilterBefore(authenticationFilter(), AnonymousAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("api/user/**").hasAuthority("Admin")
                 .requestMatchers(PROTECTED_URLS)
                 .authenticated()
                 .and()
@@ -69,38 +68,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable()
                 .httpBasic().disable()
                 .logout().disable();
-
-
-//                .authorizeRequests()
-//                .antMatchers("/resources/**", "/registration")
-//                .permitAll()
-//                .anyRequest()
-//                .authenticated()
-//                .and()
-//                .formLogin()
-//                .loginPage("/login")
-//                .permitAll()
-//                .and()
-//                .logout()
-//                .permitAll();
-
-//                .httpBasic()
-//                .and()
-//                .logout()
-//                .permitAll()
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers(HttpMethod.GET, "/warehouse/**").hasAnyRole("Owner", "Agent")
-//                .antMatchers(HttpMethod.POST, "/warehouse").hasRole("Owner")
-//                .antMatchers(HttpMethod.PUT, "/warehouse/**").hasRole("Owner")
-//                .antMatchers(HttpMethod.DELETE, "/warehouse/**").hasRole("Owner")
-//                .antMatchers(HttpMethod.GET, "/user/**").permitAll()
-//                .antMatchers(HttpMethod.POST, "/user").hasRole("Admin")
-//                .antMatchers(HttpMethod.PUT, "/user/**").hasRole("Admin")
-//                .antMatchers(HttpMethod.DELETE, "/user/**").hasRole("Admin")
-//                .and()
-//                .csrf().disable()
-//                .formLogin().disable();
     }
 
     @Bean
