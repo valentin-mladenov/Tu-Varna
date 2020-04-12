@@ -2,7 +2,7 @@ package com.vale.warehouses.auth.controller;
 
 import com.vale.warehouses.auth.models.TokenEntity;
 import com.vale.warehouses.auth.service.AuthService;
-import com.vale.warehouses.auth.service.interfaces.UserServiceInterface;
+import com.vale.warehouses.app.service.interfaces.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

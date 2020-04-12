@@ -28,6 +28,9 @@ public class LeasingContract {
     @ManyToOne(fetch = FetchType.LAZY)
     private Owner owner;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    private LeaseRequest leaseRequest;
+
     public Long getId() {
         return id;
     }
@@ -82,5 +85,13 @@ public class LeasingContract {
 
     public void setOwner(Owner owner) {
         this.owner = owner;
+    }
+
+    public LeaseRequest getLeaseRequest() {
+        return leaseRequest;
+    }
+
+    public void setLeaseRequest(LeaseRequest leaseRequest) {
+        this.leaseRequest = leaseRequest;
     }
 }

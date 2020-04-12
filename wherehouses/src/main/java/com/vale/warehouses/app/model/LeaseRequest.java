@@ -9,10 +9,18 @@ public class LeaseRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Tenant tenant;
 
-    @Column(name="warehouse_type")
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            mappedBy = "leaseRequest",
+            cascade = CascadeType.ALL,
+            optional = true)
+    @PrimaryKeyJoinColumn
+    private LeasingContract leasingContract;
+
+    @Column(name = "warehouse_type")
     private WarehouseType warehouseType;
 
     public WarehouseType getWarehouseType() {
@@ -37,5 +45,13 @@ public class LeaseRequest {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public LeasingContract getLeasingContract() {
+        return leasingContract;
+    }
+
+    public void setLeasingContract(LeasingContract leasingContract) {
+        this.leasingContract = leasingContract;
     }
 }

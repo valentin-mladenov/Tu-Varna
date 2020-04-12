@@ -1,7 +1,7 @@
 package com.vale.warehouses.auth.validator;
 
 import com.vale.warehouses.auth.models.UserEntity;
-import com.vale.warehouses.auth.service.interfaces.UserServiceInterface;
+import com.vale.warehouses.app.service.interfaces.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
