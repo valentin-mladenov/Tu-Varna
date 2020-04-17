@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lab._01.Singleton
+namespace Lab_01.Singleton
 {
     public class ChocolateBoiler
     {
