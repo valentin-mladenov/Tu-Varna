@@ -10,7 +10,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.vale.warehouses.R;
@@ -25,6 +27,7 @@ import org.json.JSONException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class AddEditUserActivity extends AppCompatActivity {
     public static final String USER_ID = "USER_ID";
@@ -33,8 +36,17 @@ public class AddEditUserActivity extends AppCompatActivity {
     private RoleMultiSelectionSpinner roleSpinner;
     private Token token;
     private User user;
-    private EditText editTextUsername;
-    private EditText editTextEmail;
+    private EditText editTextUsername,
+            editTextEmail,
+            editTextPassword,
+            editTextPasswordConfirm,
+            editTextFirstName,
+            editTextLastName,
+            editTextAddress,
+            editTextFee,
+            editTextRating,
+            editTextUnique,
+            editTextPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +55,20 @@ public class AddEditUserActivity extends AppCompatActivity {
 
         token = (Token)getIntent().getExtras().get("TOKEN");
 
-        roleSpinner = findViewById(R.id.role_spinner);
         Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(R.drawable.ic_close);
 
+        roleSpinner = findViewById(R.id.role_spinner);
         editTextUsername = findViewById(R.id.edit_text_username);
         editTextEmail = findViewById(R.id.edit_text_email);
+        editTextPassword = findViewById(R.id.edit_text_password);
+        editTextPasswordConfirm = findViewById(R.id.edit_text_password_confirm);
+        editTextAddress = findViewById(R.id.edit_text_address);
+        editTextFee = findViewById(R.id.edit_text_fee);
+        editTextPhone = findViewById(R.id.edit_text_phone_number);
+        editTextFirstName = findViewById(R.id.edit_text_first_name);
+        editTextLastName = findViewById(R.id.edit_text_last_name);
+        editTextRating = findViewById(R.id.edit_text_rating);
+        editTextUnique = findViewById(R.id.edit_text_unique);
 
         user = new User();
         user.setRoles(new HashSet<Role>());
@@ -58,41 +79,57 @@ public class AddEditUserActivity extends AppCompatActivity {
         roleViewModel.getAllRoles(token.getId()).observe(this, new Observer<List<Role>>() {
             @Override
             public void onChanged(@Nullable List<Role> roles) {
-            roleSpinner.setRoles(roles);
-            if (getIntent().hasExtra(USER_ID)) {
-                setTitle(getString(R.string.edit));
+                roleSpinner.setRoles(roles);
 
-                userViewModel = new ViewModelProvider(that).get(UserViewModel.class);
-                userViewModel.setToken(token);
-                Long userId = getIntent().getExtras().getLong(USER_ID);
+                if (getIntent().hasExtra(USER_ID)) {
+                    setTitle(getString(R.string.edit));
+                    editTextUsername.setEnabled(false);
 
-                userViewModel.getOne(userId).observe(that, new Observer<User>() {
-                    @Override
-                    public void onChanged(@Nullable User userRes) {
-                    user.setEmail(userRes.getEmail());
-                    user.setId(userRes.getId());
-                    user.setUserName(userRes.getUserName());
-                    user.setRoles(userRes.getRoles());
+                    editTextPassword.setVisibility(View.INVISIBLE);
+                    editTextPasswordConfirm.setVisibility(View.INVISIBLE);
 
-                    editTextUsername.setText(user.getUserName());
-                    editTextEmail.setText(user.getEmail());
+                    userViewModel = new ViewModelProvider(that).get(UserViewModel.class);
+                    userViewModel.setToken(token);
+                    Long userId = getIntent().getExtras().getLong(USER_ID);
 
-                    roleSpinner.setSelection(user.getRoles());
-                    }
-                });
-            } else {
-                setTitle(getString(R.string.add));
-            }
+                    userViewModel.getOne(userId).observe(that, new Observer<User>() {
+                        @Override
+                        public void onChanged(@Nullable User userRes) {
+                            user.setEmail(userRes.getEmail());
+                            user.setId(userRes.getId());
+                            user.setUserName(userRes.getUserName());
+                            user.setRoles(userRes.getRoles());
+
+                            editTextUsername.setText(user.getUserName());
+                            editTextEmail.setText(user.getEmail());
+
+                            roleSpinner.setSelection(user.getRoles());
+
+                            roleSpinner.getSelection().observe(that, new Observer<Set<Role>>() {
+                                @Override
+                                public void onChanged(Set<Role> roles) {
+                                    user.setRoles(roles);
+                                    hideData(roles);
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    setTitle(getString(R.string.add));
+                }
             }
         });
     }
 
     private void saveUser() {
-        User a = user;
-        user.setRoles(roleSpinner.getSelectedItems());
-
         if(user.getRoles().isEmpty()) {
             Toast.makeText(this, R.string.user_role_missing, Toast.LENGTH_SHORT).show();
+
+            return;
+        }
+
+        if(user.getRoles().size() > 1) {
+            Toast.makeText(this, "Only one Role per User", Toast.LENGTH_SHORT).show();
 
             return;
         }
@@ -105,8 +142,7 @@ public class AddEditUserActivity extends AppCompatActivity {
                 userViewModel.insert(user);
                 Toast.makeText(this, R.string.user_created, Toast.LENGTH_SHORT).show();
             }
-        }
-        catch (JSONException ignored) {
+        } catch (Exception ignored) {
 
         }
 
@@ -116,6 +152,24 @@ public class AddEditUserActivity extends AppCompatActivity {
         setResult(RESULT_OK);
 
         finish();
+    }
+
+    public void hideData(Set<Role> roles) {
+        boolean isAgent = false;
+        for (Role role: roles) {
+            if (role.getId() == 3) {
+                isAgent = true;
+            }
+        }
+
+        //Toggle
+        if (isAgent) {
+            editTextRating.setVisibility(View.VISIBLE);
+            editTextFee.setVisibility(View.VISIBLE);
+        } else {
+            editTextRating.setVisibility(View.INVISIBLE);
+            editTextFee.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override

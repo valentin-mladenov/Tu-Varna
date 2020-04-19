@@ -77,6 +77,9 @@ public class AdminUserService implements UserServiceInterface {
 
         UserEntity newEntity = user.get();
         newEntity.setEmail(entity.getEmail());
+        newEntity.setRoles(entity.getRoles());
+
+        //TODO Update password
 
         return userRepository.save(newEntity);
     }

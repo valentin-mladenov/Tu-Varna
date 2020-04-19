@@ -21,6 +21,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.vale.warehouses.R;
 import com.vale.warehouses.service.AppRequestQueue;
+import com.vale.warehouses.service.model.Role;
 import com.vale.warehouses.service.model.Token;
 import com.vale.warehouses.service.model.User;
 
@@ -134,10 +135,23 @@ public class UserViewModel extends AndroidViewModel {
     public MutableLiveData<User> update(User user) throws JSONException {
         oneUser = new MutableLiveData<>();
 
+        JSONArray rolesJson = new JSONArray();
+        for (Role role: user.getRoles()) {
+            JSONObject roleBody = new JSONObject();
+            roleBody.put("id", role.getId());
+            roleBody.put("name", role.getName());
+
+            rolesJson.put(roleBody);
+        }
+
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("email", user.getEmail());
+        requestBody.put("roles", rolesJson);
+
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
             Request.Method.PUT,
             url + "/" + user.getId(),
-            user,
+            requestBody,
             new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {

@@ -8,6 +8,7 @@ import android.widget.SpinnerAdapter;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.lifecycle.MutableLiveData;
 
 import com.vale.warehouses.service.model.Role;
 
@@ -21,6 +22,7 @@ public class RoleMultiSelectionSpinner extends AppCompatSpinner
         implements DialogInterface.OnMultiChoiceClickListener {
 
     List<Role> roles = null;
+    private MutableLiveData<Set<Role>> selectedRoles = new MutableLiveData<>();
     boolean[] selection = null;
     ArrayAdapter adapter;
 
@@ -47,6 +49,8 @@ public class RoleMultiSelectionSpinner extends AppCompatSpinner
 
             adapter.clear();
             adapter.add(buildSelectedItemString());
+
+            this.selectedRoles.setValue(getSelectedItems());
         } else {
             throw new IllegalArgumentException("Argument 'which' is out of bounds.");
         }
@@ -78,8 +82,7 @@ public class RoleMultiSelectionSpinner extends AppCompatSpinner
 
     @Override
     public void setAdapter(SpinnerAdapter adapter) {
-        throw new RuntimeException(
-                "setAdapter is not supported by MultiSelectSpinner.");
+        throw new RuntimeException("setAdapter is not supported by MultiSelectSpinner.");
     }
 
     public void setRoles(List<Role> roles) {
@@ -90,7 +93,12 @@ public class RoleMultiSelectionSpinner extends AppCompatSpinner
         Arrays.fill(selection, false);
     }
 
+    public MutableLiveData<Set<Role>> getSelection() {
+        return this.selectedRoles;
+    }
+
     public void setSelection(Set<Role> selection) {
+        this.selectedRoles.setValue(selection);
         for (int i = 0; i < this.selection.length; i++) {
             this.selection[i] = false;
         }

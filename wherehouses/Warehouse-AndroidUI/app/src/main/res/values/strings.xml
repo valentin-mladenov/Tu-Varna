@@ -28,4 +28,13 @@
     <string name="user_updated">User updated</string>
     <string name="user_created">User created</string>
     <string name="user_role_missing">User must have at least one role</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="rating">Rating</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="address">Address</string>
+    <string name="unique_id_egn">Unique ID (EGN)</string>
+    <string name="fee">Fee</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
 </resources>

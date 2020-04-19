@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/user_name"
         android:importantForAutofill="no"
+        android:layout_marginBottom="3dp"
         android:inputType="text" />
 
     <EditText
@@ -22,12 +23,101 @@
         android:layout_height="wrap_content"
         android:hint="@string/email"
         android:importantForAutofill="no"
+        android:layout_marginVertical="3dp"
         android:inputType="textWebEmailAddress" />
+
+    <EditText
+        android:id="@+id/edit_text_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/password"
+        android:importantForAutofill="no"
+        android:layout_marginVertical="3dp"
+        android:inputType="textWebPassword" />
+
+    <EditText
+        android:id="@+id/edit_text_password_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/confirm_password"
+        android:importantForAutofill="no"
+        android:layout_marginVertical="3dp"
+        android:inputType="textWebPassword" />
 
     <com.vale.warehouses.ui.users.RoleMultiSelectionSpinner
         android:id="@+id/role_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
         android:spinnerMode="dropdown" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_marginVertical="10dp"
+        android:background="#c0c0c0"/>
+
+    <EditText
+        android:id="@+id/edit_text_first_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/first_name"
+        android:importantForAutofill="no"
+        android:layout_marginVertical="3dp"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/edit_text_last_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/last_name"
+        android:importantForAutofill="no"
+        android:layout_marginVertical="3dp"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/edit_text_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/address"
+        android:importantForAutofill="no"
+        android:layout_marginVertical="3dp"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/edit_text_phone_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/phone_number"
+        android:layout_marginVertical="3dp"
+        android:importantForAutofill="no"
+        android:inputType="phone" />
+
+    <EditText
+        android:id="@+id/edit_text_unique"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/unique_id_egn"
+        android:importantForAutofill="no"
+        android:layout_marginVertical="3dp"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/edit_text_fee"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/fee"
+        android:importantForAutofill="no"
+        android:layout_marginVertical="3dp"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/edit_text_rating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/rating"
+        android:importantForAutofill="no"
+        android:layout_marginVertical="3dp"
+        android:inputType="text" />
 
 </LinearLayout>
