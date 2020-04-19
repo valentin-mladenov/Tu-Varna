@@ -3,7 +3,6 @@ package com.vale.warehouses.ui.login;
 import android.app.Activity;
 
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.vale.warehouses.data.model.Token;
 import com.vale.warehouses.ui.loggedin.LoggedIn;
 import com.vale.warehouses.R;
 
@@ -34,8 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
-                .get(LoginViewModel.class);
+        loginViewModel = new LoginViewModel(getApplication());
 
         final EditText usernameEditText = findViewById(R.id.username);
         final EditText passwordEditText = findViewById(R.id.password);
@@ -119,15 +118,19 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void updateUiWithUser(LoggedInUserView model) {
-        String welcome = getString(R.string.welcome) + model.getDisplayName();
+    private void updateUiWithUser(Token token) {
+        String welcome = getString(R.string.welcome) + token.getUser().getEmail();
 
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
 
         Intent intent = new Intent(LoginActivity.this, LoggedIn.class);
-        intent.putExtra("USER_NAME", model.getDisplayName());
-        intent.putExtra("USER_ROLES", model.getDisplayName());
-        intent.putExtra("USER_TOKEN", model.getDisplayName());
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("TOKEN", token);
+        intent.putExtras(bundle);
+//        intent.putExtra("USER_NAME", token.getUser().getUserName());
+//        intent.putExtra("USER_ROLES", token.getUser().getDisplayName());
+//        intent.putExtra("TOKEN_EXPIRES_AT", token.getExpireAt());
+//        intent.putExtra("USER_TOKEN", token.getId());
 
         startActivity(intent);
     }

@@ -24,9 +24,9 @@ public class UserAdapter extends ListAdapter<User, UserAdapter.UserHolder> {
 
         @Override
         public boolean areContentsTheSame(User oldItem, User newItem) {
-            return oldItem.getEmail().equals(newItem.getEmail()) &&
-                    oldItem.getUserName().equals(newItem.getUserName()) &&
-                    oldItem.getFullName().equals(newItem.getFullName());
+            return oldItem.getId() == newItem.getId() &&
+                    oldItem.getEmail().equals(newItem.getEmail()) &&
+                    oldItem.getUserName().equals(newItem.getUserName());
         }
     };
 
@@ -44,14 +44,14 @@ public class UserAdapter extends ListAdapter<User, UserAdapter.UserHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull UserHolder holder, int position) {
-        User currentNote = getNoteAt(position);
-        holder.textViewEmail.setText(currentNote.getEmail());
-        holder.textViewFullName.setText(currentNote.getFullName());
-        holder.textViewUserName.setText(String.valueOf(currentNote.getUserName()));
+        User current = getUserAt(position);
+        holder.textViewEmail.setText(current.getEmail());
+        holder.textViewFullName.setText(String.valueOf(current.getId()));
+        holder.textViewUserName.setText(current.getUserName());
     }
 
 
-    public User getNoteAt(int position) {
+    public User getUserAt(int position) {
         return getItem(position);
     }
 
@@ -69,7 +69,7 @@ public class UserAdapter extends ListAdapter<User, UserAdapter.UserHolder> {
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     if (listener != null && position != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(getNoteAt(position));
+                        listener.onItemClick(getUserAt(position));
                     }
                 }
             });

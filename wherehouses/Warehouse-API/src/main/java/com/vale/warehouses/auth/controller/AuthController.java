@@ -26,7 +26,7 @@ public class AuthController {
     ) {
         TokenEntity token = authService.login(username, password);
 
-        token.setUser(null);
+        token.getUser().setPassword(null);
 
         return token;
     }

@@ -2,7 +2,9 @@ package com.vale.warehouses.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     @SerializedName("id")
     private long id;
 
@@ -11,17 +13,6 @@ public class User {
 
     @SerializedName("email")
     private String email;
-
-    @SerializedName("fullName")
-    private String fullName;
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
 
     public String getEmail() {
         return email;

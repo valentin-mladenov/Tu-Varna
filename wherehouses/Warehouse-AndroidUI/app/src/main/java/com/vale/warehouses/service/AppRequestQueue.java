@@ -2,10 +2,15 @@ package com.vale.warehouses.service;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.widget.Toast;
 
+import com.android.volley.NetworkError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.vale.warehouses.R;
 
 public class AppRequestQueue {
     private static AppRequestQueue instance;
@@ -47,5 +52,18 @@ public class AppRequestQueue {
         if (requestQueue != null) {
             requestQueue.cancelAll(tag);
         }
+    }
+
+    public Response.ErrorListener getErrorListener() {
+        return new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error instanceof NetworkError) {
+                    Toast.makeText(context, R.string.no_network, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(context, error.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+        };
     }
 }

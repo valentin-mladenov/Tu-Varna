@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.vale.warehouses.R;
+import com.vale.warehouses.data.model.Token;
 import com.vale.warehouses.data.model.User;
 import com.vale.warehouses.data.model.UserViewModel;
 
@@ -27,22 +27,26 @@ public class UserListActivity extends AppCompatActivity {
     public static final int EDIT_REQUEST = 2;
 
     private UserViewModel userViewModel;
+    private Token token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users);
 
-        FloatingActionButton buttonAddNote = findViewById(R.id.button_add_note);
+        token = (Token)getIntent().getExtras().get("TOKEN");
+
+        FloatingActionButton buttonAddNote = findViewById(R.id.button_add_user);
         buttonAddNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(UserListActivity.this, AddEditUserActivity.class);
+                intent.putExtras(getIntent());
                 startActivityForResult(intent, ADD_REQUEST);
             }
         });
 
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = findViewById(R.id.users_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
@@ -50,6 +54,7 @@ public class UserListActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        userViewModel.setToken(token);
         userViewModel.getAllUsers().observe(this, new Observer<List<User>>() {
             @Override
             public void onChanged(@Nullable List<User> notes) {
@@ -66,11 +71,9 @@ public class UserListActivity extends AppCompatActivity {
 //                return false;
 //            }
 //
-//
-//
 //            @Override
 //            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-//                noteViewModel.delete(adapter.getNoteAt(viewHolder.getAdapterPosition()));
+//                userViewModel.delete(adapter.getNoteAt(viewHolder.getAdapterPosition()));
 //                Toast.makeText(UserListActivity.this, R.string.note_deleted, Toast.LENGTH_SHORT).show();
 //            }
 //        }).attachToRecyclerView(recyclerView);
@@ -79,10 +82,9 @@ public class UserListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(User user) {
                 Intent intent = new Intent(UserListActivity.this, AddEditUserActivity.class);
-//                intent.putExtra(AddEditNoteActivity.EXTRA_ID, note.getId());
-//                intent.putExtra(AddEditNoteActivity.EXTRA_TITLE, note.getTitle());
-//                intent.putExtra(AddEditNoteActivity.EXTRA_DESCRIPTION, note.getDescription());
-//                intent.putExtra(AddEditNoteActivity.EXTRA_PRIORITY, note.getPriority());
+
+                intent.putExtras(getIntent());
+
                 startActivityForResult(intent, EDIT_REQUEST);
             }
         });

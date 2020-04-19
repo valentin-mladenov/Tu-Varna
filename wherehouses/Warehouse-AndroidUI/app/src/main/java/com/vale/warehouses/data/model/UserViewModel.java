@@ -9,6 +9,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -27,36 +28,53 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UserViewModel extends AndroidViewModel {
-    private RequestQueue requestQueue;
+    private AppRequestQueue requestQueue;
     private MutableLiveData<List<User>> allUsers;
-    private User oneUser;
-    private String baseUrl = "http://localhost:8080/api/user";
+    private MutableLiveData<User> oneUser;
+    private Token token;
+    private String baseUrl = "http://10.0.2.2:8080/api/user";
 
     public UserViewModel(@NonNull Application application) {
         super(application);
-        requestQueue = AppRequestQueue.getInstance(application).getRequestQueue();
+        requestQueue = AppRequestQueue.getInstance(application);
     }
 
-    public User getOne(String userId) {
-        oneUser = null;
+    public void setToken(Token token) {
+        this.token = token;
+    }
+
+    public MutableLiveData<User> getOne(String userId) {
+        oneUser = new MutableLiveData<>();
+
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.GET,
-                baseUrl + userId,
-                null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
+            Request.Method.GET,
+            baseUrl + userId,
+            null,
+            new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
 
-                        VolleyLog.wtf(response.toString(), "utf-8");
-                        GsonBuilder builder = new GsonBuilder();
-                        Gson gson = builder.create();
+                    VolleyLog.wtf(response.toString(), "utf-8");
+                    GsonBuilder builder = new GsonBuilder();
+                    Gson gson = builder.create();
 
-                        oneUser = gson.fromJson(response.toString(), User.class);
-                    }
-                }, errorListener) {
+                    oneUser.setValue(gson.fromJson(response.toString(), User.class));
+                }
+            },
+            requestQueue.getErrorListener()) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/json; charset=UTF-8");
+                params.put("Authorization", "Bearer " + token.getId());
+                return params;
+            }
 
             @Override
             public String getBodyContentType() {
@@ -69,7 +87,7 @@ public class UserViewModel extends AndroidViewModel {
             }
         };
 
-        requestQueue.add(jsonObjectRequest);
+        requestQueue.getRequestQueue().add(jsonObjectRequest);
 
         return oneUser;
     }
@@ -90,22 +108,32 @@ public class UserViewModel extends AndroidViewModel {
         allUsers = new MutableLiveData<>();
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                Request.Method.GET,
-                baseUrl,
-                null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
+            Request.Method.GET,
+            baseUrl,
+            null,
+            new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
 
-                        VolleyLog.wtf(response.toString(), "utf-8");
-                        GsonBuilder builder = new GsonBuilder();
-                        Gson gson = builder.create();
+                    VolleyLog.wtf(response.toString(), "utf-8");
+                    GsonBuilder builder = new GsonBuilder();
+                    Gson gson = builder.create();
 
-                        Type listType = new TypeToken<List<User>>(){}.getType();
-                        List<User> users = gson.fromJson(response.toString(), listType);
-                        allUsers.setValue(users);
-                    }
-                }, errorListener) {
+                    Type listType = new TypeToken<List<User>>(){}.getType();
+                    List<User> users = gson.fromJson(response.toString(), listType);
+                    allUsers.setValue(users);
+                }
+            },
+            requestQueue.getErrorListener()) {
+            //This is for Headers If You Needed
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/json; charset=UTF-8");
+                params.put("Authorization", "Bearer " + token.getId());
+                return params;
+            }
 
             @Override
             public String getBodyContentType() {
@@ -118,19 +146,8 @@ public class UserViewModel extends AndroidViewModel {
             }
         };
 
-        requestQueue.add(jsonArrayRequest);
+        requestQueue.getRequestQueue().add(jsonArrayRequest);
 
         return allUsers;
     }
-
-    Response.ErrorListener errorListener = new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            if (error instanceof NetworkError) {
-                Toast.makeText(getApplication(), R.string.no_network, Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(getApplication(), error.toString(), Toast.LENGTH_LONG).show();
-            }
-        }
-    };
 }

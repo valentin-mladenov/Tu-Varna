@@ -2,12 +2,14 @@ package com.vale.warehouses.ui.login;
 
 import androidx.annotation.Nullable;
 
+import com.vale.warehouses.data.model.Token;
+
 /**
  * Authentication result : success (user details) or error message.
  */
 class LoginResult {
     @Nullable
-    private LoggedInUserView success;
+    private Token success;
     @Nullable
     private Integer error;
 
@@ -15,12 +17,12 @@ class LoginResult {
         this.error = error;
     }
 
-    LoginResult(@Nullable LoggedInUserView success) {
+    LoginResult(@Nullable Token success) {
         this.success = success;
     }
 
     @Nullable
-    LoggedInUserView getSuccess() {
+    Token getSuccess() {
         return success;
     }
 
