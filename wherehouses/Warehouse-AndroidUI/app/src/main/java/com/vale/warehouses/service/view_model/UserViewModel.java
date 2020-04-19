@@ -36,11 +36,12 @@ public class UserViewModel extends AndroidViewModel {
     private MutableLiveData<List<User>> allUsers;
     private MutableLiveData<User> oneUser;
     private Token token;
-    private String url = R.string.base_url + "/api/user";
+    private String url = getApplication().getResources().getString(R.string.base_url) + "/api/user";
     private MutableLiveData<Boolean> deleteResult;
 
     public UserViewModel(@NonNull Application application) {
         super(application);
+
         requestQueue = AppRequestQueue.getInstance(application);
     }
 
@@ -48,12 +49,12 @@ public class UserViewModel extends AndroidViewModel {
         this.token = token;
     }
 
-    public MutableLiveData<User> getOne(String userId) {
+    public MutableLiveData<User> getOne(Long userId) {
         oneUser = new MutableLiveData<>();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
             Request.Method.GET,
-            url + userId,
+            url + "/" + userId,
             null,
             new Response.Listener<JSONObject>() {
                 @Override

@@ -21,4 +21,8 @@
     <string name="owners">Owners</string>
     <string name="base_url">http://10.0.2.2:8080</string>
     <string name="save">Save</string>
+    <string name="role">Role</string>
+    <string name="id">Id</string>
+    <string name="edit">Edit</string>
+    <string name="add">Add</string>
 </resources>

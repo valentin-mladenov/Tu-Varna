@@ -13,8 +13,10 @@ import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.vale.warehouses.R;
+import com.vale.warehouses.service.model.Role;
 import com.vale.warehouses.service.model.Token;
 import com.vale.warehouses.service.model.User;
+import com.vale.warehouses.service.view_model.RoleViewModel;
 import com.vale.warehouses.service.view_model.UserViewModel;
 
 import java.util.List;
@@ -47,15 +49,15 @@ public class UserListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
-        final UserAdapter adapter = new UserAdapter();
-        recyclerView.setAdapter(adapter);
+        final UserAdapter userAdapter = new UserAdapter();
+        recyclerView.setAdapter(userAdapter);
 
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         userViewModel.setToken(token);
         userViewModel.getAllUsers().observe(this, new Observer<List<User>>() {
             @Override
-            public void onChanged(@Nullable List<User> notes) {
-                adapter.submitList(notes);
+            public void onChanged(@Nullable List<User> users) {
+                userAdapter.submitList(users);
             }
         });
 
@@ -75,12 +77,13 @@ public class UserListActivity extends AppCompatActivity {
 //            }
 //        }).attachToRecyclerView(recyclerView);
 
-        adapter.setOnItemClickListener(new UserAdapter.OnItemClickListener() {
+        userAdapter.setOnItemClickListener(new UserAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(User user) {
                 Intent intent = new Intent(UserListActivity.this, AddEditUserActivity.class);
 
                 intent.putExtras(getIntent());
+                intent.putExtra("USER_ID", user.getId());
 
                 startActivityForResult(intent, EDIT_REQUEST);
             }
