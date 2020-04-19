@@ -13,7 +13,7 @@ public interface UserServiceInterface {
 
     UserEntity createUser(UserEntity entity);
 
-    UserEntity updateUser(UserEntity entity) throws NullPointerException;
+    UserEntity updateUser(Long id, UserEntity entity) throws NullPointerException;
 
     void deleteUser(Long id);
 }

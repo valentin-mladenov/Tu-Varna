@@ -13,6 +13,7 @@ import com.vale.warehouses.service.model.Role;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -125,7 +126,7 @@ public class RoleMultiSelectionSpinner extends AppCompatSpinner
         return sb.toString();
     }
 
-    public ArrayList<Role> getSelectedItems() {
+    public Set<Role> getSelectedItems() {
         ArrayList<Role> selectedItems = new ArrayList<>();
 
         for (int i = 0; i < roles.size(); ++i) {
@@ -134,6 +135,6 @@ public class RoleMultiSelectionSpinner extends AppCompatSpinner
             }
         }
 
-        return selectedItems;
+        return new HashSet<>(selectedItems);
     }
 }

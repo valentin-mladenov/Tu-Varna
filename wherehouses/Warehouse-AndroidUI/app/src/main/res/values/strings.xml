@@ -25,4 +25,7 @@
     <string name="id">Id</string>
     <string name="edit">Edit</string>
     <string name="add">Add</string>
+    <string name="user_updated">User updated</string>
+    <string name="user_created">User created</string>
+    <string name="user_role_missing">User must have at least one role</string>
 </resources>

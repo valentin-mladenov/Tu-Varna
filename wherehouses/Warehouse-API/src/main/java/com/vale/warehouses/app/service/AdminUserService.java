@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -45,13 +46,10 @@ public class AdminUserService implements UserServiceInterface {
     @Override
     public UserEntity createUser(UserEntity entity)
     {
-        // Optional<UserEntity> user = repository.findById(entity.getId());
-
-        if(userRepository.existsById(entity.getId()))
+        if(!Objects.isNull(entity.getId()) && userRepository.existsById(entity.getId()))
         {
             throw new IllegalArgumentException("User with that ID already exists");
         }
-
 
         if (!entity.getPassword().equals(entity.getPasswordConfirm())) {
             throw new IllegalArgumentException("PAss and pass confirm doesn't match");
@@ -68,9 +66,9 @@ public class AdminUserService implements UserServiceInterface {
     }
 
     @Override
-    public UserEntity updateUser(UserEntity entity) throws NullPointerException
+    public UserEntity updateUser(Long id, UserEntity entity) throws NullPointerException
     {
-        Optional<UserEntity> user = userRepository.findById(entity.getId());
+        Optional<UserEntity> user = userRepository.findById(id);
 
         if(!user.isPresent())
         {

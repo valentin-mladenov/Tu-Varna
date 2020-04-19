@@ -1,12 +1,14 @@
 package com.vale.warehouses.app.controller;
 
-import com.vale.warehouses.auth.models.UserEntity;
 import com.vale.warehouses.app.service.AdminUserService;
+import com.vale.warehouses.auth.models.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -23,9 +25,8 @@ public class AdminUserController {
 
         List<UserEntity> users = userService.getUsers();
 
-        // hide password
         for (UserEntity user : users) {
-            user.setPassword("");
+            this.hideSensitiveData(user);
         }
 
         return ResponseEntity.ok().body(users);
@@ -38,30 +39,43 @@ public class AdminUserController {
 
         UserEntity user = userService.getUser(id);
 
-        // hide password
-        user.setPassword("");
+        this.hideSensitiveData(user);
 
         return ResponseEntity.ok().body(user);
     }
 
     /*---Add new user---*/
+    // @PostMapping(consumes = MediaType.ALL_VALUE)
     @PostMapping
     public ResponseEntity<?> save(@RequestBody UserEntity user) {
         throwExceptionIfNotAdminUser();
 
-        UserEntity userResult = userService.createUser(user);
+        try {
+            UserEntity userResult = userService.createUser(user);
 
-        return ResponseEntity.ok().body(userResult);
+            this.hideSensitiveData(userResult);
+
+            return ResponseEntity.ok().body(userResult);
+        }
+        catch (Exception ex){
+            throw new ResponseStatusException(
+                HttpStatus.UNPROCESSABLE_ENTITY,
+                ex.getMessage(),
+                ex
+            );
+        }
     }
 
     /*---Update a user by id---*/
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}")
     public ResponseEntity<?> update(@PathVariable("id") long id, @RequestBody UserEntity user) {
         throwExceptionIfNotAdminUser();
 
-        userService.updateUser(user);
+        UserEntity userResult = userService.updateUser(id, user);
 
-        return (ResponseEntity<?>) ResponseEntity.noContent();
+        this.hideSensitiveData(userResult);
+
+        return ResponseEntity.ok().body(userResult);
     }
 
     /*---Delete a user by id---*/
@@ -85,5 +99,10 @@ public class AdminUserController {
         if (!isAdmin) {
             throw new AccessDeniedException("Admins only");
         }
+    }
+
+    private void hideSensitiveData(UserEntity userResult) {
+        userResult.setPassword(null);
+        userResult.setPasswordConfirm(null);
     }
 }

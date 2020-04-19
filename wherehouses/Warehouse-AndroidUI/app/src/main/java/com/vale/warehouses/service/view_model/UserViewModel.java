@@ -17,6 +17,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.vale.warehouses.R;
 import com.vale.warehouses.service.AppRequestQueue;
@@ -24,6 +25,7 @@ import com.vale.warehouses.service.model.Token;
 import com.vale.warehouses.service.model.User;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
@@ -129,12 +131,12 @@ public class UserViewModel extends AndroidViewModel {
         return oneUser;
     }
 
-    public MutableLiveData<User> update(User user) {
+    public MutableLiveData<User> update(User user) throws JSONException {
         oneUser = new MutableLiveData<>();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
             Request.Method.PUT,
-            url,
+            url + "/" + user.getId(),
             user,
             new Response.Listener<JSONObject>() {
                 @Override
@@ -150,13 +152,12 @@ public class UserViewModel extends AndroidViewModel {
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                return requestQueue.getHeaders(token.getId());
+                Map<String, String> headers = requestQueue.getHeaders(token.getId());
+                headers.put("Content-Type", "application/json; charset=utf-8");
+
+                return headers;
             }
 
-            @Override
-            public String getBodyContentType() {
-                return "application/json";
-            }
 
             @Override
             public Priority getPriority() {
@@ -174,7 +175,7 @@ public class UserViewModel extends AndroidViewModel {
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
             Request.Method.PUT,
-            url,
+            url + "/" + user.getId(),
             user,
             new Response.Listener<JSONObject>() {
                 @Override

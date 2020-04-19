@@ -1,6 +1,6 @@
 package com.vale.warehouses.auth.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -14,7 +14,7 @@ public class RoleEntity {
 
     private String name;
 
-    @JsonBackReference
+    @JsonIgnore
     @ManyToMany(mappedBy = "roles")
     private Set<UserEntity> users;
 

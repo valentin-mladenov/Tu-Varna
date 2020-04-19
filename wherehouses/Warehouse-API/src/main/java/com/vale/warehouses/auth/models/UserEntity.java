@@ -1,12 +1,14 @@
 package com.vale.warehouses.auth.models;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name="user")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +21,6 @@ public class UserEntity {
 
     private String password;
 
-    @JsonManagedReference
     @ManyToMany
     private Set<RoleEntity> roles;
 

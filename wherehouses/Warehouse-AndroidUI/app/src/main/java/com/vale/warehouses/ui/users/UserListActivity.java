@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -61,22 +63,6 @@ public class UserListActivity extends AppCompatActivity {
             }
         });
 
-//        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
-//                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-//            @Override
-//            public boolean onMove(@NonNull RecyclerView recyclerView,
-//                                  @NonNull RecyclerView.ViewHolder viewHolder,
-//                                  @NonNull RecyclerView.ViewHolder target) {
-//                return false;
-//            }
-//
-//            @Override
-//            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-//                userViewModel.delete(adapter.getNoteAt(viewHolder.getAdapterPosition()));
-//                Toast.makeText(UserListActivity.this, R.string.note_deleted, Toast.LENGTH_SHORT).show();
-//            }
-//        }).attachToRecyclerView(recyclerView);
-
         userAdapter.setOnItemClickListener(new UserAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(User user) {
@@ -88,5 +74,12 @@ public class UserListActivity extends AppCompatActivity {
                 startActivityForResult(intent, EDIT_REQUEST);
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main_menu, menu);
+        return true;
     }
 }
