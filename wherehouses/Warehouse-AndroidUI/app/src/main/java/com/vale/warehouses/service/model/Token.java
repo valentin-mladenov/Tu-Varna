@@ -1,4 +1,4 @@
-package com.vale.warehouses.data.model;
+package com.vale.warehouses.service.model;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -1,10 +1,9 @@
-package com.vale.warehouses.ui.login;
+package com.vale.warehouses.service.view_model;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import android.app.Application;
 import android.util.Patterns;
@@ -23,11 +22,11 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
-import com.vale.warehouses.data.model.Token;
-import com.vale.warehouses.data.Result;
-import com.vale.warehouses.data.model.LoggedInUser;
-import com.vale.warehouses.R;
 import com.vale.warehouses.service.AppRequestQueue;
+import com.vale.warehouses.service.model.Token;
+import com.vale.warehouses.R;
+import com.vale.warehouses.ui.login.LoginFormState;
+import com.vale.warehouses.ui.login.LoginResult;
 
 import java.lang.reflect.Type;
 import java.time.OffsetDateTime;
@@ -35,22 +34,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LoginViewModel extends AndroidViewModel {
-
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
-    //private LoginRepository loginRepository;
 
     public LoginViewModel(@NonNull Application application) {
         super(application);
-
-        //this.loginRepository = LoginRepository.getInstance(new LoginDataSource(application));
     }
 
-    LiveData<LoginFormState> getLoginFormState() {
+    public LiveData<LoginFormState> getLoginFormState() {
         return loginFormState;
     }
 
-    LiveData<LoginResult> getLoginResult() {
+    public LiveData<LoginResult> getLoginResult() {
         return loginResult;
     }
 
@@ -110,20 +105,6 @@ public class LoginViewModel extends AndroidViewModel {
         };
 
         AppRequestQueue.getInstance(getApplication()).getRequestQueue().add(stringRequest);
-
-        // can be launched in a separate asynchronous job
-//        Result<Token> result = loginRepository.login(username, password);
-//
-//        if (result instanceof Result.Success) {
-//            Token data = ((Result.Success<Token>) result).getData();
-//            loginResult.setValue(new LoginResult(new LoggedInUserView(data.getUser().getUserName())));
-//        } else {
-//            loginResult.setValue(new LoginResult(R.string.login_failed));
-//        }
-
-
-
-
     }
 
     public void loginDataChanged(String username, String password) {

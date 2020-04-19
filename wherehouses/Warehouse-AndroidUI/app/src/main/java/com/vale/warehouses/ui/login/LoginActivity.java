@@ -22,8 +22,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.vale.warehouses.data.model.Token;
-import com.vale.warehouses.ui.loggedin.LoggedIn;
+import com.vale.warehouses.service.view_model.LoginViewModel;
+import com.vale.warehouses.service.model.Token;
+import com.vale.warehouses.ui.loggedin.LoggedInActivity;
 import com.vale.warehouses.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -123,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
 
-        Intent intent = new Intent(LoginActivity.this, LoggedIn.class);
+        Intent intent = new Intent(LoginActivity.this, LoggedInActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("TOKEN", token);
         intent.putExtras(bundle);

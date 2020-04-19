@@ -9,11 +9,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.vale.warehouses.R;
-import com.vale.warehouses.data.model.Token;
+import com.vale.warehouses.service.model.Token;
 import com.vale.warehouses.ui.login.LoginActivity;
 import com.vale.warehouses.ui.users.UserListActivity;
 
-public class LoggedIn extends AppCompatActivity {
+public class LoggedInActivity extends AppCompatActivity {
     private Token token;
 
     @Override
@@ -28,7 +28,7 @@ public class LoggedIn extends AppCompatActivity {
         String goodbye = getString(R.string.goodbye) + token.getUser().getUserName();
         Toast.makeText(getApplicationContext(), goodbye, Toast.LENGTH_LONG).show();
 
-        Intent intent = new Intent(LoggedIn.this, LoginActivity.class);
+        Intent intent = new Intent(LoggedInActivity.this, LoginActivity.class);
         startActivity(intent);
 
         setResult(Activity.RESULT_OK);
@@ -47,7 +47,7 @@ public class LoggedIn extends AppCompatActivity {
     }
 
     public void openUsers(View view) {
-        Intent intent = new Intent(LoggedIn.this, UserListActivity.class);
+        Intent intent = new Intent(LoggedInActivity.this, UserListActivity.class);
 
         intent.putExtras(getIntent());
 

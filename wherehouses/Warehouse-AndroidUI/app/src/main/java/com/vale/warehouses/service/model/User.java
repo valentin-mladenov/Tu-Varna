@@ -1,10 +1,12 @@
-package com.vale.warehouses.data.model;
+package com.vale.warehouses.service.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
-public class User implements Serializable {
+public class User extends JSONObject implements Serializable {
     @SerializedName("id")
     private long id;
 

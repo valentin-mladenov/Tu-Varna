@@ -2,22 +2,22 @@ package com.vale.warehouses.ui.login;
 
 import androidx.annotation.Nullable;
 
-import com.vale.warehouses.data.model.Token;
+import com.vale.warehouses.service.model.Token;
 
 /**
  * Authentication result : success (user details) or error message.
  */
-class LoginResult {
+public class LoginResult {
     @Nullable
     private Token success;
     @Nullable
     private Integer error;
 
-    LoginResult(@Nullable Integer error) {
+    public LoginResult(@Nullable Integer error) {
         this.error = error;
     }
 
-    LoginResult(@Nullable Token success) {
+    public LoginResult(@Nullable Token success) {
         this.success = success;
     }
 

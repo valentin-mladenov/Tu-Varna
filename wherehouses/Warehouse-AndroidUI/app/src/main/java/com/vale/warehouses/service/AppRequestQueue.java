@@ -12,6 +12,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.vale.warehouses.R;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class AppRequestQueue {
     private static AppRequestQueue instance;
     private Context context;
@@ -65,5 +68,12 @@ public class AppRequestQueue {
                 }
             }
         };
+    }
+
+    public Map<String, String> getHeaders(String token) {
+        Map<String, String> params = new HashMap<>();
+        params.put("Content-Type", "application/json; charset=UTF-8");
+        params.put("Authorization", "Bearer " + token);
+        return params;
     }
 }

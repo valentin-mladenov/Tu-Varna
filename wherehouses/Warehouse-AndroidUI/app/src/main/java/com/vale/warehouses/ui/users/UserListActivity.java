@@ -1,24 +1,21 @@
 package com.vale.warehouses.ui.users;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.vale.warehouses.R;
-import com.vale.warehouses.data.model.Token;
-import com.vale.warehouses.data.model.User;
-import com.vale.warehouses.data.model.UserViewModel;
+import com.vale.warehouses.service.model.Token;
+import com.vale.warehouses.service.model.User;
+import com.vale.warehouses.service.view_model.UserViewModel;
 
 import java.util.List;
 

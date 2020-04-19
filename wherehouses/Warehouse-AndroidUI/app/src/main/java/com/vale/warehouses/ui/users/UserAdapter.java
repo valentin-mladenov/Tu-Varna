@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.vale.warehouses.R;
-import com.vale.warehouses.data.model.User;
+import com.vale.warehouses.service.model.User;
 
 public class UserAdapter extends ListAdapter<User, UserAdapter.UserHolder> {
     private OnItemClickListener listener;
