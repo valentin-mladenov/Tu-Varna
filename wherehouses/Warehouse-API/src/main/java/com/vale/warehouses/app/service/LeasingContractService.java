@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -42,7 +43,7 @@ public class LeasingContractService implements LeasingContractInterface {
     @Override
     public LeasingContract createLeasingContract(LeasingContract entity)
     {
-        if(repository.existsById(entity.getId()))
+        if(!Objects.isNull(entity.getId()) && repository.existsById(entity.getId()))
         {
             throw new IllegalArgumentException("Record with that ID already exists");
         }

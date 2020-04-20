@@ -1,6 +1,7 @@
 package com.vale.warehouses.app.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -9,6 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name="warehouse")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Warehouse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +33,6 @@ public class Warehouse {
     @ManyToOne(fetch = FetchType.LAZY)
     private Owner owner;
 
-    @JsonManagedReference
     @ManyToMany
     private Set<SaleAgent> saleAgents;
 

@@ -1,10 +1,14 @@
 package com.vale.warehouses.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name="tenant")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Tenant extends AbstractPerson {
     @OneToMany(
             cascade = CascadeType.ALL,

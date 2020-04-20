@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.vale.warehouses.R;
@@ -27,6 +28,7 @@ public class UserListActivity extends AppCompatActivity {
     public static final int ADD_REQUEST = 1;
     public static final int EDIT_REQUEST = 2;
 
+    private UserAdapter userAdapter;
     private UserViewModel userViewModel;
     private Token token;
 
@@ -51,17 +53,12 @@ public class UserListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
-        final UserAdapter userAdapter = new UserAdapter();
+        userAdapter = new UserAdapter();
         recyclerView.setAdapter(userAdapter);
 
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         userViewModel.setToken(token);
-        userViewModel.getAllUsers().observe(this, new Observer<List<User>>() {
-            @Override
-            public void onChanged(@Nullable List<User> users) {
-                userAdapter.submitList(users);
-            }
-        });
+        getAllUsers();
 
         userAdapter.setOnItemClickListener(new UserAdapter.OnItemClickListener() {
             @Override
@@ -77,9 +74,25 @@ public class UserListActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        getAllUsers();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.main_menu, menu);
         return true;
+    }
+
+    private void getAllUsers() {
+        userViewModel.getAllUsers().observe(this, new Observer<List<User>>() {
+            @Override
+            public void onChanged(@Nullable List<User> users) {
+                userAdapter.submitList(users);
+            }
+        });
     }
 }

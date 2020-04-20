@@ -37,4 +37,10 @@
     <string name="fee">Fee</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="owner_created">Owner Created</string>
+    <string name="owner_updated">Owner Updated</string>
+    <string name="tenant_updated">Tenant Updated</string>
+    <string name="tenant_created">Tenant Created</string>
+    <string name="sale_agent_cerated">Sale Agent Created</string>
+    <string name="sale_agent_updated">Sale Agent Updated</string>
 </resources>

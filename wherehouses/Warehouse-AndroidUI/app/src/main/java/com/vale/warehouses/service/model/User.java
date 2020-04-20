@@ -18,6 +18,12 @@ public class User extends JSONObject implements Serializable {
     @SerializedName("email")
     private String email;
 
+    @SerializedName("password")
+    private String password;
+
+    @SerializedName("passwordConfirm")
+    private String confirmPassword;
+
     @SerializedName("roles")
     private Set<Role> roles;
 
@@ -71,5 +77,21 @@ public class User extends JSONObject implements Serializable {
         }
 
         this.roles.remove(role);
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 }

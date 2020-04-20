@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -42,12 +43,12 @@ public class OwnerService implements OwnerInterface {
     @Override
     public Owner createOwner(Owner entity)
     {
-        if(repository.existsById(entity.getId()))
+        if(!Objects.isNull(entity.getId()) && repository.existsById(entity.getId()))
         {
             throw new IllegalArgumentException("Record with that ID already exists");
         }
 
-        return repository.save(entity);
+        return repository.saveAndFlush(entity);
     }
 
     @Override

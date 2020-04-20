@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -42,7 +43,7 @@ public class WarehouseService implements WarehouseInterface {
     @Override
     public Warehouse createWarehouse(Warehouse entity)
     {
-        if(repository.existsById(entity.getId()))
+        if(!Objects.isNull(entity.getId()) && repository.existsById(entity.getId()))
         {
             throw new IllegalArgumentException("Record with that ID already exists");
         }

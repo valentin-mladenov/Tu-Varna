@@ -1,31 +1,47 @@
-package com.vale.warehouses.app.model;
+package com.vale.warehouses.service.model;
 
-import com.vale.warehouses.auth.models.UserEntity;
+import com.google.gson.annotations.SerializedName;
 
-import javax.persistence.*;
+import org.json.JSONObject;
 
-@MappedSuperclass
-public class AbstractPerson {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+import java.io.Serializable;
+import java.util.Set;
+
+public class Owner implements Serializable {
+    @SerializedName("id")
     private Long id;
 
-    @Column(name="first_name")
+    @SerializedName("firstName")
     private String firstName;
 
-    @Column(name="last_name")
+    @SerializedName("lastName")
     private String lastName;
 
+    @SerializedName("address")
     private String address;
 
-    @Column(name="phone_number")
+    @SerializedName("phoneNumber")
     private String phoneNumber;
 
-    @Column(name = "unique_code", unique=true)
+    @SerializedName("uniqueCode")
     private String uniqueCode;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    private UserEntity user;
+    @SerializedName("user")
+    private User user;
+
+    // @SerializedName("warehouses")
+    // private Set<Warehouse> warehouses;
+
+    // @SerializedName("leasingContracts")
+    // private Set<LeasingContract> leasingContracts;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -43,24 +59,12 @@ public class AbstractPerson {
         this.lastName = lastName;
     }
 
-    public String getFullName() {
-        return this.getFirstName() + " " + this.getLastName();
-    }
-
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getPhoneNumber() {
@@ -79,11 +83,11 @@ public class AbstractPerson {
         this.uniqueCode = uniqueCode;
     }
 
-    public UserEntity getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(User user) {
         this.user = user;
     }
 }
