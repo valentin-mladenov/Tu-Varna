@@ -1,11 +1,13 @@
 package com.vale.warehouses.app.service;
 
+import com.vale.warehouses.app.service.interfaces.OwnerInterface;
 import com.vale.warehouses.app.service.interfaces.UserServiceInterface;
 import com.vale.warehouses.auth.models.UserEntity;
 import com.vale.warehouses.auth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +15,22 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class AdminUserService implements UserServiceInterface {
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private OwnerInterface ownerService;
+
+    @Autowired
+    private SaleAgentService saleAgentService;
+
+    @Autowired
+    private TenantService tenantService;
 
     @Override
     public List<UserEntity> getUsers()
@@ -62,6 +75,16 @@ public class AdminUserService implements UserServiceInterface {
         entity.setPassword(bCryptPasswordEncoder.encode(entity.getPassword()));
         entity.setPasswordConfirm("");
 
+        if (entity.getRelatedOwner() != null) {
+            ownerService.createOwner(entity.getRelatedOwner());
+        }
+        else if(entity.getRelatedSaleAgent() != null) {
+            saleAgentService.createSaleAgent(entity.getRelatedSaleAgent());
+        }
+        else if(entity.getRelatedTenant() != null) {
+            tenantService.createTenant(entity.getRelatedTenant());
+        }
+
         return userRepository.save(entity);
     }
 
@@ -75,9 +98,22 @@ public class AdminUserService implements UserServiceInterface {
             throw new NullPointerException("No user with that ID");
         }
 
+        if (entity.getRelatedOwner() != null) {
+            ownerService.updateOwner(entity.getRelatedOwner());
+        }
+        else if(entity.getRelatedSaleAgent() != null) {
+            saleAgentService.updateSaleAgent(entity.getRelatedSaleAgent());
+        }
+        else if(entity.getRelatedTenant() != null) {
+            tenantService.updateTenant(entity.getRelatedTenant());
+        }
+
         UserEntity newEntity = user.get();
         newEntity.setEmail(entity.getEmail());
         newEntity.setRoles(entity.getRoles());
+        newEntity.setRelatedOwner(entity.getRelatedOwner());
+        newEntity.setRelatedSaleAgent(entity.getRelatedSaleAgent());
+        newEntity.setRelatedTenant(entity.getRelatedTenant());
 
         //TODO Update password
 

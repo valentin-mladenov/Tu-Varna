@@ -30,13 +30,13 @@ public class TenantController {
         return ResponseEntity.ok(tenant);
     }
 
-    /*---Add new tenant---*/
-    @PostMapping
-    public ResponseEntity<?> save(@RequestBody Tenant tenant) {
-        tenant = service.createTenant(tenant);
-
-        return ResponseEntity.ok(tenant);
-    }
+//    /*---Add new tenant---*/
+//    @PostMapping
+//    public ResponseEntity<?> save(@RequestBody Tenant tenant) {
+//        tenant = service.createTenant(tenant);
+//
+//        return ResponseEntity.ok(tenant);
+//    }
 
     /*---Update a tenant by id---*/
     @PutMapping("/{id}")

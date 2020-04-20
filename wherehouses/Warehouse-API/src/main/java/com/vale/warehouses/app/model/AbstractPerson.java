@@ -1,7 +1,5 @@
 package com.vale.warehouses.app.model;
 
-import com.vale.warehouses.auth.models.UserEntity;
-
 import javax.persistence.*;
 
 @MappedSuperclass
@@ -23,9 +21,6 @@ public class AbstractPerson {
 
     @Column(name = "unique_code", unique=true)
     private String uniqueCode;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    private UserEntity user;
 
     public String getFirstName() {
         return firstName;
@@ -77,13 +72,5 @@ public class AbstractPerson {
 
     public void setUniqueCode(String uniqueCode) {
         this.uniqueCode = uniqueCode;
-    }
-
-    public UserEntity getUser() {
-        return user;
-    }
-
-    public void setUser(UserEntity user) {
-        this.user = user;
     }
 }

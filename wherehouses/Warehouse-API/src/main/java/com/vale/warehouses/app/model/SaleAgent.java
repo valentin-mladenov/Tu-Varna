@@ -1,7 +1,9 @@
 package com.vale.warehouses.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.vale.warehouses.auth.models.UserEntity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -24,6 +26,14 @@ public class SaleAgent extends AbstractPerson {
             orphanRemoval = true
     )
     private Set<LeasingContract> leasingContracts;
+
+    @OneToOne(fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            mappedBy = "relatedSaleAgent",
+            optional = true)
+    @PrimaryKeyJoinColumn
+    @JsonIgnore
+    private UserEntity user;
 
     public int getRating() {
         return rating;
@@ -55,5 +65,13 @@ public class SaleAgent extends AbstractPerson {
 
     public void setLeasingContracts(Set<LeasingContract> leasingContracts) {
         this.leasingContracts = leasingContracts;
+    }
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 }

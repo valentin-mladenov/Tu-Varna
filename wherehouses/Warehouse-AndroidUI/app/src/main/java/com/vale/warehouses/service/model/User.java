@@ -27,6 +27,15 @@ public class User extends JSONObject implements Serializable {
     @SerializedName("roles")
     private Set<Role> roles;
 
+    @SerializedName("relatedOwner")
+    private Owner relatedOwner;
+
+    @SerializedName("relatedTenant")
+    private Tenant relatedTenant;
+
+    @SerializedName("relatedSaleAgent")
+    private SaleAgent relatedSaleAgent;
+
     public String getEmail() {
         return email;
     }
@@ -93,5 +102,29 @@ public class User extends JSONObject implements Serializable {
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+    }
+
+    public Owner getRelatedOwner() {
+        return relatedOwner;
+    }
+
+    public void setRelatedOwner(Owner relatedOwner) {
+        this.relatedOwner = relatedOwner;
+    }
+
+    public Tenant getRelatedTenant() {
+        return relatedTenant;
+    }
+
+    public void setRelatedTenant(Tenant relatedTenant) {
+        this.relatedTenant = relatedTenant;
+    }
+
+    public SaleAgent getRelatedSaleAgent() {
+        return relatedSaleAgent;
+    }
+
+    public void setRelatedSaleAgent(SaleAgent relatedSaleAgent) {
+        this.relatedSaleAgent = relatedSaleAgent;
     }
 }

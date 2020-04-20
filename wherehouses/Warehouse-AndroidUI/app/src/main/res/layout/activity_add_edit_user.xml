@@ -4,45 +4,77 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
     tools:context="com.vale.warehouses.ui.users.AddEditUserActivity">
 
-    <EditText
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edit_text_username"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/user_name"
-        android:importantForAutofill="no"
-        android:layout_marginBottom="3dp"
-        android:inputType="text" />
+        android:layout_marginVertical="5dp"
+        android:layout_height="wrap_content">
 
-    <EditText
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/user_name"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edit_text_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/email"
-        android:importantForAutofill="no"
-        android:layout_marginVertical="3dp"
-        android:inputType="textWebEmailAddress" />
+        android:layout_marginVertical="5dp"
+        app:errorEnabled="true">
 
-    <EditText
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edit_text_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/password"
-        android:importantForAutofill="no"
-        android:layout_marginVertical="3dp"
-        android:inputType="textWebPassword" />
+        android:layout_marginVertical="5dp"
+        app:errorEnabled="true"
+        app:counterEnabled="true">
 
-    <EditText
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edit_text_password_confirm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/confirm_password"
-        android:importantForAutofill="no"
-        android:layout_marginVertical="3dp"
-        android:inputType="textWebPassword" />
+        android:layout_marginVertical="5dp"
+        app:errorEnabled="true"
+        app:counterEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/confirm_password"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.vale.warehouses.ui.users.RoleMultiSelectionSpinner
         android:id="@+id/role_spinner"
@@ -57,76 +89,112 @@
         android:layout_marginVertical="10dp"
         android:background="#c0c0c0"/>
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edit_text_first_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/first_name"
-        android:importantForAutofill="no"
-        android:layout_marginVertical="3dp"
-        android:inputType="text" />
+        android:layout_marginVertical="5dp">
 
-    <EditText
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/first_name"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edit_text_last_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/last_name"
-        android:importantForAutofill="no"
-        android:layout_marginVertical="3dp"
-        android:inputType="text" />
+        android:layout_marginVertical="5dp">
 
-    <EditText
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/last_name"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edit_text_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/address"
-        android:importantForAutofill="no"
-        android:layout_marginVertical="3dp"
-        android:inputType="text" />
+        android:layout_marginVertical="5dp">
 
-    <EditText
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/address"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edit_text_phone_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/phone_number"
-        android:layout_marginVertical="3dp"
-        android:importantForAutofill="no"
-        android:inputType="phone" />
+        android:layout_marginVertical="5dp"
+        app:errorEnabled="true">
 
-    <EditText
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/phone_number"
+            android:importantForAutofill="no"
+            android:inputType="phone" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edit_text_unique"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/unique_id_egn"
-        android:importantForAutofill="no"
-        android:layout_marginVertical="3dp"
-        android:inputType="text" />
+        android:layout_marginVertical="5dp">
 
-    <EditText
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/unique_id_egn"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edit_text_fee"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/fee"
-        android:importantForAutofill="no"
-        android:layout_marginVertical="3dp"
-        android:inputType="numberDecimal" />
+        android:layout_marginVertical="5dp">
 
-    <RatingBar
-        android:id="@+id/edit_text_rating"
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/fee"
+            android:inputType="numberDecimal" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <TextView
+        android:id="@+id/text_view_rating"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@string/rating"
+        />
+    <RatingBar
+        android:id="@+id/edit_text_rating"
+        style="?android:attr/ratingBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginHorizontal="2dp"
         android:hint="@string/rating"
-        android:layout_marginTop="3dp"
-        android:numStars="10"
-        android:stepSize="1"/>
+        android:transitionName="@string/rating"
+        android:numStars="8"
+        android:rating="1"
+        android:stepSize="1.0" />
 
-<!--    <EditText-->
-<!--        android:id="@+id/edit_text_rating"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:hint="@string/rating"-->
-<!--        android:importantForAutofill="no"-->
-<!--        android:layout_marginVertical="3dp"-->
-<!--        android:inputType="text" />-->
-
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

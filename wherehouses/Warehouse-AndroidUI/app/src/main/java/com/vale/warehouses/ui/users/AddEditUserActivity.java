@@ -17,6 +17,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.vale.warehouses.R;
 import com.vale.warehouses.service.model.Owner;
 import com.vale.warehouses.service.model.Role;
@@ -50,7 +51,7 @@ public class AddEditUserActivity extends AppCompatActivity {
     private RoleMultiSelectionSpinner roleSpinner;
     private Token token;
     private User user;
-    private EditText editTextUsername,
+    private TextInputLayout editTextUsername,
             editTextEmail,
             editTextPassword,
             editTextPasswordConfirm,
@@ -62,6 +63,7 @@ public class AddEditUserActivity extends AppCompatActivity {
             editTextPhone;
 
     private RatingBar editRatingBar;
+    private TextView textViewRating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,7 @@ public class AddEditUserActivity extends AppCompatActivity {
         editTextLastName = findViewById(R.id.edit_text_last_name);
         editTextUnique = findViewById(R.id.edit_text_unique);
         editRatingBar = findViewById(R.id.edit_text_rating);
+        textViewRating = findViewById(R.id.text_view_rating);
 
         roleSpinner = findViewById(R.id.role_spinner);
         roleSpinner.getSelection().observe(this, new Observer<Set<Role>>() {
@@ -108,9 +111,10 @@ public class AddEditUserActivity extends AppCompatActivity {
                 if (getIntent().hasExtra(USER_ID)) {
                     setTitle(getString(R.string.edit));
                     editTextUsername.setEnabled(false);
+                    roleSpinner.setEnabled(false);
 
-                    editTextPassword.setVisibility(View.INVISIBLE);
-                    editTextPasswordConfirm.setVisibility(View.INVISIBLE);
+                    editTextPassword.setVisibility(View.GONE);
+                    editTextPasswordConfirm.setVisibility(View.GONE);
 
                     Long userId = getIntent().getExtras().getLong(USER_ID);
 
@@ -121,11 +125,16 @@ public class AddEditUserActivity extends AppCompatActivity {
                             user.setId(userRes.getId());
                             user.setUserName(userRes.getUserName());
                             user.setRoles(userRes.getRoles());
+                            user.setRelatedSaleAgent(userRes.getRelatedSaleAgent());
+                            user.setRelatedOwner(userRes.getRelatedOwner());
+                            user.setRelatedTenant(userRes.getRelatedTenant());
 
-                            editTextUsername.setText(user.getUserName());
-                            editTextEmail.setText(user.getEmail());
+                            editTextUsername.getEditText().setText(user.getUserName());
+                            editTextEmail.getEditText().setText(user.getEmail());
 
                             roleSpinner.setSelection(user.getRoles());
+
+                            addUserDataToUi();
                         }
                     });
                 } else {
@@ -137,6 +146,54 @@ public class AddEditUserActivity extends AppCompatActivity {
         });
     }
 
+    private void addUserDataToUi() {
+        for (Role role: user.getRoles()) {
+            switch ((int) role.getId()) {
+                case 2:
+                    addOwnerData();
+                    break;
+                case 3:
+                    addSaleAgentData();
+                    break;
+                case 4:
+                    addTenantData();
+                    break;
+            }
+        }
+    }
+
+    private void addOwnerData() {
+        Owner owner = user.getRelatedOwner();
+
+        editTextUnique.getEditText().setText(owner.getUniqueCode());
+        editTextPhone.getEditText().setText(owner.getPhoneNumber());
+        editTextLastName.getEditText().setText(owner.getLastName());
+        editTextFirstName.getEditText().setText(owner.getFirstName());
+        editTextAddress.getEditText().setText(owner.getAddress());
+    }
+
+    private void addTenantData() {
+        Tenant tenant = user.getRelatedTenant();
+
+        editTextUnique.getEditText().setText(tenant.getUniqueCode());
+        editTextPhone.getEditText().setText(tenant.getPhoneNumber());
+        editTextLastName.getEditText().setText(tenant.getLastName());
+        editTextFirstName.getEditText().setText(tenant.getFirstName());
+        editTextAddress.getEditText().setText(tenant.getAddress());
+    }
+
+    private void addSaleAgentData() {
+        SaleAgent agent = user.getRelatedSaleAgent();
+
+        editTextUnique.getEditText().setText(agent.getUniqueCode());
+        editTextPhone.getEditText().setText(agent.getPhoneNumber());
+        editTextLastName.getEditText().setText(agent.getLastName());
+        editTextFirstName.getEditText().setText(agent.getFirstName());
+        editTextAddress.getEditText().setText(agent.getAddress());
+        editTextFee.getEditText().setText(String.format("%a", agent.getFee()));
+        editRatingBar.setRating(agent.getRating());
+    }
+
     private void saveUser() {
         if(user.getRoles().isEmpty()) {
             Toast.makeText(this, R.string.user_role_missing, Toast.LENGTH_SHORT).show();
@@ -144,18 +201,21 @@ public class AddEditUserActivity extends AppCompatActivity {
             return;
         }
 
-//        if(user.getRoles().size() > 1) {
-//            Toast.makeText(this, "Only one Role per User", Toast.LENGTH_SHORT).show();
-//
-//            return;
-//        }
+        if(user.getRoles().size() > 1) {
+            Toast.makeText(this, "Only one Role per User", Toast.LENGTH_SHORT).show();
+
+            return;
+        }
 
         try {
+            user.setEmail(editTextEmail.getEditText().getText().toString());
+
             if (getIntent().hasExtra(USER_ID)) {
+
+                handleUserRelatedData();
                 userViewModel.update(user).observe(this, new Observer<User>() {
                     @Override
                     public void onChanged(User updatedUser) {
-                        handleUserAction(updatedUser);
 
                         Intent intent = new Intent();
                         intent.putExtras(getIntent());
@@ -168,16 +228,15 @@ public class AddEditUserActivity extends AppCompatActivity {
 
                 Toast.makeText(this, R.string.user_updated, Toast.LENGTH_SHORT).show();
             } else {
-                user.setUserName(editTextUsername.getText().toString());
-                user.setEmail(editTextEmail.getText().toString());
-                user.setPassword(editTextPassword.getText().toString());
-                user.setConfirmPassword(editTextPasswordConfirm.getText().toString());
+                user.setUserName(editTextUsername.getEditText().getText().toString());
+                user.setPassword(editTextPassword.getEditText().getText().toString());
+                user.setConfirmPassword(editTextPasswordConfirm.getEditText().getText().toString());
 
+                handleUserRelatedData();
                 userViewModel.insertData(user).observe(this, new Observer<User>() {
                     @Override
                     public void onChanged(@Nullable User insertedUser) {
                         assert insertedUser != null;
-                        handleUserAction(insertedUser);
 
                         Intent intent = new Intent();
                         intent.putExtras(getIntent());
@@ -206,100 +265,67 @@ public class AddEditUserActivity extends AppCompatActivity {
         //Toggle
         if (isAgent) {
             editRatingBar.setVisibility(View.VISIBLE);
-            editTextFee.setVisibility(View.VISIBLE);
+            editRatingBar.setVisibility(View.VISIBLE);
+            textViewRating.setVisibility(View.VISIBLE);
         } else {
-            editRatingBar.setVisibility(View.INVISIBLE);
-            editTextFee.setVisibility(View.INVISIBLE);
+            editRatingBar.setVisibility(View.GONE);
+            editRatingBar.setVisibility(View.GONE);
+            textViewRating.setVisibility(View.GONE);
         }
     }
 
-    private void handleUserAction(User user) {
-        boolean isNew = !getIntent().hasExtra(USER_ID);
-        try {
-            for (Role role: user.getRoles()) {
-                switch ((int) role.getId()) {
-                    case 2:
-                        handleOwner(user, isNew);
-                        break;
-                    case 3:
-                        handleSaleAgent(user, isNew);
-                        break;
-                    case 4:
-                        handleTenant(user, isNew);
-                        break;
-                }
+    private void handleUserRelatedData() {
+        for (Role role: user.getRoles()) {
+            switch ((int) role.getId()) {
+                case 2:
+                    handleOwner();
+                    break;
+                case 3:
+                    handleSaleAgent();
+                    break;
+                case 4:
+                    handleTenant();
+                    break;
             }
-        } catch (JSONException e) {
         }
     }
 
-    private void handleOwner(User user, boolean isNew) throws JSONException {
+    private void handleOwner() {
         Owner owner = new Owner();
 
-        owner.setAddress(editTextAddress.getText().toString());
-        owner.setFirstName(editTextFirstName.getText().toString());
-        owner.setLastName(editTextLastName.getText().toString());
-        owner.setPhoneNumber(editTextPhone.getText().toString());
-        owner.setUniqueCode(editTextUnique.getText().toString());
-        owner.setUser(user);
+        owner.setAddress(editTextAddress.getEditText().getText().toString());
+        owner.setFirstName(editTextFirstName.getEditText().getText().toString());
+        owner.setLastName(editTextLastName.getEditText().getText().toString());
+        owner.setPhoneNumber(editTextPhone.getEditText().getText().toString());
+        owner.setUniqueCode(editTextUnique.getEditText().getText().toString());
 
-        OwnerViewModel ownerViewModel = new ViewModelProvider(this).get(OwnerViewModel.class);
-        ownerViewModel.setToken(token);
-
-        if (isNew) {
-            ownerViewModel.insertData(owner);
-            Toast.makeText(this, R.string.owner_created, Toast.LENGTH_SHORT).show();
-
-            return;
-        }
-
-        ownerViewModel.update(owner);
-        Toast.makeText(this, R.string.owner_updated, Toast.LENGTH_SHORT).show();
+        user.setRelatedOwner(owner);
     }
 
-
-    private void handleTenant(User user, boolean isNew) throws JSONException {
+    private void handleTenant() {
         Tenant tenant = new Tenant();
 
-        tenant.setAddress(editTextAddress.getText().toString());
-        tenant.setFirstName(editTextFirstName.getText().toString());
-        tenant.setLastName(editTextLastName.getText().toString());
-        tenant.setPhoneNumber(editTextPhone.getText().toString());
-        tenant.setUniqueCode(editTextUnique.getText().toString());
-        tenant.setUser(user);
+        tenant.setAddress(editTextAddress.getEditText().getText().toString());
+        tenant.setFirstName(editTextFirstName.getEditText().getText().toString());
+        tenant.setLastName(editTextLastName.getEditText().getText().toString());
+        tenant.setPhoneNumber(editTextPhone.getEditText().getText().toString());
+        tenant.setUniqueCode(editTextUnique.getEditText().getText().toString());
 
-        if (isNew) {
-            tenantViewModel.insertData(tenant);
-            Toast.makeText(this, R.string.tenant_created, Toast.LENGTH_SHORT).show();
-
-            return;
-        }
-
-        tenantViewModel.update(tenant);
-        Toast.makeText(this, R.string.tenant_updated, Toast.LENGTH_SHORT).show();
+        user.setRelatedTenant(tenant);
     }
 
-    private void handleSaleAgent(User user, boolean isNew) throws JSONException {
+    private void handleSaleAgent() {
         SaleAgent agent = new SaleAgent();
 
-        agent.setAddress(editTextAddress.getText().toString());
-        agent.setFirstName(editTextFirstName.getText().toString());
-        agent.setLastName(editTextLastName.getText().toString());
-        agent.setPhoneNumber(editTextPhone.getText().toString());
-        agent.setUniqueCode(editTextUnique.getText().toString());
+        agent.setAddress(editTextAddress.getEditText().getText().toString());
+        agent.setFirstName(editTextFirstName.getEditText().getText().toString());
+        agent.setLastName(editTextLastName.getEditText().getText().toString());
+        agent.setPhoneNumber(editTextPhone.getEditText().getText().toString());
+        agent.setUniqueCode(editTextUnique.getEditText().getText().toString());
         agent.setRating((int) editRatingBar.getRating());
-        agent.setFee(new BigDecimal(editTextFee.getText().toString()));
-        agent.setUser(user);
+        agent.setFee(new BigDecimal(editTextFee.getEditText().getText().toString()));
 
-        if (isNew) {
-            saleAgentViewModel.insertData(agent);
-            Toast.makeText(this, R.string.sale_agent_cerated, Toast.LENGTH_SHORT).show();
-
-            return;
-        }
-
-        saleAgentViewModel.update(agent);
-        Toast.makeText(this, R.string.sale_agent_updated, Toast.LENGTH_SHORT).show();
+        user.setRelatedSaleAgent(agent);
     }
 
     private void buildViewModels() {
@@ -308,14 +334,14 @@ public class AddEditUserActivity extends AppCompatActivity {
 
         roleViewModel = new ViewModelProvider(this).get(RoleViewModel.class);
 
-        tenantViewModel = new ViewModelProvider(this).get(TenantViewModel.class);
-        tenantViewModel.setToken(token);
-
-        ownerViewModel = new ViewModelProvider(this).get(OwnerViewModel.class);
-        ownerViewModel.setToken(token);
-
-        saleAgentViewModel = new ViewModelProvider(this).get(SaleAgentViewModel.class);
-        saleAgentViewModel.setToken(token);
+//        tenantViewModel = new ViewModelProvider(this).get(TenantViewModel.class);
+//        tenantViewModel.setToken(token);
+//
+//        ownerViewModel = new ViewModelProvider(this).get(OwnerViewModel.class);
+//        ownerViewModel.setToken(token);
+//
+//        saleAgentViewModel = new ViewModelProvider(this).get(SaleAgentViewModel.class);
+//        saleAgentViewModel.setToken(token);
     }
 
     @Override

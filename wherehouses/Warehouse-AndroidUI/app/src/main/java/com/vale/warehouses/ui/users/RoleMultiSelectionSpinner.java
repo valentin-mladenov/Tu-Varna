@@ -24,27 +24,30 @@ public class RoleMultiSelectionSpinner extends AppCompatSpinner
     List<Role> roles = null;
     private MutableLiveData<Set<Role>> selectedRoles = new MutableLiveData<>();
     boolean[] selection = null;
-    ArrayAdapter adapter;
+    ArrayAdapter<String> adapter;
 
     public RoleMultiSelectionSpinner(Context context) {
         super(context);
 
-        adapter = new ArrayAdapter(context,
-                android.R.layout.simple_spinner_item);
+        adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item);
+
         super.setAdapter(adapter);
     }
 
     public RoleMultiSelectionSpinner(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        adapter = new ArrayAdapter(context,
-                android.R.layout.simple_spinner_item);
+        adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item);
         super.setAdapter(adapter);
     }
 
     @Override
     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
         if (selection != null && which < selection.length) {
+//            for (int i = 0; i < selection.length; i++) {
+//                selection[i] = false;
+//            }
+
             selection[which] = isChecked;
 
             adapter.clear();

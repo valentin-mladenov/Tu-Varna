@@ -5,6 +5,7 @@ import com.vale.warehouses.app.repository.OwnerRepository;
 import com.vale.warehouses.app.service.interfaces.OwnerInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class OwnerService implements OwnerInterface {
     @Autowired
     private OwnerRepository repository;
@@ -48,7 +50,7 @@ public class OwnerService implements OwnerInterface {
             throw new IllegalArgumentException("Record with that ID already exists");
         }
 
-        return repository.saveAndFlush(entity);
+        return repository.save(entity);
     }
 
     @Override

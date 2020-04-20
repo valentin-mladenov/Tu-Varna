@@ -5,6 +5,7 @@ import com.vale.warehouses.app.repository.TenantRepository;
 import com.vale.warehouses.app.service.interfaces.TenantInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class TenantService implements TenantInterface {
     @Autowired
     private TenantRepository repository;

@@ -30,13 +30,13 @@ public class SaleAgentController {
         return ResponseEntity.ok(saleAgent);
     }
 
-    /*---Add new saleAgent---*/
-    @PostMapping
-    public ResponseEntity<?> save(@RequestBody SaleAgent saleAgent) {
-        saleAgent = service.createSaleAgent(saleAgent);
-
-        return ResponseEntity.ok(saleAgent);
-    }
+//    /*---Add new saleAgent---*/
+//    @PostMapping
+//    public ResponseEntity<?> save(@RequestBody SaleAgent saleAgent) {
+//        saleAgent = service.createSaleAgent(saleAgent);
+//
+//        return ResponseEntity.ok(saleAgent);
+//    }
 
     /*---Update a saleAgent by id---*/
     @PutMapping("/{id}")

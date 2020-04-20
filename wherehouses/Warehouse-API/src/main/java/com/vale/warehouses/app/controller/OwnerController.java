@@ -38,13 +38,13 @@ public class OwnerController {
         return ResponseEntity.ok(owner);
     }
 
-    /*---Update a owner by id---*/
-    @PutMapping("/{id}")
-    public ResponseEntity<Owner> update(@PathVariable("id") long id, @RequestBody Owner owner) {
-        service.updateOwner(owner);
-
-        return  ResponseEntity.ok(owner);
-    }
+//    /*---Update a owner by id---*/
+//    @PutMapping("/{id}")
+//    public ResponseEntity<Owner> update(@PathVariable("id") long id, @RequestBody Owner owner) {
+//        service.updateOwner(owner);
+//
+//        return  ResponseEntity.ok(owner);
+//    }
 
     /*---Delete a owner by id---*/
     @DeleteMapping("/{id}")
