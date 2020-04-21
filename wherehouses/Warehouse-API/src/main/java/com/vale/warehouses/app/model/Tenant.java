@@ -2,29 +2,32 @@ package com.vale.warehouses.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.vale.warehouses.auth.models.UserEntity;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name="tenant")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Tenant extends AbstractPerson {
     @OneToMany(
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             orphanRemoval = true
     )
-    private Set<LeaseRequest> leaseRequests;
+    private Set<LeaseRequest> leaseRequests = new HashSet<>();
 
     @OneToMany(
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             orphanRemoval = true
     )
-    private Set<LeasingContract> leasingContracts;
+    private Set<LeasingContract> leasingContracts = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,

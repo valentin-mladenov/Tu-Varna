@@ -34,7 +34,7 @@ public class Warehouse {
     private Owner owner;
 
     @ManyToMany
-    private Set<SaleAgent> saleAgents;
+    private Set<SaleAgent> saleAgents = new HashSet<>();
 
     @OneToMany(
             cascade = CascadeType.ALL,

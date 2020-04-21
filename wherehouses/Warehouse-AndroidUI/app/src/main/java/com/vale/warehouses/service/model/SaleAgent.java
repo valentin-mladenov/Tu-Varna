@@ -31,7 +31,7 @@ public class SaleAgent implements Serializable {
     private int rating;
 
     @SerializedName("fee")
-    private BigDecimal fee;
+    private double fee;
 
     // @SerializedName("warehouses")
     // private Set<Warehouse> warehouses;
@@ -103,11 +103,11 @@ public class SaleAgent implements Serializable {
         this.rating = rating;
     }
 
-    public BigDecimal getFee() {
+    public double getFee() {
         return fee;
     }
 
-    public void setFee(BigDecimal fee) {
+    public void setFee(double fee) {
         this.fee = fee;
     }
 }

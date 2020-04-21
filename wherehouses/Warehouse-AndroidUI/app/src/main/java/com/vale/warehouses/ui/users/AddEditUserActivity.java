@@ -190,7 +190,7 @@ public class AddEditUserActivity extends AppCompatActivity {
         editTextLastName.getEditText().setText(agent.getLastName());
         editTextFirstName.getEditText().setText(agent.getFirstName());
         editTextAddress.getEditText().setText(agent.getAddress());
-        editTextFee.getEditText().setText(String.format("%a", agent.getFee()));
+        editTextFee.getEditText().setText(String.valueOf(agent.getFee()));
         editRatingBar.setRating(agent.getRating());
     }
 
@@ -209,10 +209,9 @@ public class AddEditUserActivity extends AppCompatActivity {
 
         try {
             user.setEmail(editTextEmail.getEditText().getText().toString());
+            handleUserRelatedData();
 
             if (getIntent().hasExtra(USER_ID)) {
-
-                handleUserRelatedData();
                 userViewModel.update(user).observe(this, new Observer<User>() {
                     @Override
                     public void onChanged(User updatedUser) {
@@ -232,7 +231,6 @@ public class AddEditUserActivity extends AppCompatActivity {
                 user.setPassword(editTextPassword.getEditText().getText().toString());
                 user.setConfirmPassword(editTextPasswordConfirm.getEditText().getText().toString());
 
-                handleUserRelatedData();
                 userViewModel.insertData(user).observe(this, new Observer<User>() {
                     @Override
                     public void onChanged(@Nullable User insertedUser) {
@@ -264,11 +262,11 @@ public class AddEditUserActivity extends AppCompatActivity {
 
         //Toggle
         if (isAgent) {
-            editRatingBar.setVisibility(View.VISIBLE);
+            editTextFee.setVisibility(View.VISIBLE);
             editRatingBar.setVisibility(View.VISIBLE);
             textViewRating.setVisibility(View.VISIBLE);
         } else {
-            editRatingBar.setVisibility(View.GONE);
+            editTextFee.setVisibility(View.GONE);
             editRatingBar.setVisibility(View.GONE);
             textViewRating.setVisibility(View.GONE);
         }
@@ -299,6 +297,10 @@ public class AddEditUserActivity extends AppCompatActivity {
         owner.setPhoneNumber(editTextPhone.getEditText().getText().toString());
         owner.setUniqueCode(editTextUnique.getEditText().getText().toString());
 
+        if(getIntent().hasExtra(USER_ID)) {
+            owner.setId(user.getRelatedOwner().getId());
+        }
+
         user.setRelatedOwner(owner);
     }
 
@@ -310,6 +312,10 @@ public class AddEditUserActivity extends AppCompatActivity {
         tenant.setLastName(editTextLastName.getEditText().getText().toString());
         tenant.setPhoneNumber(editTextPhone.getEditText().getText().toString());
         tenant.setUniqueCode(editTextUnique.getEditText().getText().toString());
+
+        if(getIntent().hasExtra(USER_ID)) {
+            tenant.setId(user.getRelatedTenant().getId());
+        }
 
         user.setRelatedTenant(tenant);
     }
@@ -323,7 +329,11 @@ public class AddEditUserActivity extends AppCompatActivity {
         agent.setPhoneNumber(editTextPhone.getEditText().getText().toString());
         agent.setUniqueCode(editTextUnique.getEditText().getText().toString());
         agent.setRating((int) editRatingBar.getRating());
-        agent.setFee(new BigDecimal(editTextFee.getEditText().getText().toString()));
+        agent.setFee(Double.parseDouble(editTextFee.getEditText().getText().toString()));
+
+        if(getIntent().hasExtra(USER_ID)) {
+            agent.setId(user.getRelatedSaleAgent().getId());
+        }
 
         user.setRelatedSaleAgent(agent);
     }
@@ -333,15 +343,6 @@ public class AddEditUserActivity extends AppCompatActivity {
         userViewModel.setToken(token);
 
         roleViewModel = new ViewModelProvider(this).get(RoleViewModel.class);
-
-//        tenantViewModel = new ViewModelProvider(this).get(TenantViewModel.class);
-//        tenantViewModel.setToken(token);
-//
-//        ownerViewModel = new ViewModelProvider(this).get(OwnerViewModel.class);
-//        ownerViewModel.setToken(token);
-//
-//        saleAgentViewModel = new ViewModelProvider(this).get(SaleAgentViewModel.class);
-//        saleAgentViewModel.setToken(token);
     }
 
     @Override

@@ -95,70 +95,50 @@ public class UserViewModel extends AndroidViewModel {
     public MutableLiveData<User> insertData(User user) {
         oneUser = new MutableLiveData<>();
 
-        try {
-            JSONObject requestBody = new JSONObject(new Gson().toJson(user));
-
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST,
-                url,
-                requestBody,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        VolleyLog.wtf(response.toString(), "utf-8");
-                        GsonBuilder builder = new GsonBuilder();
-                        Gson gson = builder.create();
-
-                        oneUser.setValue(gson.fromJson(response.toString(), User.class));
-                    }
-                },
-                requestQueue.getErrorListener()) {
-
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+            Request.Method.POST,
+            url,
+                getJsonObject(user),
+            new Response.Listener<JSONObject>() {
                 @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    return requestQueue.getHeaders(token.getId());
+                public void onResponse(JSONObject response) {
+                    VolleyLog.wtf(response.toString(), "utf-8");
+                    GsonBuilder builder = new GsonBuilder();
+                    Gson gson = builder.create();
+
+                    oneUser.setValue(gson.fromJson(response.toString(), User.class));
                 }
+            },
+            requestQueue.getErrorListener()) {
 
-                @Override
-                public String getBodyContentType() {
-                    return "application/json";
-                }
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return requestQueue.getHeaders(token.getId());
+            }
 
-                @Override
-                public Priority getPriority() {
-                    return Priority.IMMEDIATE;
-                }
-            };
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
 
-            requestQueue.getRequestQueue().add(jsonObjectRequest);
+            @Override
+            public Priority getPriority() {
+                return Priority.IMMEDIATE;
+            }
+        };
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        requestQueue.getRequestQueue().add(jsonObjectRequest);
 
         return oneUser;
     }
 
-    public MutableLiveData<User> update(User user) throws JSONException {
+    public MutableLiveData<User> update(User user) {
         oneUser = new MutableLiveData<>();
-
-        JSONArray rolesJson = new JSONArray();
-        for (Role role: user.getRoles()) {
-            JSONObject roleBody = new JSONObject();
-            roleBody.put("id", role.getId());
-            roleBody.put("name", role.getName());
-
-            rolesJson.put(roleBody);
-        }
-
-        JSONObject requestBody = new JSONObject();
-        requestBody.put("email", user.getEmail());
-        requestBody.put("roles", rolesJson);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
             Request.Method.PUT,
             url + "/" + user.getId(),
-            requestBody,
+            getJsonObject(user),
             new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
@@ -189,6 +169,16 @@ public class UserViewModel extends AndroidViewModel {
         requestQueue.getRequestQueue().add(jsonObjectRequest);
 
         return oneUser;
+    }
+
+    private JSONObject getJsonObject(User user) {
+        JSONObject requestBody = null;
+        try {
+            requestBody = new JSONObject(new Gson().toJson(user));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return requestBody;
     }
 
     public MutableLiveData<Boolean> delete(User user) {

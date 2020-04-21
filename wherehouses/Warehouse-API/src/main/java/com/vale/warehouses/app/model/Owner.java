@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.vale.warehouses.auth.models.UserEntity;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -19,14 +20,14 @@ public class Owner extends AbstractPerson {
             fetch = FetchType.LAZY,
             orphanRemoval = true
     )
-    private Set<Warehouse> warehouses;
+    private Set<Warehouse> warehouses = new HashSet<>();
 
     @OneToMany(
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             orphanRemoval = true
     )
-    private Set<LeasingContract> leasingContracts;
+    private Set<LeasingContract> leasingContracts = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
