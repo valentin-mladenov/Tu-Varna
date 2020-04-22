@@ -1,11 +1,4 @@
-package com.vale.warehouses.ui.users;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+package com.vale.warehouses.ui.warehouses;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,17 +9,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.vale.warehouses.R;
 import com.vale.warehouses.service.AppRequestQueue;
 import com.vale.warehouses.service.model.User;
 import com.vale.warehouses.service.view_model.UserViewModel;
 import com.vale.warehouses.ui.login.LoginActivity;
+import com.vale.warehouses.ui.users.AddEditUserActivity;
+import com.vale.warehouses.ui.users.UserAdapter;
 
 import java.util.List;
 import java.util.Objects;
 
-public class UserListActivity extends AppCompatActivity {
+public class WarehouseListActivity extends AppCompatActivity {
     public static final int ADD_REQUEST = 1;
     public static final int EDIT_REQUEST = 2;
 
@@ -44,7 +46,7 @@ public class UserListActivity extends AppCompatActivity {
         buttonAddNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(UserListActivity.this, AddEditUserActivity.class);
+                Intent intent = new Intent(WarehouseListActivity.this, AddEditUserActivity.class);
                 intent.putExtras(getIntent());
                 startActivityForResult(intent, ADD_REQUEST);
             }
@@ -63,7 +65,7 @@ public class UserListActivity extends AppCompatActivity {
         userAdapter.setOnItemClickListener(new UserAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(User user) {
-                Intent intent = new Intent(UserListActivity.this, AddEditUserActivity.class);
+                Intent intent = new Intent(WarehouseListActivity.this, AddEditUserActivity.class);
 
                 intent.putExtra("USER_ID", user.getId());
 
@@ -101,7 +103,7 @@ public class UserListActivity extends AppCompatActivity {
         String goodbye = getString(R.string.goodbye) + AppRequestQueue.getToken().getUser().getUserName();
         Toast.makeText(getApplicationContext(), goodbye, Toast.LENGTH_LONG).show();
 
-        Intent intent = new Intent(UserListActivity.this, LoginActivity.class);
+        Intent intent = new Intent(WarehouseListActivity.this, LoginActivity.class);
         startActivity(intent);
 
         setResult(Activity.RESULT_OK);

@@ -43,4 +43,5 @@
     <string name="tenant_created">Tenant Created</string>
     <string name="sale_agent_cerated">Sale Agent Created</string>
     <string name="sale_agent_updated">Sale Agent Updated</string>
+    <string name="warehouse_contracts">Warehouse contracts</string>
 </resources>

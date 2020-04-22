@@ -1,9 +1,4 @@
-package com.vale.warehouses.ui.users;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
+package com.vale.warehouses.ui.warehouses;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +10,11 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.google.android.material.textfield.TextInputLayout;
 import com.vale.warehouses.R;
 import com.vale.warehouses.service.model.Owner;
@@ -24,13 +24,14 @@ import com.vale.warehouses.service.model.Tenant;
 import com.vale.warehouses.service.model.User;
 import com.vale.warehouses.service.view_model.RoleViewModel;
 import com.vale.warehouses.service.view_model.UserViewModel;
+import com.vale.warehouses.ui.users.RoleMultiSelectionSpinner;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-public class AddEditUserActivity extends AppCompatActivity {
+public class AddEditWarehouseActivity extends AppCompatActivity {
     public static final String USER_ID = "USER_ID";
 
     private RoleViewModel roleViewModel;
@@ -83,7 +84,7 @@ public class AddEditUserActivity extends AppCompatActivity {
         user = new User();
         user.setRoles(new HashSet<Role>());
 
-        final AddEditUserActivity that = this;
+        final AddEditWarehouseActivity that = this;
 
         buildViewModels();
 
