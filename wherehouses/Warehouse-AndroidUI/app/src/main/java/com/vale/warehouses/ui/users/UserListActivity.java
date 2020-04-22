@@ -23,6 +23,7 @@ import com.vale.warehouses.service.view_model.RoleViewModel;
 import com.vale.warehouses.service.view_model.UserViewModel;
 
 import java.util.List;
+import java.util.Objects;
 
 public class UserListActivity extends AppCompatActivity {
     public static final int ADD_REQUEST = 1;
@@ -30,14 +31,13 @@ public class UserListActivity extends AppCompatActivity {
 
     private UserAdapter userAdapter;
     private UserViewModel userViewModel;
-    private Token token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users);
 
-        token = (Token)getIntent().getExtras().get("TOKEN");
+        Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(R.drawable.ic_back);
 
         FloatingActionButton buttonAddNote = findViewById(R.id.button_add_user);
         buttonAddNote.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +57,6 @@ public class UserListActivity extends AppCompatActivity {
         recyclerView.setAdapter(userAdapter);
 
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        userViewModel.setToken(token);
         getAllUsers();
 
         userAdapter.setOnItemClickListener(new UserAdapter.OnItemClickListener() {
@@ -65,7 +64,6 @@ public class UserListActivity extends AppCompatActivity {
             public void onItemClick(User user) {
                 Intent intent = new Intent(UserListActivity.this, AddEditUserActivity.class);
 
-                intent.putExtras(getIntent());
                 intent.putExtra("USER_ID", user.getId());
 
                 startActivityForResult(intent, EDIT_REQUEST);

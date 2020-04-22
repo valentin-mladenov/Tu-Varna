@@ -42,7 +42,7 @@ public class RoleViewModel extends AndroidViewModel {
         requestQueue = AppRequestQueue.getInstance(application);
     }
 
-    public MutableLiveData<List<Role>> getAllRoles(final String tokenId) {
+    public MutableLiveData<List<Role>> getAllRoles() {
         allRoles = new MutableLiveData<>();
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -67,7 +67,7 @@ public class RoleViewModel extends AndroidViewModel {
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                return requestQueue.getHeaders(tokenId);
+                return requestQueue.getHeaders();
             }
 
             @Override

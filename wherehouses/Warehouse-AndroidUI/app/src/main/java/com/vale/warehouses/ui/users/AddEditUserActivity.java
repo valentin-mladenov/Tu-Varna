@@ -1,8 +1,8 @@
 package com.vale.warehouses.ui.users;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -12,28 +12,22 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.vale.warehouses.R;
+import com.vale.warehouses.service.AppRequestQueue;
 import com.vale.warehouses.service.model.Owner;
 import com.vale.warehouses.service.model.Role;
 import com.vale.warehouses.service.model.SaleAgent;
 import com.vale.warehouses.service.model.Tenant;
 import com.vale.warehouses.service.model.Token;
 import com.vale.warehouses.service.model.User;
-import com.vale.warehouses.service.view_model.OwnerViewModel;
 import com.vale.warehouses.service.view_model.RoleViewModel;
-import com.vale.warehouses.service.view_model.SaleAgentViewModel;
-import com.vale.warehouses.service.view_model.TenantViewModel;
 import com.vale.warehouses.service.view_model.UserViewModel;
 
-import org.json.JSONException;
-
-import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -44,12 +38,7 @@ public class AddEditUserActivity extends AppCompatActivity {
 
     private RoleViewModel roleViewModel;
     private UserViewModel userViewModel;
-    private OwnerViewModel ownerViewModel;
-    private SaleAgentViewModel saleAgentViewModel;
-    private TenantViewModel tenantViewModel;
-
     private RoleMultiSelectionSpinner roleSpinner;
-    private Token token;
     private User user;
     private TextInputLayout editTextUsername,
             editTextEmail,
@@ -69,8 +58,6 @@ public class AddEditUserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_user);
-
-        token = (Token)getIntent().getExtras().get("TOKEN");
 
         Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(R.drawable.ic_close);
 
@@ -103,7 +90,7 @@ public class AddEditUserActivity extends AppCompatActivity {
 
         buildViewModels();
 
-        roleViewModel.getAllRoles(token.getId()).observe(this, new Observer<List<Role>>() {
+        roleViewModel.getAllRoles().observe(this, new Observer<List<Role>>() {
             @Override
             public void onChanged(@Nullable List<Role> roles) {
                 roleSpinner.setRoles(roles);
@@ -340,7 +327,6 @@ public class AddEditUserActivity extends AppCompatActivity {
 
     private void buildViewModels() {
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        userViewModel.setToken(token);
 
         roleViewModel = new ViewModelProvider(this).get(RoleViewModel.class);
     }

@@ -125,13 +125,6 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
 
         Intent intent = new Intent(LoginActivity.this, LoggedInActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("TOKEN", token);
-        intent.putExtras(bundle);
-//        intent.putExtra("USER_NAME", token.getUser().getUserName());
-//        intent.putExtra("USER_ROLES", token.getUser().getDisplayName());
-//        intent.putExtra("TOKEN_EXPIRES_AT", token.getExpireAt());
-//        intent.putExtra("USER_TOKEN", token.getId());
 
         startActivity(intent);
     }

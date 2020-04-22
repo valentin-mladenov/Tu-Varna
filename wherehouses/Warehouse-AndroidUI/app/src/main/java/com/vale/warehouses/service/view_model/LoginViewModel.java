@@ -36,9 +36,12 @@ import java.util.Map;
 public class LoginViewModel extends AndroidViewModel {
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
+    private AppRequestQueue requestQueue;
 
     public LoginViewModel(@NonNull Application application) {
         super(application);
+
+        requestQueue = AppRequestQueue.getInstance(application);
     }
 
     public LiveData<LoginFormState> getLoginFormState() {
@@ -70,6 +73,7 @@ public class LoginViewModel extends AndroidViewModel {
                         }).create();
 
                         Token token = gson.fromJson(response, Token.class);
+                        AppRequestQueue.setToken(token);
 
                         loginResult.setValue(new LoginResult(token));
                     }
@@ -104,7 +108,7 @@ public class LoginViewModel extends AndroidViewModel {
             }
         };
 
-        AppRequestQueue.getInstance(getApplication()).getRequestQueue().add(stringRequest);
+        requestQueue.getRequestQueue().add(stringRequest);
     }
 
     public void loginDataChanged(String username, String password) {

@@ -11,6 +11,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.vale.warehouses.R;
+import com.vale.warehouses.service.model.Token;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +20,7 @@ public class AppRequestQueue {
     private static AppRequestQueue instance;
     private Context context;
     private RequestQueue requestQueue;
+    private static Token token;
     public static final String TAG = AppRequestQueue.class.getSimpleName();
 
     private AppRequestQueue(Context context) {
@@ -70,10 +72,18 @@ public class AppRequestQueue {
         };
     }
 
-    public Map<String, String> getHeaders(String token) {
+    public Map<String, String> getHeaders() {
         Map<String, String> params = new HashMap<>();
         params.put("Content-Type", "application/json; charset=UTF-8");
-        params.put("Authorization", "Bearer " + token);
+        params.put("Authorization", "Bearer " + token.getId());
         return params;
+    }
+
+    public static Token getToken() {
+        return token;
+    }
+
+    public static void setToken(Token tokenIn) {
+        token = tokenIn;
     }
 }

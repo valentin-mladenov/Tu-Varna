@@ -72,7 +72,7 @@ public class OwnerViewModel extends AndroidViewModel {
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                return requestQueue.getHeaders(token.getId());
+                return requestQueue.getHeaders();
             }
 
             @Override
@@ -114,7 +114,7 @@ public class OwnerViewModel extends AndroidViewModel {
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                return requestQueue.getHeaders(token.getId());
+                return requestQueue.getHeaders();
             }
 
             @Override
@@ -156,7 +156,7 @@ public class OwnerViewModel extends AndroidViewModel {
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = requestQueue.getHeaders(token.getId());
+                Map<String, String> headers = requestQueue.getHeaders();
                 headers.put("Content-Type", "application/json; charset=utf-8");
 
                 return headers;
@@ -203,7 +203,7 @@ public class OwnerViewModel extends AndroidViewModel {
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                return requestQueue.getHeaders(token.getId());
+                return requestQueue.getHeaders();
             }
 
             @Override
@@ -246,7 +246,7 @@ public class OwnerViewModel extends AndroidViewModel {
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                return requestQueue.getHeaders(token.getId());
+                return requestQueue.getHeaders();
             }
 
             @Override

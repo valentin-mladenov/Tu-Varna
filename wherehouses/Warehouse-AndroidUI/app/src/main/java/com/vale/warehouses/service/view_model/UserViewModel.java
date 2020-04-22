@@ -17,12 +17,9 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.vale.warehouses.R;
 import com.vale.warehouses.service.AppRequestQueue;
-import com.vale.warehouses.service.model.Role;
-import com.vale.warehouses.service.model.Token;
 import com.vale.warehouses.service.model.User;
 
 import org.json.JSONArray;
@@ -30,7 +27,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +34,6 @@ public class UserViewModel extends AndroidViewModel {
     private AppRequestQueue requestQueue;
     private MutableLiveData<List<User>> allUsers;
     private MutableLiveData<User> oneUser;
-    private Token token;
     private String url = getApplication().getResources().getString(R.string.base_url) + "/api/user";
     private MutableLiveData<Boolean> deleteResult;
 
@@ -46,10 +41,6 @@ public class UserViewModel extends AndroidViewModel {
         super(application);
 
         requestQueue = AppRequestQueue.getInstance(application);
-    }
-
-    public void setToken(Token token) {
-        this.token = token;
     }
 
     public MutableLiveData<User> getOne(Long userId) {
@@ -73,7 +64,7 @@ public class UserViewModel extends AndroidViewModel {
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                return requestQueue.getHeaders(token.getId());
+                return requestQueue.getHeaders();
             }
 
             @Override
@@ -113,7 +104,7 @@ public class UserViewModel extends AndroidViewModel {
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                return requestQueue.getHeaders(token.getId());
+                return requestQueue.getHeaders();
             }
 
             @Override
@@ -153,7 +144,7 @@ public class UserViewModel extends AndroidViewModel {
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = requestQueue.getHeaders(token.getId());
+                Map<String, String> headers = requestQueue.getHeaders();
                 headers.put("Content-Type", "application/json; charset=utf-8");
 
                 return headers;
@@ -208,7 +199,7 @@ public class UserViewModel extends AndroidViewModel {
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                return requestQueue.getHeaders(token.getId());
+                return requestQueue.getHeaders();
             }
 
             @Override
@@ -252,7 +243,7 @@ public class UserViewModel extends AndroidViewModel {
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                return requestQueue.getHeaders(token.getId());
+                return requestQueue.getHeaders();
             }
 
             @Override

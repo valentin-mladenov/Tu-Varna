@@ -13,8 +13,10 @@
         android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.users.AddEditUserActivity" />
-        <activity android:name=".ui.users.UserListActivity" />
+        <activity android:name=".ui.users.AddEditUserActivity"
+            android:parentActivityName=".ui.users.UserListActivity" />
+        <activity android:name=".ui.users.UserListActivity"
+            android:parentActivityName=".ui.loggedin.LoggedInActivity"/>
         <activity android:name=".ui.loggedin.LoggedInActivity" />
         <activity
             android:name=".ui.login.LoginActivity"

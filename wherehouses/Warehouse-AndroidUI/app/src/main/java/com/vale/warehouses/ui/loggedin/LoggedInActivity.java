@@ -9,23 +9,23 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.vale.warehouses.R;
+import com.vale.warehouses.service.AppRequestQueue;
 import com.vale.warehouses.service.model.Token;
 import com.vale.warehouses.ui.login.LoginActivity;
 import com.vale.warehouses.ui.users.UserListActivity;
 
+import java.util.Objects;
+
 public class LoggedInActivity extends AppCompatActivity {
-    private Token token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logged_in);
-
-        token = (Token)getIntent().getExtras().get("TOKEN");
     }
 
     public void logout(View view) {
-        String goodbye = getString(R.string.goodbye) + token.getUser().getUserName();
+        String goodbye = getString(R.string.goodbye) + AppRequestQueue.getToken().getUser().getUserName();
         Toast.makeText(getApplicationContext(), goodbye, Toast.LENGTH_LONG).show();
 
         Intent intent = new Intent(LoggedInActivity.this, LoginActivity.class);
@@ -49,13 +49,6 @@ public class LoggedInActivity extends AppCompatActivity {
     public void openUsers(View view) {
         Intent intent = new Intent(LoggedInActivity.this, UserListActivity.class);
 
-        intent.putExtras(getIntent());
-
         startActivity(intent);
-
-         setResult(Activity.RESULT_OK);
-
-         // Complete and destroy LoggedIn activity once successful
-         finish();
     }
 }
