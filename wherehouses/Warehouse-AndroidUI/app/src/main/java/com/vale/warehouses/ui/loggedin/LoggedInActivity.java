@@ -18,6 +18,7 @@ import com.vale.warehouses.service.model.Role;
 import com.vale.warehouses.service.model.RoleType;
 import com.vale.warehouses.ui.login.LoginActivity;
 import com.vale.warehouses.ui.users.UserListActivity;
+import com.vale.warehouses.ui.warehouses.WarehouseListActivity;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -26,7 +27,7 @@ public class LoggedInActivity extends AppCompatActivity {
     private Button usersButton;
     private Button warehousesButton;
     private Button warehouseContractsButton;
-//    private Button usersButton;
+    private Button warehouseRequestsButton;
 //    private Button usersButton;
 
     @Override
@@ -37,8 +38,10 @@ public class LoggedInActivity extends AppCompatActivity {
         usersButton = findViewById(R.id.users);
         warehousesButton = findViewById(R.id.warehouses);
         warehouseContractsButton = findViewById(R.id.warehouse_contracts);
+        warehouseRequestsButton = findViewById(R.id.warehouse_requests);
 
-        ArrayList<Role> roles  = new ArrayList<>(AppRequestQueue.getToken().getUser().getRoles());
+        ArrayList<Role> roles  = new ArrayList<>(
+                AppRequestQueue.getToken().getUser().getRoles());
 
         int roleId = (int) roles.get(0).getId();
         if (roleId == RoleType.Admin.getValue()) {
@@ -46,10 +49,14 @@ public class LoggedInActivity extends AppCompatActivity {
         }
 
         if (roleId == RoleType.Owner.getValue()
-            || roleId == RoleType.SaleAgent.getValue()
+                || roleId == RoleType.SaleAgent.getValue()
         ) {
             warehousesButton.setVisibility(View.VISIBLE);
             warehouseContractsButton.setVisibility(View.VISIBLE);
+        }
+
+        if (roleId == RoleType.SaleAgent.getValue()) {
+            warehouseRequestsButton.setVisibility(View.VISIBLE);
         }
     }
 
@@ -66,13 +73,13 @@ public class LoggedInActivity extends AppCompatActivity {
         finish();
     }
 
-    public void openOwners(View view) {
-    }
-
     public void openWarehouseContracts(View view) {
     }
 
     public void openWarehouses(View view) {
+        Intent intent = new Intent(LoggedInActivity.this, WarehouseListActivity.class);
+
+        startActivity(intent);
     }
 
     public void openUsers(View view) {
@@ -97,5 +104,10 @@ public class LoggedInActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void openWarehouseRequests(View view) {
+
+
     }
 }

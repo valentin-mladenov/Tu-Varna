@@ -90,4 +90,8 @@ public class Owner implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 }

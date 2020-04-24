@@ -6,7 +6,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,15 +19,20 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.vale.warehouses.R;
+import com.vale.warehouses.service.model.Category;
 import com.vale.warehouses.service.model.Owner;
-import com.vale.warehouses.service.model.Role;
+import com.vale.warehouses.service.model.SaleAgent;
 import com.vale.warehouses.service.model.SaleAgent;
 import com.vale.warehouses.service.model.Tenant;
-import com.vale.warehouses.service.model.User;
-import com.vale.warehouses.service.view_model.RoleViewModel;
-import com.vale.warehouses.service.view_model.UserViewModel;
-import com.vale.warehouses.ui.users.RoleMultiSelectionSpinner;
+import com.vale.warehouses.service.model.Warehouse;
+import com.vale.warehouses.service.model.WarehouseType;
+import com.vale.warehouses.service.view_model.SaleAgentViewModel;
+import com.vale.warehouses.service.view_model.WarehouseViewModel;
+import com.vale.warehouses.ui.warehouses.SaleAgentMultiSelectionSpinner;
 
+import java.net.Proxy;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -34,173 +41,118 @@ import java.util.Set;
 public class AddEditWarehouseActivity extends AppCompatActivity {
     public static final String USER_ID = "USER_ID";
 
-    private RoleViewModel roleViewModel;
-    private UserViewModel userViewModel;
-    private RoleMultiSelectionSpinner roleSpinner;
-    private User user;
-    private TextInputLayout editTextUsername,
-            editTextEmail,
-            editTextPassword,
-            editTextPasswordConfirm,
-            editTextFirstName,
-            editTextLastName,
-            editTextAddress,
-            editTextFee,
-            editTextUnique,
-            editTextPhone;
+    private SaleAgentViewModel saleAgentViewModel;
+    private WarehouseViewModel warehouseViewModel;
+    private SaleAgentMultiSelectionSpinner saleAgentSpinner;
+    private Warehouse warehouse;
+    private TextInputLayout editTextAddress,
+                            editTextWidth,
+                            editTextHeight,
+                            editTextLength;
 
-    private RatingBar editRatingBar;
-    private TextView textViewRating;
+    private Spinner editSpinnerType, editSpinnerCategory;
+
+    private ArrayList<Category> categories;
+    private ArrayList<WarehouseType> warehouseTypes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.user_activity_add_edit);
+        setContentView(R.layout.warehouse_activity_add_edit);
 
         Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(R.drawable.ic_close);
 
-        editTextUsername = findViewById(R.id.edit_text_username);
-        editTextEmail = findViewById(R.id.edit_text_email);
-        editTextPassword = findViewById(R.id.edit_text_password);
-        editTextPasswordConfirm = findViewById(R.id.edit_text_password_confirm);
-        editTextAddress = findViewById(R.id.edit_text_address);
-        editTextFee = findViewById(R.id.edit_text_fee);
-        editTextPhone = findViewById(R.id.edit_text_phone_number);
-        editTextFirstName = findViewById(R.id.edit_text_first_name);
-        editTextLastName = findViewById(R.id.edit_text_last_name);
-        editTextUnique = findViewById(R.id.edit_text_unique);
-        editRatingBar = findViewById(R.id.edit_text_rating);
-        textViewRating = findViewById(R.id.text_view_rating);
+        categories = new ArrayList<>(Arrays.asList(Category.values()));
+        warehouseTypes = new ArrayList<>(Arrays.asList(WarehouseType.values()));
 
-        roleSpinner = findViewById(R.id.role_spinner);
-        roleSpinner.getSelection().observe(this, new Observer<Set<Role>>() {
+        editTextAddress = findViewById(R.id.edit_text_address);
+        editTextWidth = findViewById(R.id.edit_text_width);
+        editTextHeight = findViewById(R.id.edit_text_height);
+        editTextLength = findViewById(R.id.edit_text_length);
+
+        editSpinnerType = findViewById(R.id.spinner_types);
+        editSpinnerType.setAdapter(new ArrayAdapter<>(
+            this, android.R.layout.simple_list_item_1, WarehouseType.values()));
+
+        ArrayAdapter<Category> a = new ArrayAdapter<>(
+                this, android.R.layout.simple_list_item_1, Category.values());
+
+
+        editSpinnerCategory = findViewById(R.id.spinner_category);
+        editSpinnerCategory.setAdapter(new ArrayAdapter<>(
+                        this, android.R.layout.simple_list_item_1, Category.values()));
+
+        saleAgentSpinner = findViewById(R.id.sale_agent_spinner);
+        saleAgentSpinner.getSelection().observe(this, new Observer<Set<SaleAgent>>() {
             @Override
-            public void onChanged(Set<Role> roles) {
-                user.setRoles(roles);
-                hideData(roles);
+            public void onChanged(Set<SaleAgent> agents) {
+                warehouse.setSaleAgents(agents);
             }
         });
 
-        user = new User();
-        user.setRoles(new HashSet<Role>());
+        warehouse = new Warehouse();
 
         final AddEditWarehouseActivity that = this;
 
         buildViewModels();
 
-        roleViewModel.getAllRoles().observe(this, new Observer<List<Role>>() {
+        saleAgentViewModel.getAllSaleAgents().observe(this, new Observer<List<SaleAgent>>() {
             @Override
-            public void onChanged(@Nullable List<Role> roles) {
-                roleSpinner.setRoles(roles);
+            public void onChanged(@Nullable List<SaleAgent> saleAgents) {
+                saleAgentSpinner.setSaleAgents(saleAgents);
 
                 if (getIntent().hasExtra(USER_ID)) {
                     setTitle(getString(R.string.edit));
-                    editTextUsername.setEnabled(false);
-                    roleSpinner.setEnabled(false);
 
-                    editTextPassword.setVisibility(View.GONE);
-                    editTextPasswordConfirm.setVisibility(View.GONE);
+                    Long warehouseId = getIntent().getExtras().getLong(USER_ID);
 
-                    Long userId = getIntent().getExtras().getLong(USER_ID);
-
-                    userViewModel.getOne(userId).observe(that, new Observer<User>() {
+                    warehouseViewModel.getOne(warehouseId).observe(that, new Observer<Warehouse>() {
                         @Override
-                        public void onChanged(@Nullable User userRes) {
-                            user.setEmail(userRes.getEmail());
-                            user.setId(userRes.getId());
-                            user.setUserName(userRes.getUserName());
-                            user.setRoles(userRes.getRoles());
-                            user.setRelatedSaleAgent(userRes.getRelatedSaleAgent());
-                            user.setRelatedOwner(userRes.getRelatedOwner());
-                            user.setRelatedTenant(userRes.getRelatedTenant());
+                        public void onChanged(@Nullable Warehouse warehouseRes) {
+//                            warehouse.set(warehouseRes.getEmail());
+//                            warehouse.setId(warehouseRes.getId());
+//                            warehouse.setWarehouseName(warehouseRes.getWarehouseName());
+//                            warehouse.setSaleAgents(warehouseRes.getSaleAgents());
+//                            warehouse.setRelatedSaleAgent(warehouseRes.getRelatedSaleAgent());
+//                            warehouse.setRelatedOwner(warehouseRes.getRelatedOwner());
+//                            warehouse.setRelatedTenant(warehouseRes.getRelatedTenant());
+                            warehouse = warehouseRes;
 
-                            editTextUsername.getEditText().setText(user.getUserName());
-                            editTextEmail.getEditText().setText(user.getEmail());
+                            // TODO price per month
+                            editTextAddress.getEditText().setText(warehouse.getAddress());
+                            editTextHeight.getEditText().setText(String.valueOf(warehouse.getHeight()));
+                            editTextWidth.getEditText().setText(String.valueOf(warehouse.getWidth()));
+                            editTextLength.getEditText().setText(String.valueOf(warehouse.getLength()));
 
-                            roleSpinner.setSelection(user.getRoles());
+                            editSpinnerCategory.setSelection(categories.indexOf(warehouse.getCategory()));
+                            editSpinnerType.setSelection(warehouseTypes.indexOf(warehouse.getType()));
 
-                            addUserDataToUi();
+                            saleAgentSpinner.setSelection(warehouse.getSaleAgents());
                         }
                     });
                 } else {
                     setTitle(getString(R.string.add));
 
-                    roleSpinner.setSelection(user.getRoles());
+                    saleAgentSpinner.setSelection(warehouse.getSaleAgents());
                 }
             }
         });
     }
 
-    private void addUserDataToUi() {
-        for (Role role: user.getRoles()) {
-            switch ((int) role.getId()) {
-                case 2:
-                    addOwnerData();
-                    break;
-                case 3:
-                    addSaleAgentData();
-                    break;
-                case 4:
-                    addTenantData();
-                    break;
-            }
-        }
-    }
-
-    private void addOwnerData() {
-        Owner owner = user.getRelatedOwner();
-
-        editTextUnique.getEditText().setText(owner.getUniqueCode());
-        editTextPhone.getEditText().setText(owner.getPhoneNumber());
-        editTextLastName.getEditText().setText(owner.getLastName());
-        editTextFirstName.getEditText().setText(owner.getFirstName());
-        editTextAddress.getEditText().setText(owner.getAddress());
-    }
-
-    private void addTenantData() {
-        Tenant tenant = user.getRelatedTenant();
-
-        editTextUnique.getEditText().setText(tenant.getUniqueCode());
-        editTextPhone.getEditText().setText(tenant.getPhoneNumber());
-        editTextLastName.getEditText().setText(tenant.getLastName());
-        editTextFirstName.getEditText().setText(tenant.getFirstName());
-        editTextAddress.getEditText().setText(tenant.getAddress());
-    }
-
-    private void addSaleAgentData() {
-        SaleAgent agent = user.getRelatedSaleAgent();
-
-        editTextUnique.getEditText().setText(agent.getUniqueCode());
-        editTextPhone.getEditText().setText(agent.getPhoneNumber());
-        editTextLastName.getEditText().setText(agent.getLastName());
-        editTextFirstName.getEditText().setText(agent.getFirstName());
-        editTextAddress.getEditText().setText(agent.getAddress());
-        editTextFee.getEditText().setText(String.valueOf(agent.getFee()));
-        editRatingBar.setRating(agent.getRating());
-    }
-
-    private void saveUser() {
-        if(user.getRoles().isEmpty()) {
-            Toast.makeText(this, R.string.user_role_missing, Toast.LENGTH_SHORT).show();
-
-            return;
-        }
-
-        if(user.getRoles().size() > 1) {
-            Toast.makeText(this, "Only one Role per User", Toast.LENGTH_SHORT).show();
-
-            return;
-        }
-
+    private void saveWarehouse() {
         try {
-            user.setEmail(editTextEmail.getEditText().getText().toString());
-            handleUserRelatedData();
+            warehouse.setAddress(editTextAddress.getEditText().getText().toString());
+            warehouse.setHeight(Double.parseDouble(editTextHeight.getEditText().getText().toString()));
+            warehouse.setWidth(Double.parseDouble(editTextWidth.getEditText().getText().toString()));
+            warehouse.setLength(Double.parseDouble(editTextLength.getEditText().getText().toString()));
+
+            warehouse.setCategory(Category.valueOf(editSpinnerCategory.getSelectedItem().toString()));
+            warehouse.setType(WarehouseType.valueOf(editSpinnerType.getSelectedItem().toString()));
 
             if (getIntent().hasExtra(USER_ID)) {
-                userViewModel.update(user).observe(this, new Observer<User>() {
+                warehouseViewModel.update(warehouse).observe(this, new Observer<Warehouse>() {
                     @Override
-                    public void onChanged(User updatedUser) {
-
+                    public void onChanged(Warehouse updatedWarehouse) {
                         Intent intent = new Intent();
                         intent.putExtras(getIntent());
 
@@ -210,16 +162,12 @@ public class AddEditWarehouseActivity extends AppCompatActivity {
                     }
                 });
 
-                Toast.makeText(this, R.string.user_updated, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.warehouse_updated, Toast.LENGTH_SHORT).show();
             } else {
-                user.setUserName(editTextUsername.getEditText().getText().toString());
-                user.setPassword(editTextPassword.getEditText().getText().toString());
-                user.setConfirmPassword(editTextPasswordConfirm.getEditText().getText().toString());
-
-                userViewModel.insertData(user).observe(this, new Observer<User>() {
+                warehouseViewModel.insertData(warehouse).observe(this, new Observer<Warehouse>() {
                     @Override
-                    public void onChanged(@Nullable User insertedUser) {
-                        assert insertedUser != null;
+                    public void onChanged(@Nullable Warehouse insertedWarehouse) {
+                        assert insertedWarehouse != null;
 
                         Intent intent = new Intent();
                         intent.putExtras(getIntent());
@@ -230,103 +178,17 @@ public class AddEditWarehouseActivity extends AppCompatActivity {
                     }
                 });
 
-                Toast.makeText(this, R.string.user_created, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.warehouse_created, Toast.LENGTH_SHORT).show();
             }
         } catch (Exception ignored) {
             ignored.printStackTrace();
         }
     }
 
-    private void hideData(Set<Role> roles) {
-        boolean isAgent = false;
-        for (Role role: roles) {
-            if (role.getId() == 3) {
-                isAgent = true;
-            }
-        }
-
-        //Toggle
-        if (isAgent) {
-            editTextFee.setVisibility(View.VISIBLE);
-            editRatingBar.setVisibility(View.VISIBLE);
-            textViewRating.setVisibility(View.VISIBLE);
-        } else {
-            editTextFee.setVisibility(View.GONE);
-            editRatingBar.setVisibility(View.GONE);
-            textViewRating.setVisibility(View.GONE);
-        }
-    }
-
-    private void handleUserRelatedData() {
-        for (Role role: user.getRoles()) {
-            switch ((int) role.getId()) {
-                case 2:
-                    handleOwner();
-                    break;
-                case 3:
-                    handleSaleAgent();
-                    break;
-                case 4:
-                    handleTenant();
-                    break;
-            }
-        }
-    }
-
-    private void handleOwner() {
-        Owner owner = new Owner();
-
-        owner.setAddress(editTextAddress.getEditText().getText().toString());
-        owner.setFirstName(editTextFirstName.getEditText().getText().toString());
-        owner.setLastName(editTextLastName.getEditText().getText().toString());
-        owner.setPhoneNumber(editTextPhone.getEditText().getText().toString());
-        owner.setUniqueCode(editTextUnique.getEditText().getText().toString());
-
-        if(getIntent().hasExtra(USER_ID)) {
-            owner.setId(user.getRelatedOwner().getId());
-        }
-
-        user.setRelatedOwner(owner);
-    }
-
-    private void handleTenant() {
-        Tenant tenant = new Tenant();
-
-        tenant.setAddress(editTextAddress.getEditText().getText().toString());
-        tenant.setFirstName(editTextFirstName.getEditText().getText().toString());
-        tenant.setLastName(editTextLastName.getEditText().getText().toString());
-        tenant.setPhoneNumber(editTextPhone.getEditText().getText().toString());
-        tenant.setUniqueCode(editTextUnique.getEditText().getText().toString());
-
-        if(getIntent().hasExtra(USER_ID)) {
-            tenant.setId(user.getRelatedTenant().getId());
-        }
-
-        user.setRelatedTenant(tenant);
-    }
-
-    private void handleSaleAgent() {
-        SaleAgent agent = new SaleAgent();
-
-        agent.setAddress(editTextAddress.getEditText().getText().toString());
-        agent.setFirstName(editTextFirstName.getEditText().getText().toString());
-        agent.setLastName(editTextLastName.getEditText().getText().toString());
-        agent.setPhoneNumber(editTextPhone.getEditText().getText().toString());
-        agent.setUniqueCode(editTextUnique.getEditText().getText().toString());
-        agent.setRating((int) editRatingBar.getRating());
-        agent.setFee(Double.parseDouble(editTextFee.getEditText().getText().toString()));
-
-        if(getIntent().hasExtra(USER_ID)) {
-            agent.setId(user.getRelatedSaleAgent().getId());
-        }
-
-        user.setRelatedSaleAgent(agent);
-    }
-
     private void buildViewModels() {
-        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        warehouseViewModel = new ViewModelProvider(this).get(WarehouseViewModel.class);
 
-        roleViewModel = new ViewModelProvider(this).get(RoleViewModel.class);
+        saleAgentViewModel = new ViewModelProvider(this).get(SaleAgentViewModel.class);
     }
 
     @Override
@@ -341,7 +203,7 @@ public class AddEditWarehouseActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save_item:
-                saveUser();
+                saveWarehouse();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

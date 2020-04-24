@@ -1,4 +1,4 @@
-package com.vale.warehouses.app.vier_model;
+package com.vale.warehouses.app.view_model;
 
 import com.vale.warehouses.app.model.AbstractPerson;
 import com.vale.warehouses.app.model.LeasingContract;

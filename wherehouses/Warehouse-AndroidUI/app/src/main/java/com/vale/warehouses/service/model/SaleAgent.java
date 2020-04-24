@@ -110,4 +110,8 @@ public class SaleAgent implements Serializable {
     public void setFee(double fee) {
         this.fee = fee;
     }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 }

@@ -19,10 +19,10 @@ public class WarehouseService implements WarehouseInterface {
     @Override
     public List<Warehouse> getWarehouses()
     {
-        List<Warehouse> employeeList = repository.findAll();
+        List<Warehouse> warehouseList = repository.findAll();
 
-        if(employeeList.size() > 0) {
-            return employeeList;
+        if(warehouseList.size() > 0) {
+            return warehouseList;
         } else {
             return new ArrayList<>();
         }

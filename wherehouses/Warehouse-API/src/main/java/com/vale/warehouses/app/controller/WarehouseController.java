@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -19,7 +20,12 @@ public class WarehouseController {
     public ResponseEntity<List<Warehouse>> list() {
         List<Warehouse> warehouses = service.getWarehouses();
 
-        return ResponseEntity.ok(warehouses);
+        for (Warehouse warehouse: warehouses) {
+            warehouse.setAgents(new HashSet<>());
+            warehouse.setOwner(null);
+        }
+
+        return ResponseEntity.ok().body(warehouses);
     }
 
     /*---Get a warehouse by id---*/

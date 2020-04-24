@@ -44,4 +44,18 @@
     <string name="sale_agent_cerated">Sale Agent Created</string>
     <string name="sale_agent_updated">Sale Agent Updated</string>
     <string name="warehouse_contracts">Warehouse contracts</string>
+    <string name="warehouse_requests">Warehouse Requests</string>
+    <string name="area">Area</string>
+    <string name="category">Category</string>
+    <string name="type">Type</string>
+    <string name="additional_data">Additional data</string>
+    <string name="owner">Owner</string>
+    <string name="width">Width</string>
+    <string name="height">Height</string>
+    <string name="lenght">Lenght</string>
+    <string name="choose_type">Choose a Warehouse type</string>
+    <string name="choose_category">Choose a Warehouse category</string>
+    <string name="warehouse_created">Warehose created</string>
+    <string name="warehouse_updated">Warehouse updated</string>
+    <string name="price_per_month">Price per Month</string>
 </resources>

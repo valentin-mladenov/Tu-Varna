@@ -1,19 +1,12 @@
-package com.vale.warehouses.app.model;
+package com.vale.warehouses.app.view_model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.vale.warehouses.app.model.*;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name="warehouse")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class Warehouse {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class WarehouseVM {
     public Long id;
 
     public double width;
@@ -24,23 +17,14 @@ public class Warehouse {
 
     public BigDecimal pricePerMonth;
 
-    @Enumerated
     public WarehouseType type;
-
-    @Enumerated
+    
     public Category category;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    public Owner owner = new Owner();
+    public Owner owner;
 
-    @ManyToMany
     public Set<SaleAgent> saleAgents = new HashSet<>();
-
-    @OneToMany(
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
-            orphanRemoval = true
-    )
+    
     public Set<LeasingContract> leasingContracts = new HashSet<>();
 
     public String address;

@@ -39,6 +39,16 @@
             android:text="@string/warehouses"
             android:visibility="gone" />
 
+    <Button
+        android:id="@+id/warehouse_requests"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:onClick="openWarehouseRequests"
+        android:text="@string/warehouse_requests"
+        android:visibility="gone" />
+
     <!--    <Button-->
     <!--        android:id="@+id/owners"-->
     <!--        style="@style/Widget.AppCompat.Button"-->

@@ -19,11 +19,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.vale.warehouses.R;
 import com.vale.warehouses.service.AppRequestQueue;
-import com.vale.warehouses.service.model.User;
-import com.vale.warehouses.service.view_model.UserViewModel;
+import com.vale.warehouses.service.model.Warehouse;
+import com.vale.warehouses.service.view_model.WarehouseViewModel;
 import com.vale.warehouses.ui.login.LoginActivity;
-import com.vale.warehouses.ui.users.AddEditUserActivity;
-import com.vale.warehouses.ui.users.UserAdapter;
+import com.vale.warehouses.ui.warehouses.AddEditWarehouseActivity;
+import com.vale.warehouses.ui.warehouses.WarehouseAdapter;
 
 import java.util.List;
 import java.util.Objects;
@@ -32,42 +32,42 @@ public class WarehouseListActivity extends AppCompatActivity {
     public static final int ADD_REQUEST = 1;
     public static final int EDIT_REQUEST = 2;
 
-    private UserAdapter userAdapter;
-    private UserViewModel userViewModel;
+    private WarehouseAdapter warehouseAdapter;
+    private WarehouseViewModel warehouseViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.user_main_activity);
+        setContentView(R.layout.warehouse_main_activity);
 
         Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(R.drawable.ic_back);
 
-        FloatingActionButton buttonAddNote = findViewById(R.id.button_add_user);
+        FloatingActionButton buttonAddNote = findViewById(R.id.button_add_warehouse);
         buttonAddNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(WarehouseListActivity.this, AddEditUserActivity.class);
+                Intent intent = new Intent(WarehouseListActivity.this, AddEditWarehouseActivity.class);
                 intent.putExtras(getIntent());
                 startActivityForResult(intent, ADD_REQUEST);
             }
         });
 
-        RecyclerView recyclerView = findViewById(R.id.users_recycler_view);
+        RecyclerView recyclerView = findViewById(R.id.warehouses_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
-        userAdapter = new UserAdapter();
-        recyclerView.setAdapter(userAdapter);
+        warehouseAdapter = new WarehouseAdapter();
+        recyclerView.setAdapter(warehouseAdapter);
 
-        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        getAllUsers();
+        warehouseViewModel = new ViewModelProvider(this).get(WarehouseViewModel.class);
+        getAllWarehouses();
 
-        userAdapter.setOnItemClickListener(new UserAdapter.OnItemClickListener() {
+        warehouseAdapter.setOnItemClickListener(new WarehouseAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(User user) {
-                Intent intent = new Intent(WarehouseListActivity.this, AddEditUserActivity.class);
+            public void onItemClick(Warehouse warehouse) {
+                Intent intent = new Intent(WarehouseListActivity.this, AddEditWarehouseActivity.class);
 
-                intent.putExtra("USER_ID", user.getId());
+                intent.putExtra("USER_ID", warehouse.getId());
 
                 startActivityForResult(intent, EDIT_REQUEST);
             }
@@ -78,7 +78,7 @@ public class WarehouseListActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        getAllUsers();
+        getAllWarehouses();
     }
 
     @Override
@@ -100,7 +100,7 @@ public class WarehouseListActivity extends AppCompatActivity {
     }
 
     private void logoutNow() {
-        String goodbye = getString(R.string.goodbye) + AppRequestQueue.getToken().getUser().getUserName();
+        String goodbye = getString(R.string.goodbye) + AppRequestQueue.getToken().getUser().getEmail();
         Toast.makeText(getApplicationContext(), goodbye, Toast.LENGTH_LONG).show();
 
         Intent intent = new Intent(WarehouseListActivity.this, LoginActivity.class);
@@ -112,11 +112,11 @@ public class WarehouseListActivity extends AppCompatActivity {
         finish();
     }
 
-    private void getAllUsers() {
-        userViewModel.getAllUsers().observe(this, new Observer<List<User>>() {
+    private void getAllWarehouses() {
+        warehouseViewModel.getAllWarehouses().observe(this, new Observer<List<Warehouse>>() {
             @Override
-            public void onChanged(@Nullable List<User> users) {
-                userAdapter.submitList(users);
+            public void onChanged(@Nullable List<Warehouse> warehouses) {
+                warehouseAdapter.submitList(warehouses);
             }
         });
     }

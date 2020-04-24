@@ -13,10 +13,17 @@
         android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".ui.users.AddEditUserActivity"
             android:parentActivityName=".ui.users.UserListActivity" />
         <activity android:name=".ui.users.UserListActivity"
-            android:parentActivityName=".ui.loggedin.LoggedInActivity"/>
+            android:parentActivityName=".ui.loggedin.LoggedInActivity" />
+
+        <activity android:name=".ui.warehouses.WarehouseListActivity"
+            android:parentActivityName=".ui.loggedin.LoggedInActivity" />
+        <activity android:name=".ui.warehouses.AddEditWarehouseActivity"
+            android:parentActivityName=".ui.warehouses.WarehouseListActivity" />
+
         <activity android:name=".ui.loggedin.LoggedInActivity" />
         <activity
             android:name=".ui.login.LoginActivity"

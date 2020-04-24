@@ -10,7 +10,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.lifecycle.MutableLiveData;
 
-import com.vale.warehouses.service.model.Role;
+import com.vale.warehouses.service.model.SaleAgent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,8 +21,8 @@ import java.util.Set;
 public class SaleAgentMultiSelectionSpinner extends AppCompatSpinner
         implements DialogInterface.OnMultiChoiceClickListener {
 
-    List<Role> roles = null;
-    private MutableLiveData<Set<Role>> selectedRoles = new MutableLiveData<>();
+    List<SaleAgent> saleAgents = null;
+    private MutableLiveData<Set<SaleAgent>> selectedSaleAgents = new MutableLiveData<>();
     boolean[] selection = null;
     ArrayAdapter<String> adapter;
 
@@ -44,16 +44,13 @@ public class SaleAgentMultiSelectionSpinner extends AppCompatSpinner
     @Override
     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
         if (selection != null && which < selection.length) {
-//            for (int i = 0; i < selection.length; i++) {
-//                selection[i] = false;
-//            }
 
             selection[which] = isChecked;
 
             adapter.clear();
             adapter.add(buildSelectedItemString());
 
-            this.selectedRoles.setValue(getSelectedItems());
+            this.selectedSaleAgents.setValue(getSelectedItems());
         } else {
             throw new IllegalArgumentException("Argument 'which' is out of bounds.");
         }
@@ -62,10 +59,10 @@ public class SaleAgentMultiSelectionSpinner extends AppCompatSpinner
     @Override
     public boolean performClick() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        String[] itemNames = new String[roles.size()];
+        String[] itemNames = new String[saleAgents.size()];
 
-        for (int i = 0; i < roles.size(); i++) {
-            itemNames[i] = roles.get(i).getName();
+        for (int i = 0; i < saleAgents.size(); i++) {
+            itemNames[i] = saleAgents.get(i).getFullName();
         }
 
         builder.setMultiChoiceItems(itemNames, selection, this);
@@ -88,27 +85,27 @@ public class SaleAgentMultiSelectionSpinner extends AppCompatSpinner
         throw new RuntimeException("setAdapter is not supported by MultiSelectSpinner.");
     }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-        selection = new boolean[this.roles.size()];
+    public void setSaleAgents(List<SaleAgent> saleAgents) {
+        this.saleAgents = saleAgents;
+        selection = new boolean[this.saleAgents.size()];
         adapter.clear();
         adapter.add("");
         Arrays.fill(selection, false);
     }
 
-    public MutableLiveData<Set<Role>> getSelection() {
-        return this.selectedRoles;
+    public MutableLiveData<Set<SaleAgent>> getSelection() {
+        return this.selectedSaleAgents;
     }
 
-    public void setSelection(Set<Role> selection) {
-        this.selectedRoles.setValue(selection);
+    public void setSelection(Set<SaleAgent> selection) {
+        this.selectedSaleAgents.setValue(selection);
         for (int i = 0; i < this.selection.length; i++) {
             this.selection[i] = false;
         }
 
-        for (Role sel : selection) {
-            for (int j = 0; j < roles.size(); ++j) {
-                if (roles.get(j).getName().equals(sel.getName())) {
+        for (SaleAgent sel : selection) {
+            for (int j = 0; j < saleAgents.size(); ++j) {
+                if (saleAgents.get(j).getFullName().equals(sel.getFullName())) {
                     this.selection[j] = true;
                 }
             }
@@ -122,7 +119,7 @@ public class SaleAgentMultiSelectionSpinner extends AppCompatSpinner
         StringBuilder sb = new StringBuilder();
         boolean foundOne = false;
 
-        for (int i = 0; i < roles.size(); ++i) {
+        for (int i = 0; i < saleAgents.size(); ++i) {
             if (selection[i]) {
                 if (foundOne) {
                     sb.append(", ");
@@ -130,19 +127,19 @@ public class SaleAgentMultiSelectionSpinner extends AppCompatSpinner
 
                 foundOne = true;
 
-                sb.append(roles.get(i).getName());
+                sb.append(saleAgents.get(i).getFullName());
             }
         }
 
         return sb.toString();
     }
 
-    public Set<Role> getSelectedItems() {
-        ArrayList<Role> selectedItems = new ArrayList<>();
+    public Set<SaleAgent> getSelectedItems() {
+        ArrayList<SaleAgent> selectedItems = new ArrayList<>();
 
-        for (int i = 0; i < roles.size(); ++i) {
+        for (int i = 0; i < saleAgents.size(); ++i) {
             if (selection[i]) {
-                selectedItems.add(roles.get(i));
+                selectedItems.add(saleAgents.get(i));
             }
         }
 
