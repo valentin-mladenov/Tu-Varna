@@ -19,10 +19,10 @@ public class LeaseRequestService implements LeaseRequestInterface {
     @Override
     public List<LeaseRequest> getLeaseRequests()
     {
-        List<LeaseRequest> employeeList = leaseRequestRepository.findAll();
+        List<LeaseRequest> leaseRequests = leaseRequestRepository.findAll();
 
-        if(employeeList.size() > 0) {
-            return employeeList;
+        if(leaseRequests.size() > 0) {
+            return leaseRequests;
         } else {
             return new ArrayList<>();
         }
@@ -31,13 +31,13 @@ public class LeaseRequestService implements LeaseRequestInterface {
     @Override
     public LeaseRequest getLeaseRequest(Long id) throws NullPointerException
     {
-        Optional<LeaseRequest> user = leaseRequestRepository.findById(id);
+        Optional<LeaseRequest> leaseRequest = leaseRequestRepository.findById(id);
 
-        if(!user.isPresent()) {
+        if(!leaseRequest.isPresent()) {
             throw new NullPointerException("No record exist for given id");
         }
 
-        return user.get();
+        return leaseRequest.get();
     }
 
     @Override
@@ -54,9 +54,9 @@ public class LeaseRequestService implements LeaseRequestInterface {
     @Override
     public LeaseRequest updateLeaseRequest(LeaseRequest entity) throws NullPointerException
     {
-        Optional<LeaseRequest> user = leaseRequestRepository.findById(entity.getId());
+        Optional<LeaseRequest> leaseRequest = leaseRequestRepository.findById(entity.getId());
 
-        if(!user.isPresent())
+        if(!leaseRequest.isPresent())
         {
             throw new NullPointerException("No record with that ID");
         }
@@ -67,9 +67,9 @@ public class LeaseRequestService implements LeaseRequestInterface {
     @Override
     public void deleteLeaseRequest(Long id) throws NullPointerException
     {
-        Optional<LeaseRequest> user = leaseRequestRepository.findById(id);
+        Optional<LeaseRequest> leaseRequest = leaseRequestRepository.findById(id);
 
-        if(!user.isPresent())
+        if(!leaseRequest.isPresent())
         {
             throw new NullPointerException("No record exist for given id");
         }

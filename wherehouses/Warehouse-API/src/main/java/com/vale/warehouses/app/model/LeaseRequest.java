@@ -1,14 +1,11 @@
 package com.vale.warehouses.app.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name="lease_request")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class LeaseRequest {
     @Id
@@ -22,7 +19,7 @@ public class LeaseRequest {
             fetch = FetchType.LAZY,
             mappedBy = "leaseRequest",
             cascade = CascadeType.ALL,
-            optional = true)
+            orphanRemoval = true)
     @PrimaryKeyJoinColumn
     private LeasingContract leasingContract;
 

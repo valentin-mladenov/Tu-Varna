@@ -1,9 +1,7 @@
 package com.vale.warehouses.app.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.vale.warehouses.auth.models.UserEntity;
 
 import javax.persistence.*;
@@ -13,7 +11,6 @@ import java.util.Set;
 
 @Entity
 @Table(name="sale_agent")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class SaleAgent extends AbstractPerson {
     private int rating;

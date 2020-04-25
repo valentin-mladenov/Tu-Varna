@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -28,6 +29,7 @@ public class AdminUserController {
 
         for (UserEntity user : users) {
             this.hideSensitiveData(user);
+            this.nullifyData(user);
         }
 
         return ResponseEntity.ok().body(users);
@@ -102,8 +104,15 @@ public class AdminUserController {
         }
     }
 
+    private void nullifyData(UserEntity userResult) {
+        if(userResult.getRelatedSaleAgent() != null) {
+            userResult.getRelatedSaleAgent().setWarehouses(new HashSet<>());
+        }
+    }
+
     private void hideSensitiveData(UserEntity userResult) {
         userResult.setPassword(null);
         userResult.setPasswordConfirm(null);
+
     }
 }

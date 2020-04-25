@@ -21,20 +21,12 @@ public class LeasingContractController {
     /*---get all LeasingContracts---*/
     @GetMapping
     public ResponseEntity<List<LeasingContract>> list() {
-       // throwExceptionIfAccessForbidden(RoleType.Admin);
+       throwExceptionIfAccessForbidden(RoleType.Admin);
 
         List<LeasingContract> leasingContracts = service.getLeasingContracts();
 
         for (LeasingContract leasingContract: leasingContracts) {
-            leasingContract.getWarehouse().setSaleAgents(new HashSet<>());
-            leasingContract.getWarehouse().setOwner(null);
-            leasingContract.getSaleAgent().setWarehouses(new HashSet<>());
-
-            if (leasingContract.getLeaseRequest() != null) {
-                leasingContract.getLeaseRequest().setLeasingContract(null);
-                leasingContract.getLeaseRequest().setTenant(null);
-            }
-
+            nullifyNestedObjects(leasingContract);
         }
 
         return ResponseEntity.ok(leasingContracts);
@@ -46,12 +38,11 @@ public class LeasingContractController {
     public ResponseEntity<List<LeasingContract>> listForOwner(@PathVariable("id") long id) {
         throwExceptionIfAccessForbidden(RoleType.Owner);
 
-        List<LeasingContract> leasingContracts = service.getLeasingContracts();
+        List<LeasingContract> leasingContracts = service.getLeasingContractsForOwner(id);
 
-//        for (Warehouse warehouse: warehouses) {
-//            warehouse.setSaleAgents(new HashSet<>());
-//            warehouse.setOwner(null);
-//        }
+        for (LeasingContract leasingContract: leasingContracts) {
+            nullifyNestedObjects(leasingContract);
+        }
 
         return ResponseEntity.ok(leasingContracts);
     }
@@ -61,12 +52,11 @@ public class LeasingContractController {
     public ResponseEntity<List<LeasingContract>> listForSaleAgent(@PathVariable("id") long id) {
         throwExceptionIfAccessForbidden(RoleType.Agent);
 
-        List<LeasingContract> leasingContracts = service.getLeasingContracts();
+        List<LeasingContract> leasingContracts = service.getLeasingContractsForSaleAgent(id);
 
-//        for (Warehouse warehouse: warehouses) {
-//            warehouse.setSaleAgents(new HashSet<>());
-//            warehouse.setOwner(null);
-//        }
+        for (LeasingContract leasingContract: leasingContracts) {
+            nullifyNestedObjects(leasingContract);
+        }
 
         return ResponseEntity.ok(leasingContracts);
 
@@ -76,6 +66,8 @@ public class LeasingContractController {
     @GetMapping("/{id}")
     public ResponseEntity<LeasingContract> get(@PathVariable("id") long id) {
         LeasingContract leasingContract = service.getLeasingContract(id);
+
+        nullifyNestedObjects(leasingContract);
 
         return ResponseEntity.ok(leasingContract);
     }
@@ -116,6 +108,17 @@ public class LeasingContractController {
 
         if (!isAllowed) {
             throw new AccessDeniedException("Only accessable for: " + type.toString());
+        }
+    }
+
+    private void nullifyNestedObjects(LeasingContract leasingContract) {
+        leasingContract.getWarehouse().setSaleAgents(new HashSet<>());
+        leasingContract.getWarehouse().setOwner(null);
+        leasingContract.getSaleAgent().setWarehouses(new HashSet<>());
+
+        if (leasingContract.getLeaseRequest() != null) {
+            leasingContract.getLeaseRequest().setLeasingContract(null);
+            leasingContract.getLeaseRequest().setTenant(null);
         }
     }
 }
