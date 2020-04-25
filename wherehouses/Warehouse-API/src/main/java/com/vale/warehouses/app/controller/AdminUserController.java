@@ -43,6 +43,7 @@ public class AdminUserController {
         UserEntity user = userService.getUser(id);
 
         this.hideSensitiveData(user);
+        this.nullifyData(user);
 
         return ResponseEntity.ok().body(user);
     }
@@ -57,6 +58,7 @@ public class AdminUserController {
             UserEntity userResult = userService.createUser(user);
 
             this.hideSensitiveData(userResult);
+            this.nullifyData(user);
 
             return ResponseEntity.ok().body(userResult);
         }
@@ -77,6 +79,7 @@ public class AdminUserController {
         UserEntity userResult = userService.updateUser(id, user);
 
         this.hideSensitiveData(userResult);
+        this.nullifyData(user);
 
         return ResponseEntity.ok().body(userResult);
     }

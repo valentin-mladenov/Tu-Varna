@@ -26,6 +26,8 @@ import com.vale.warehouses.R;
 import com.vale.warehouses.service.AppRequestQueue;
 import com.vale.warehouses.service.model.LeasingContract;
 import com.vale.warehouses.service.AppRequestQueue;
+import com.vale.warehouses.service.model.RoleType;
+import com.vale.warehouses.service.model.Warehouse;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -224,9 +226,29 @@ public class LeasingContractViewModel extends AndroidViewModel {
         return deleteResult;
     }
 
-    public MutableLiveData<List<LeasingContract>> getAllLeasingContracts() {
+    public MutableLiveData<List<LeasingContract>> getAllLeasingContracts(RoleType roleType) {
         allLeasingContracts = new MutableLiveData<>();
 
+        String url = "";
+
+        if (roleType.getValue() == RoleType.Admin.getValue()) {
+            url = this.url;
+        }
+        else if (roleType.getValue() == RoleType.Owner.getValue()) {
+            long id = AppRequestQueue.getToken().getUser().getRelatedOwner().getId();
+            url = this.url + "/forOwner/" + id;
+        }
+        else if (roleType.getValue() == RoleType.SaleAgent.getValue()) {
+            long id = AppRequestQueue.getToken().getUser().getRelatedSaleAgent().getId();
+            url = this.url + "/forSaleAgent/" + id;
+        }
+
+        getAll(url);
+
+        return allLeasingContracts;
+    }
+
+    public void getAll(String url) {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
             Request.Method.GET,
             url,
@@ -264,8 +286,6 @@ public class LeasingContractViewModel extends AndroidViewModel {
         };
 
         requestQueue.getRequestQueue().add(jsonArrayRequest);
-
-        return allLeasingContracts;
     }
 
     private Gson buildGson() {

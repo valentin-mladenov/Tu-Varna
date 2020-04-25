@@ -20,11 +20,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.vale.warehouses.R;
 import com.vale.warehouses.service.AppRequestQueue;
 import com.vale.warehouses.service.model.LeasingContract;
+import com.vale.warehouses.service.model.RoleType;
+import com.vale.warehouses.service.model.User;
 import com.vale.warehouses.service.model.Warehouse;
 import com.vale.warehouses.service.view_model.LeasingContractViewModel;
 import com.vale.warehouses.service.view_model.WarehouseViewModel;
 import com.vale.warehouses.ui.login.LoginActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -117,7 +120,11 @@ public class LeaseContractListActivity extends AppCompatActivity {
     }
 
     private void getAllWarehouses() {
-        leasingContractViewModel.getAllLeasingContracts().observe(this, new Observer<List<LeasingContract>>() {
+        User loggedUser = AppRequestQueue.getToken().getUser();
+        int rolePosition = (int) new ArrayList<>(loggedUser.getRoles()).get(0).getId();
+        RoleType roleType = RoleType.values()[rolePosition - 1];
+
+        leasingContractViewModel.getAllLeasingContracts(roleType).observe(this, new Observer<List<LeasingContract>>() {
             @Override
             public void onChanged(@Nullable List<LeasingContract> leasingContracts) {
                 leasingContractAdapter.submitList(leasingContracts);

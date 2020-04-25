@@ -223,7 +223,6 @@ public class WarehouseViewModel extends AndroidViewModel {
         allWarehouses = new MutableLiveData<>();
 
         String url = "";
-        int s = roleType.getValue();
 
         if (roleType.getValue() == RoleType.Admin.getValue()) {
             url = this.url;
