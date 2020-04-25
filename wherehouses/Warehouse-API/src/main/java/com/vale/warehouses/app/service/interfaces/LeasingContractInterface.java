@@ -7,6 +7,10 @@ import java.util.List;
 public interface LeasingContractInterface {
     List<LeasingContract> getLeasingContracts();
 
+    List<LeasingContract> getLeasingContractsForOwner(Long id);
+
+    List<LeasingContract> getLeasingContractsForSaleAgent(Long id);
+
     LeasingContract getLeasingContract(Long id) throws NullPointerException;
 
     LeasingContract createLeasingContract(LeasingContract entity);

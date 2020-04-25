@@ -23,7 +23,7 @@ public class LeasingContract {
     @SerializedName("tenant")
     private Tenant tenant;
 
-    @SerializedName("id")
+    @SerializedName("owner")
     private Owner owner;
 
     @SerializedName("leaseRequest")

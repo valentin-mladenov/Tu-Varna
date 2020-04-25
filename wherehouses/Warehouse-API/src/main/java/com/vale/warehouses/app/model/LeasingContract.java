@@ -1,20 +1,26 @@
 package com.vale.warehouses.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.time.OffsetDateTime;
 
 @Entity
 @Table(name="leasing_contract")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class LeasingContract {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name="leased_at")
-    private OffsetDateTime leasedAt;
+    private OffsetDateTime leasedAt = OffsetDateTime.now();
 
     @Column(name="leased_till")
-    private OffsetDateTime leasedTill;
+    private OffsetDateTime leasedTill = OffsetDateTime.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Warehouse warehouse;

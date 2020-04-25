@@ -17,48 +17,53 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 import com.vale.warehouses.R;
 import com.vale.warehouses.service.AppRequestQueue;
-import com.vale.warehouses.service.model.RoleType;
-import com.vale.warehouses.service.model.Warehouse;
+import com.vale.warehouses.service.model.LeasingContract;
+import com.vale.warehouses.service.AppRequestQueue;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-public class WarehouseViewModel extends AndroidViewModel {
+public class LeasingContractViewModel extends AndroidViewModel {
     private AppRequestQueue requestQueue;
-    private MutableLiveData<List<Warehouse>> allWarehouses;
-    private MutableLiveData<Warehouse> oneWarehouse;
-    private String url = getApplication().getResources().getString(R.string.base_url) + "/api/warehouse";
+    private MutableLiveData<List<LeasingContract>> allLeasingContracts;
+    private MutableLiveData<LeasingContract> oneLeasingContract;
+    private String url = getApplication().getResources().getString(R.string.base_url) + "/api/leasingContract";
     private MutableLiveData<Boolean> deleteResult;
 
-    public WarehouseViewModel(@NonNull Application application) {
+    public LeasingContractViewModel(@NonNull Application application) {
         super(application);
 
         requestQueue = AppRequestQueue.getInstance(application);
     }
 
-    public MutableLiveData<Warehouse> getOne(Long warehouseId) {
-        oneWarehouse = new MutableLiveData<>();
+    public MutableLiveData<LeasingContract> getOne(Long leaseContractId) {
+        oneLeasingContract = new MutableLiveData<>();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
             Request.Method.GET,
-            url + "/" + warehouseId,
+            url + "/" + leaseContractId,
             null,
             new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     VolleyLog.wtf(response.toString(), "utf-8");
-                    GsonBuilder builder = new GsonBuilder();
-                    Gson gson = builder.create();
 
-                    oneWarehouse.setValue(gson.fromJson(response.toString(), Warehouse.class));
+                    Gson gson = buildGson();
+
+                    oneLeasingContract.setValue(gson.fromJson(response.toString(), LeasingContract.class));
                 }
             },
             requestQueue.getErrorListener()) {
@@ -81,24 +86,24 @@ public class WarehouseViewModel extends AndroidViewModel {
 
         requestQueue.getRequestQueue().add(jsonObjectRequest);
 
-        return oneWarehouse;
+        return oneLeasingContract;
     }
 
-    public MutableLiveData<Warehouse> insertData(Warehouse warehouse) {
-        oneWarehouse = new MutableLiveData<>();
+    public MutableLiveData<LeasingContract> insertData(LeasingContract leaseContract) {
+        oneLeasingContract = new MutableLiveData<>();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
             Request.Method.POST,
             url,
-            getJsonObject(warehouse),
+            getJsonObject(leaseContract),
             new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     VolleyLog.wtf(response.toString(), "utf-8");
-                    GsonBuilder builder = new GsonBuilder();
-                    Gson gson = builder.create();
 
-                    oneWarehouse.setValue(gson.fromJson(response.toString(), Warehouse.class));
+                    Gson gson = buildGson();
+
+                    oneLeasingContract.setValue(gson.fromJson(response.toString(), LeasingContract.class));
                 }
             },
             requestQueue.getErrorListener()) {
@@ -121,24 +126,24 @@ public class WarehouseViewModel extends AndroidViewModel {
 
         requestQueue.getRequestQueue().add(jsonObjectRequest);
 
-        return oneWarehouse;
+        return oneLeasingContract;
     }
 
-    public MutableLiveData<Warehouse> update(Warehouse warehouse) {
-        oneWarehouse = new MutableLiveData<>();
+    public MutableLiveData<LeasingContract> update(LeasingContract leaseContract) {
+        oneLeasingContract = new MutableLiveData<>();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
             Request.Method.PUT,
-            url + "/" + warehouse.getId(),
-            getJsonObject(warehouse),
+            url + "/" + leaseContract.getId(),
+            getJsonObject(leaseContract),
             new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     VolleyLog.wtf(response.toString(), "utf-8");
-                    GsonBuilder builder = new GsonBuilder();
-                    Gson gson = builder.create();
 
-                    oneWarehouse.setValue(gson.fromJson(response.toString(), Warehouse.class));
+                    Gson gson = buildGson();
+
+                    oneLeasingContract.setValue(gson.fromJson(response.toString(), LeasingContract.class));
                 }
             },
             requestQueue.getErrorListener()) {
@@ -160,26 +165,26 @@ public class WarehouseViewModel extends AndroidViewModel {
 
         requestQueue.getRequestQueue().add(jsonObjectRequest);
 
-        return oneWarehouse;
+        return oneLeasingContract;
     }
 
-    private JSONObject getJsonObject(Warehouse warehouse) {
+    private JSONObject getJsonObject(LeasingContract leaseContract) {
         JSONObject requestBody = null;
         try {
-            requestBody = new JSONObject(new Gson().toJson(warehouse));
+            requestBody = new JSONObject(new Gson().toJson(leaseContract));
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return requestBody;
     }
 
-    public MutableLiveData<Boolean> delete(Warehouse warehouse) {
+    public MutableLiveData<Boolean> delete(LeasingContract leaseContract) {
         deleteResult = new MutableLiveData<>();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
             Request.Method.PUT,
-            url + "/" + warehouse.getId(),
-            getJsonObject(warehouse),
+            url + "/" + leaseContract.getId(),
+            getJsonObject(leaseContract),
             new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
@@ -219,48 +224,27 @@ public class WarehouseViewModel extends AndroidViewModel {
         return deleteResult;
     }
 
-    public MutableLiveData<List<Warehouse>> getAllWarehouses(RoleType roleType) {
-        allWarehouses = new MutableLiveData<>();
+    public MutableLiveData<List<LeasingContract>> getAllLeasingContracts() {
+        allLeasingContracts = new MutableLiveData<>();
 
-        String url = "";
-        int s = roleType.getValue();
-
-        if (roleType.getValue() == RoleType.Admin.getValue()) {
-            url = this.url;
-        }
-        else if (roleType.getValue() == RoleType.Owner.getValue()) {
-            long id = AppRequestQueue.getToken().getUser().getRelatedOwner().getId();
-            url = this.url + "/forOwner/" + id;
-        }
-        else if (roleType.getValue() == RoleType.SaleAgent.getValue()) {
-            long id = AppRequestQueue.getToken().getUser().getRelatedSaleAgent().getId();
-            url = this.url + "/forSaleAgent/" + id;
-        }
-
-        getAll(url);
-
-        return allWarehouses;
-    }
-
-    private void getAll(String url) {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                Request.Method.GET,
-                url,
-                null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
+            Request.Method.GET,
+            url,
+            null,
+            new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
 
-                        VolleyLog.wtf(response.toString(), "utf-8");
-                        GsonBuilder builder = new GsonBuilder();
-                        Gson gson = builder.create();
+                    VolleyLog.wtf(response.toString(), "utf-8");
 
-                        Type listType = new TypeToken<List<Warehouse>>(){}.getType();
-                        List<Warehouse> warehouses = gson.fromJson(response.toString(), listType);
-                        allWarehouses.setValue(warehouses);
-                    }
-                },
-                requestQueue.getErrorListener()) {
+                    Gson gson = buildGson();
+
+                    Type listType = new TypeToken<List<LeasingContract>>(){}.getType();
+                    List<LeasingContract> leaseContracts = gson.fromJson(response.toString(), listType);
+                    allLeasingContracts.setValue(leaseContracts);
+                }
+            },
+            requestQueue.getErrorListener()) {
             //This is for Headers If You Needed
 
             @Override
@@ -280,6 +264,21 @@ public class WarehouseViewModel extends AndroidViewModel {
         };
 
         requestQueue.getRequestQueue().add(jsonArrayRequest);
+
+        return allLeasingContracts;
     }
 
+    private Gson buildGson() {
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder
+                .registerTypeAdapter(OffsetDateTime.class, new JsonDeserializer<OffsetDateTime>() {
+                    @Override
+                    public OffsetDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+                            throws JsonParseException {
+                        return OffsetDateTime.parse(json.getAsString());
+                    }
+                }).create();
+
+        return gson;
+    }
 }

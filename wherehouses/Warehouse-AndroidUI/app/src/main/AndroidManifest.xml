@@ -24,6 +24,11 @@
         <activity android:name=".ui.warehouses.AddEditWarehouseActivity"
             android:parentActivityName=".ui.warehouses.WarehouseListActivity" />
 
+        <activity android:name=".ui.lease_contract.LeaseContractListActivity"
+            android:parentActivityName=".ui.loggedin.LoggedInActivity" />
+        <activity android:name=".ui.lease_contract.AddEditLeasingContractActivity"
+            android:parentActivityName=".ui.lease_contract.LeaseContractListActivity" />
+
         <activity android:name=".ui.loggedin.LoggedInActivity" />
         <activity
             android:name=".ui.login.LoginActivity"

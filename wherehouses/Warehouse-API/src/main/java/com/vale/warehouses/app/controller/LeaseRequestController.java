@@ -1,6 +1,7 @@
 package com.vale.warehouses.app.controller;
 
 import com.vale.warehouses.app.model.LeaseRequest;
+import com.vale.warehouses.app.model.LeasingContract;
 import com.vale.warehouses.app.service.interfaces.LeaseRequestInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,10 @@ public class LeaseRequestController {
     public ResponseEntity<List<LeaseRequest>> list() {
         List<LeaseRequest> leaseRequests = service.getLeaseRequests();
 
+        for (LeaseRequest leaseRequest: leaseRequests) {
+            nullifyContractData(leaseRequest);
+        }
+
         return ResponseEntity.ok(leaseRequests);
     }
 
@@ -26,6 +31,8 @@ public class LeaseRequestController {
     @GetMapping("/{id}")
     public ResponseEntity<LeaseRequest> get(@PathVariable("id") long id) {
         LeaseRequest leaseRequest = service.getLeaseRequest(id);
+
+        nullifyContractData(leaseRequest);
 
         return ResponseEntity.ok(leaseRequest);
     }
@@ -52,5 +59,16 @@ public class LeaseRequestController {
         service.deleteLeaseRequest(id);
 
         return (ResponseEntity<?>) ResponseEntity.noContent();
+    }
+
+    private void nullifyContractData(LeaseRequest leaseRequest) {
+        LeasingContract leasingContract =  leaseRequest.getLeasingContract();
+        if(leasingContract != null){
+            leasingContract.setLeaseRequest(null);
+            leasingContract.getSaleAgent().setWarehouses(null);
+            leasingContract.getWarehouse().setSaleAgents(null);
+            leasingContract.getWarehouse().setOwner(null);
+            leasingContract.setTenant(null);
+        }
     }
 }

@@ -9,5 +9,7 @@ import java.util.List;
 @Repository
 public interface WarehouseRepository extends JpaRepository<Warehouse, Long> {
     List<Warehouse> findBySaleAgentsId(Long id);
+
     List<Warehouse> findByOwnerId(Long id);
+    
 }

@@ -19,10 +19,32 @@ public class LeasingContractService implements LeasingContractInterface {
     @Override
     public List<LeasingContract> getLeasingContracts()
     {
-        List<LeasingContract> employeeList = repository.findAll();
+        List<LeasingContract> leasingContracts = repository.findAll();
 
-        if(employeeList.size() > 0) {
-            return employeeList;
+        if(leasingContracts.size() > 0) {
+            return leasingContracts;
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public List<LeasingContract> getLeasingContractsForOwner(Long id) {
+        List<LeasingContract> leasingContracts = repository.findByOwnerId(id);
+
+        if(leasingContracts.size() > 0) {
+            return leasingContracts;
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public List<LeasingContract> getLeasingContractsForSaleAgent(Long id) {
+        List<LeasingContract> leasingContracts = repository.findBySaleAgentId(id);
+
+        if(leasingContracts.size() > 0) {
+            return leasingContracts;
         } else {
             return new ArrayList<>();
         }
@@ -31,13 +53,13 @@ public class LeasingContractService implements LeasingContractInterface {
     @Override
     public LeasingContract getLeasingContract(Long id) throws NullPointerException
     {
-        Optional<LeasingContract> user = repository.findById(id);
+        Optional<LeasingContract> leasingContract = repository.findById(id);
 
-        if(!user.isPresent()) {
+        if(!leasingContract.isPresent()) {
             throw new NullPointerException("No record exist for given id");
         }
 
-        return user.get();
+        return leasingContract.get();
     }
 
     @Override
@@ -54,9 +76,9 @@ public class LeasingContractService implements LeasingContractInterface {
     @Override
     public LeasingContract updateLeasingContract(LeasingContract entity) throws NullPointerException
     {
-        Optional<LeasingContract> user = repository.findById(entity.getId());
+        Optional<LeasingContract> leasingContract = repository.findById(entity.getId());
 
-        if(!user.isPresent())
+        if(!leasingContract.isPresent())
         {
             throw new NullPointerException("No record with that ID");
         }
@@ -67,9 +89,9 @@ public class LeasingContractService implements LeasingContractInterface {
     @Override
     public void deleteLeasingContract(Long id) throws NullPointerException
     {
-        Optional<LeasingContract> user = repository.findById(id);
+        Optional<LeasingContract> leasingContract = repository.findById(id);
 
-        if(!user.isPresent())
+        if(!leasingContract.isPresent())
         {
             throw new NullPointerException("No record exist for given id");
         }

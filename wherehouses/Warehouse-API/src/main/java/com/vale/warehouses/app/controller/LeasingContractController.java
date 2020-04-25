@@ -2,10 +2,14 @@ package com.vale.warehouses.app.controller;
 
 import com.vale.warehouses.app.model.LeasingContract;
 import com.vale.warehouses.app.service.interfaces.LeasingContractInterface;
+import com.vale.warehouses.auth.models.RoleType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -17,9 +21,55 @@ public class LeasingContractController {
     /*---get all LeasingContracts---*/
     @GetMapping
     public ResponseEntity<List<LeasingContract>> list() {
-        List<LeasingContract> LeasingContracts = service.getLeasingContracts();
+       // throwExceptionIfAccessForbidden(RoleType.Admin);
 
-        return ResponseEntity.ok(LeasingContracts);
+        List<LeasingContract> leasingContracts = service.getLeasingContracts();
+
+        for (LeasingContract leasingContract: leasingContracts) {
+            leasingContract.getWarehouse().setSaleAgents(new HashSet<>());
+            leasingContract.getWarehouse().setOwner(null);
+            leasingContract.getSaleAgent().setWarehouses(new HashSet<>());
+
+            if (leasingContract.getLeaseRequest() != null) {
+                leasingContract.getLeaseRequest().setLeasingContract(null);
+                leasingContract.getLeaseRequest().setTenant(null);
+            }
+
+        }
+
+        return ResponseEntity.ok(leasingContracts);
+    }
+
+
+    /*---get all warehouses---*/
+    @GetMapping("forOwner/{id}")
+    public ResponseEntity<List<LeasingContract>> listForOwner(@PathVariable("id") long id) {
+        throwExceptionIfAccessForbidden(RoleType.Owner);
+
+        List<LeasingContract> leasingContracts = service.getLeasingContracts();
+
+//        for (Warehouse warehouse: warehouses) {
+//            warehouse.setSaleAgents(new HashSet<>());
+//            warehouse.setOwner(null);
+//        }
+
+        return ResponseEntity.ok(leasingContracts);
+    }
+
+    /*---get all warehouses---*/
+    @GetMapping("forSaleAgent/{id}")
+    public ResponseEntity<List<LeasingContract>> listForSaleAgent(@PathVariable("id") long id) {
+        throwExceptionIfAccessForbidden(RoleType.Agent);
+
+        List<LeasingContract> leasingContracts = service.getLeasingContracts();
+
+//        for (Warehouse warehouse: warehouses) {
+//            warehouse.setSaleAgents(new HashSet<>());
+//            warehouse.setOwner(null);
+//        }
+
+        return ResponseEntity.ok(leasingContracts);
+
     }
 
     /*---Get a LeasingContract by id---*/
@@ -54,5 +104,18 @@ public class LeasingContractController {
         service.deleteLeasingContract(id);
 
         return (ResponseEntity<?>) ResponseEntity.noContent();
+    }
+
+    private void throwExceptionIfAccessForbidden(RoleType type) throws AccessDeniedException {
+        boolean isAllowed = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getAuthorities()
+                .stream()
+                .anyMatch(r -> r.getAuthority().equals(type.toString()));
+
+        if (!isAllowed) {
+            throw new AccessDeniedException("Only accessable for: " + type.toString());
+        }
     }
 }

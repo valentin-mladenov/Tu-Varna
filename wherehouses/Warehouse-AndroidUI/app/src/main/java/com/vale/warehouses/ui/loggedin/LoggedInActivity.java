@@ -16,6 +16,7 @@ import com.vale.warehouses.R;
 import com.vale.warehouses.service.AppRequestQueue;
 import com.vale.warehouses.service.model.Role;
 import com.vale.warehouses.service.model.RoleType;
+import com.vale.warehouses.ui.lease_contract.LeaseContractListActivity;
 import com.vale.warehouses.ui.login.LoginActivity;
 import com.vale.warehouses.ui.users.UserListActivity;
 import com.vale.warehouses.ui.warehouses.WarehouseListActivity;
@@ -73,7 +74,10 @@ public class LoggedInActivity extends AppCompatActivity {
         finish();
     }
 
-    public void openWarehouseContracts(View view) {
+    public void openLeasingContracts(View view) {
+        Intent intent = new Intent(LoggedInActivity.this, LeaseContractListActivity.class);
+
+        startActivity(intent);
     }
 
     public void openWarehouses(View view) {
