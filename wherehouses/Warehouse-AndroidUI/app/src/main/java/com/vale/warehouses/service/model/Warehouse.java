@@ -40,8 +40,8 @@ public class Warehouse implements Serializable {
     @SerializedName("saleAgents")
     private Set<SaleAgent> saleAgents = new HashSet<>();
 
-//    @SerializedName("leasingContracts")
-//    private Set<LeasingContracts> leasingContracts = new HashSet<>();
+    @SerializedName("leasingContracts")
+    private Set<LeasingContract> leasingContracts = new HashSet<>();
 
     public long getId() {
         return id;

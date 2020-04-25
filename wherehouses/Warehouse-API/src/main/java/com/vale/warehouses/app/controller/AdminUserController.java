@@ -1,6 +1,7 @@
 package com.vale.warehouses.app.controller;
 
 import com.vale.warehouses.app.service.AdminUserService;
+import com.vale.warehouses.auth.models.RoleType;
 import com.vale.warehouses.auth.models.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -94,7 +95,7 @@ public class AdminUserController {
                 .getAuthentication()
                 .getAuthorities()
                 .stream()
-                .anyMatch(r -> r.getAuthority().toLowerCase().equals("admin"));
+                .anyMatch(r -> r.getAuthority().equals(RoleType.Admin.toString()));
 
         if (!isAdmin) {
             throw new AccessDeniedException("Admins only");

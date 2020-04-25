@@ -40,6 +40,10 @@ public class WarehouseListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.warehouse_main_activity);
 
+        if (AppRequestQueue.getToken().getUser().getRelatedSaleAgent() != null) {
+            findViewById(R.id.button_add_warehouse).setVisibility(View.GONE);
+        }
+
         Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(R.drawable.ic_back);
 
         FloatingActionButton buttonAddNote = findViewById(R.id.button_add_warehouse);
@@ -67,7 +71,7 @@ public class WarehouseListActivity extends AppCompatActivity {
             public void onItemClick(Warehouse warehouse) {
                 Intent intent = new Intent(WarehouseListActivity.this, AddEditWarehouseActivity.class);
 
-                intent.putExtra("USER_ID", warehouse.getId());
+                intent.putExtra("WAREHOUSE_ID", warehouse.getId());
 
                 startActivityForResult(intent, EDIT_REQUEST);
             }

@@ -53,11 +53,11 @@ public class Warehouse {
         this.address = address;
     }
 
-    public Set<SaleAgent> getAgents() {
+    public Set<SaleAgent> getSaleAgents() {
         return saleAgents;
     }
 
-    public void setAgents(Set<SaleAgent> agents) {
+    public void setSaleAgents(Set<SaleAgent> agents) {
         this.saleAgents = agents;
     }
 

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -18,6 +19,10 @@ public class SaleAgentController {
     @GetMapping
     public ResponseEntity<List<SaleAgent>> list() {
         List<SaleAgent> saleAgents = service.getSaleAgents();
+
+        for (SaleAgent saleAgent: saleAgents) {
+            saleAgent.setWarehouses(new HashSet<>());
+        }
 
         return ResponseEntity.ok(saleAgents);
     }

@@ -7,9 +7,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.RatingBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -19,27 +17,23 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.vale.warehouses.R;
+import com.vale.warehouses.service.AppRequestQueue;
 import com.vale.warehouses.service.model.Category;
-import com.vale.warehouses.service.model.Owner;
 import com.vale.warehouses.service.model.SaleAgent;
-import com.vale.warehouses.service.model.SaleAgent;
-import com.vale.warehouses.service.model.Tenant;
 import com.vale.warehouses.service.model.Warehouse;
 import com.vale.warehouses.service.model.WarehouseType;
 import com.vale.warehouses.service.view_model.SaleAgentViewModel;
 import com.vale.warehouses.service.view_model.WarehouseViewModel;
-import com.vale.warehouses.ui.warehouses.SaleAgentMultiSelectionSpinner;
 
-import java.net.Proxy;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 public class AddEditWarehouseActivity extends AppCompatActivity {
-    public static final String USER_ID = "USER_ID";
+    public static final String WAREHOUSE_ID = "WAREHOUSE_ID";
 
     private SaleAgentViewModel saleAgentViewModel;
     private WarehouseViewModel warehouseViewModel;
@@ -48,7 +42,8 @@ public class AddEditWarehouseActivity extends AppCompatActivity {
     private TextInputLayout editTextAddress,
                             editTextWidth,
                             editTextHeight,
-                            editTextLength;
+                            editTextLength,
+                            editTextPricePerMonth;
 
     private Spinner editSpinnerType, editSpinnerCategory;
 
@@ -69,6 +64,7 @@ public class AddEditWarehouseActivity extends AppCompatActivity {
         editTextWidth = findViewById(R.id.edit_text_width);
         editTextHeight = findViewById(R.id.edit_text_height);
         editTextLength = findViewById(R.id.edit_text_length);
+        editTextPricePerMonth = findViewById(R.id.edit_text_price_per_month);
 
         editSpinnerType = findViewById(R.id.spinner_types);
         editSpinnerType.setAdapter(new ArrayAdapter<>(
@@ -82,6 +78,20 @@ public class AddEditWarehouseActivity extends AppCompatActivity {
         editSpinnerCategory.setAdapter(new ArrayAdapter<>(
                         this, android.R.layout.simple_list_item_1, Category.values()));
 
+        warehouse = new Warehouse();
+
+        if (AppRequestQueue.getToken().getUser().getRelatedSaleAgent() != null) {
+            editTextAddress.setEnabled(false);
+            editTextWidth.setEnabled(false);
+            editTextHeight.setEnabled(false);
+            editTextLength.setEnabled(false);
+            editTextPricePerMonth.setEnabled(false);
+            editSpinnerType.setEnabled(false);
+            editSpinnerCategory.setEnabled(false);
+            saleAgentSpinner.setEnabled(false);
+            findViewById(R.id.save_item).setEnabled(false);
+        }
+
         saleAgentSpinner = findViewById(R.id.sale_agent_spinner);
         saleAgentSpinner.getSelection().observe(this, new Observer<Set<SaleAgent>>() {
             @Override
@@ -90,7 +100,6 @@ public class AddEditWarehouseActivity extends AppCompatActivity {
             }
         });
 
-        warehouse = new Warehouse();
 
         final AddEditWarehouseActivity that = this;
 
@@ -101,28 +110,21 @@ public class AddEditWarehouseActivity extends AppCompatActivity {
             public void onChanged(@Nullable List<SaleAgent> saleAgents) {
                 saleAgentSpinner.setSaleAgents(saleAgents);
 
-                if (getIntent().hasExtra(USER_ID)) {
+                if (getIntent().hasExtra(WAREHOUSE_ID)) {
                     setTitle(getString(R.string.edit));
 
-                    Long warehouseId = getIntent().getExtras().getLong(USER_ID);
+                    Long warehouseId = getIntent().getExtras().getLong(WAREHOUSE_ID);
 
                     warehouseViewModel.getOne(warehouseId).observe(that, new Observer<Warehouse>() {
                         @Override
                         public void onChanged(@Nullable Warehouse warehouseRes) {
-//                            warehouse.set(warehouseRes.getEmail());
-//                            warehouse.setId(warehouseRes.getId());
-//                            warehouse.setWarehouseName(warehouseRes.getWarehouseName());
-//                            warehouse.setSaleAgents(warehouseRes.getSaleAgents());
-//                            warehouse.setRelatedSaleAgent(warehouseRes.getRelatedSaleAgent());
-//                            warehouse.setRelatedOwner(warehouseRes.getRelatedOwner());
-//                            warehouse.setRelatedTenant(warehouseRes.getRelatedTenant());
                             warehouse = warehouseRes;
 
-                            // TODO price per month
                             editTextAddress.getEditText().setText(warehouse.getAddress());
                             editTextHeight.getEditText().setText(String.valueOf(warehouse.getHeight()));
                             editTextWidth.getEditText().setText(String.valueOf(warehouse.getWidth()));
                             editTextLength.getEditText().setText(String.valueOf(warehouse.getLength()));
+                            editTextPricePerMonth.getEditText().setText(String.valueOf(warehouse.getPricePerMonth()));
 
                             editSpinnerCategory.setSelection(categories.indexOf(warehouse.getCategory()));
                             editSpinnerType.setSelection(warehouseTypes.indexOf(warehouse.getType()));
@@ -132,6 +134,7 @@ public class AddEditWarehouseActivity extends AppCompatActivity {
                     });
                 } else {
                     setTitle(getString(R.string.add));
+                    warehouse.setOwner(AppRequestQueue.getToken().getUser().getRelatedOwner());
 
                     saleAgentSpinner.setSelection(warehouse.getSaleAgents());
                 }
@@ -145,11 +148,12 @@ public class AddEditWarehouseActivity extends AppCompatActivity {
             warehouse.setHeight(Double.parseDouble(editTextHeight.getEditText().getText().toString()));
             warehouse.setWidth(Double.parseDouble(editTextWidth.getEditText().getText().toString()));
             warehouse.setLength(Double.parseDouble(editTextLength.getEditText().getText().toString()));
+            warehouse.setPricePerMonth(new BigDecimal(editTextPricePerMonth.getEditText().getText().toString()));
 
             warehouse.setCategory(Category.valueOf(editSpinnerCategory.getSelectedItem().toString()));
             warehouse.setType(WarehouseType.valueOf(editSpinnerType.getSelectedItem().toString()));
 
-            if (getIntent().hasExtra(USER_ID)) {
+            if (getIntent().hasExtra(WAREHOUSE_ID)) {
                 warehouseViewModel.update(warehouse).observe(this, new Observer<Warehouse>() {
                     @Override
                     public void onChanged(Warehouse updatedWarehouse) {

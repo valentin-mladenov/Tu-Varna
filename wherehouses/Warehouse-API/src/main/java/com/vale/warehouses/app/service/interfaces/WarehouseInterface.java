@@ -7,6 +7,10 @@ import java.util.List;
 public interface WarehouseInterface {
     List<Warehouse> getWarehouses();
 
+    List<Warehouse> getWarehousesForOwner(Long id);
+
+    List<Warehouse> getWarehousesForSaleAgent(Long id);
+
     Warehouse getWarehouse(Long id) throws NullPointerException;
 
     Warehouse createWarehouse(Warehouse entity);

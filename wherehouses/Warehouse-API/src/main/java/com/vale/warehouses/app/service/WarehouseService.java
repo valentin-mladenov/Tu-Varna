@@ -29,6 +29,28 @@ public class WarehouseService implements WarehouseInterface {
     }
 
     @Override
+    public List<Warehouse> getWarehousesForOwner(Long id) {
+        List<Warehouse> warehouseList = repository.findByOwnerId(id);
+
+        if(warehouseList.size() > 0) {
+            return warehouseList;
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public List<Warehouse> getWarehousesForSaleAgent(Long id) {
+        List<Warehouse> warehouseList = repository.findBySaleAgentsId(id);
+
+        if(warehouseList.size() > 0) {
+            return warehouseList;
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
     public Warehouse getWarehouse(Long id) throws NullPointerException
     {
         Optional<Warehouse> user = repository.findById(id);
