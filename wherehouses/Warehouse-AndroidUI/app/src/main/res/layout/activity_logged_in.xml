@@ -39,16 +39,36 @@
             android:text="@string/warehouses"
             android:visibility="gone" />
 
-    <Button
-        android:id="@+id/warehouse_requests"
-        style="@style/Widget.AppCompat.Button"
+    <TextView
+        android:id="@+id/text_notifications"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="10dp"
-        android:onClick="openWarehouseRequests"
-        android:text="@string/warehouse_requests"
-        android:visibility="gone" />
+        android:text="@string/notifications"
+        android:visibility="visible" />
 
+
+    <ListView
+        android:id="@+id/lease_requests_notifications"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible" />
+
+    <ListView
+        android:id="@+id/expired_leases_notifications"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        />
+
+<!--    <Button-->
+<!--        android:id="@+id/warehouse_requests"-->
+<!--        style="@style/Widget.AppCompat.Button"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginVertical="10dp"-->
+<!--        android:onClick="openWarehouseRequests"-->
+<!--        android:text="@string/warehouse_requests"-->
+<!--        android:visibility="visible" />-->
     <!--    <Button-->
     <!--        android:id="@+id/owners"-->
     <!--        style="@style/Widget.AppCompat.Button"-->

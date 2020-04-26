@@ -124,7 +124,8 @@ public class LeaseContractListActivity extends AppCompatActivity {
         int rolePosition = (int) new ArrayList<>(loggedUser.getRoles()).get(0).getId();
         RoleType roleType = RoleType.values()[rolePosition - 1];
 
-        leasingContractViewModel.getAllLeasingContracts(roleType).observe(this, new Observer<List<LeasingContract>>() {
+        leasingContractViewModel.getAllLeasingContracts(roleType, null, null)
+        .observe(this, new Observer<List<LeasingContract>>() {
             @Override
             public void onChanged(@Nullable List<LeasingContract> leasingContracts) {
                 leasingContractAdapter.submitList(leasingContracts);

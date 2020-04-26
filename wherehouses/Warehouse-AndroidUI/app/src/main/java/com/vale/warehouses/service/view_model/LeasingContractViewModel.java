@@ -220,7 +220,9 @@ public class LeasingContractViewModel extends AndroidViewModel {
         return deleteResult;
     }
 
-    public MutableLiveData<List<LeasingContract>> getAllLeasingContracts(RoleType roleType) {
+    public MutableLiveData<List<LeasingContract>> getAllLeasingContracts(
+            RoleType roleType, OffsetDateTime fromDate, OffsetDateTime toDate
+    ) {
         allLeasingContracts = new MutableLiveData<>();
 
         String url = "";
@@ -235,6 +237,30 @@ public class LeasingContractViewModel extends AndroidViewModel {
         else if (roleType.getValue() == RoleType.SaleAgent.getValue()) {
             long id = AppRequestQueue.getToken().getUser().getRelatedSaleAgent().getId();
             url = this.url + "/forSaleAgent/" + id;
+        }
+
+        getAll(url);
+
+        return allLeasingContracts;
+    }
+
+    public MutableLiveData<List<LeasingContract>> getEndingSoonContracts(
+            RoleType roleType
+    ) {
+        allLeasingContracts = new MutableLiveData<>();
+
+        String url = "";
+
+        if (roleType.getValue() == RoleType.Admin.getValue()) {
+            url = this.url;
+        }
+        else if (roleType.getValue() == RoleType.Owner.getValue()) {
+            long id = AppRequestQueue.getToken().getUser().getRelatedOwner().getId();
+            url = this.url + "/endingSoon/forOwner/" + id;
+        }
+        else if (roleType.getValue() == RoleType.SaleAgent.getValue()) {
+            long id = AppRequestQueue.getToken().getUser().getRelatedSaleAgent().getId();
+            url = this.url + "/endingSoon/forSaleAgent/" + id;
         }
 
         getAll(url);

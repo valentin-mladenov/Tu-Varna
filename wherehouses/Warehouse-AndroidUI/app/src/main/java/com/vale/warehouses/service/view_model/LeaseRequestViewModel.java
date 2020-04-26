@@ -249,7 +249,11 @@ public class LeaseRequestViewModel extends AndroidViewModel {
     public MutableLiveData<List<LeaseRequest>> getAllNotCompleted(Long id) {
         allLeaseRequests = new MutableLiveData<>();
 
-        getAll(this.url + "/notCompeted/" + id);
+        String url = (id == null )
+                ? this.url + "/notCompeted"
+                : this.url + "/notCompeted/" + id;
+
+        getAll(url);
 
         return allLeaseRequests;
     }

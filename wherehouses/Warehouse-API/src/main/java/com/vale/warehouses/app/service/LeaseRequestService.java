@@ -29,14 +29,13 @@ public class LeaseRequestService implements LeaseRequestInterface {
     }
 
     @Override
-    public List<LeaseRequest> getLeaseRequestsWithoutContract(Long id) {
-        List<LeaseRequest> leaseRequests = leaseRequestRepository.findByTenantIdAndLeasingContractIsNull(id);
+    public List<LeaseRequest> getLeaseRequestsWithoutContract(Long id)
+    {
+        List<LeaseRequest> leaseRequests = (id == null)
+            ? leaseRequestRepository.findByLeasingContractIsNull()
+            : leaseRequestRepository.findByTenantIdAndLeasingContractIsNull(id);
 
-        if(leaseRequests.size() > 0) {
-            return leaseRequests;
-        } else {
-            return new ArrayList<>();
-        }
+        return leaseRequests;
     }
 
     @Override

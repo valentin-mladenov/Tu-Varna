@@ -71,4 +71,5 @@
     <string name="leaseContract_created">Leasing Contract Created.</string>
     <string name="leased_at_less_than_leased_till">Leased At month must be before Leased Till</string>
     <string name="inspect">Inspect</string>
+    <string name="notifications">Notifications</string>
 </resources>

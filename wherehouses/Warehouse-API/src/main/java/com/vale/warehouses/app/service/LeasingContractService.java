@@ -43,7 +43,22 @@ public class LeasingContractService implements LeasingContractInterface {
     @Override
     public List<LeasingContract> getLeasingContractsForSaleAgent(
             Long id, OffsetDateTime fromDate, OffsetDateTime toDate) {
-        List<LeasingContract> leasingContracts = repository.findBySaleAgentIdAndLeasedAtBetween(id, fromDate, toDate);
+        List<LeasingContract> leasingContracts = repository
+                .findBySaleAgentIdAndLeasedAtBetween(id, fromDate, toDate);
+
+        if(leasingContracts.size() > 0) {
+            return leasingContracts;
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public List<LeasingContract> getEndingSoonLeasingContractsForSaleAgent(
+            Long id, OffsetDateTime leasedTill
+    ) {
+        List<LeasingContract> leasingContracts = repository
+                .findBySaleAgentIdAndLeasedTillBeforeOrderByLeasedTillDesc(id, leasedTill);
 
         if(leasingContracts.size() > 0) {
             return leasingContracts;

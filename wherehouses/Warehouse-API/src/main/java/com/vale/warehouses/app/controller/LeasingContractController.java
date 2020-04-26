@@ -74,7 +74,22 @@ public class LeasingContractController {
         }
 
         return ResponseEntity.ok(leasingContracts);
+    }
 
+    /*---get all warehouses---*/
+    @GetMapping("endingSoon/forSaleAgent/{id}")
+    public ResponseEntity<List<LeasingContract>> endingSoonForSaleAgent(@PathVariable("id") long id) {
+        throwExceptionIfAccessForbidden(RoleType.Agent);
+
+        OffsetDateTime monthFromNow = OffsetDateTime.now().plusMonths(1).plusDays(3);
+
+        List<LeasingContract> leasingContracts = service.getEndingSoonLeasingContractsForSaleAgent(id, monthFromNow);
+
+        for (LeasingContract leasingContract: leasingContracts) {
+            nullifyNestedObjects(leasingContract);
+        }
+
+        return ResponseEntity.ok(leasingContracts);
     }
 
     /*---Get a LeasingContract by id---*/

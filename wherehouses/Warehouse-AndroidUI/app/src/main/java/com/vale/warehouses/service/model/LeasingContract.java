@@ -1,8 +1,12 @@
 package com.vale.warehouses.service.model;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
+import com.vale.warehouses.R;
 
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class LeasingContract {
     @SerializedName("id")
@@ -91,5 +95,14 @@ public class LeasingContract {
 
     public void setLeaseRequest(LeaseRequest leaseRequest) {
         this.leaseRequest = leaseRequest;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Warehouse at: " + getWarehouse().getAddress()
+                + ", owned by: " + owner.getFullName()
+                + ", rented by: " + tenant.getFullName()
+                + ", lease expires at: " + leasedTill.format(DateTimeFormatter.ofPattern("dd MMM YYYY"));
     }
 }

@@ -12,6 +12,8 @@ public interface LeasingContractInterface {
 
     List<LeasingContract> getLeasingContractsForSaleAgent(Long id, OffsetDateTime fromDate, OffsetDateTime toDate);
 
+    List<LeasingContract> getEndingSoonLeasingContractsForSaleAgent(Long id, OffsetDateTime leasedTill);
+
     LeasingContract getLeasingContract(Long id) throws NullPointerException;
 
     LeasingContract createLeasingContract(LeasingContract entity);
