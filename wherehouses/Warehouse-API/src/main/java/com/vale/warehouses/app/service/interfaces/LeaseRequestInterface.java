@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface LeaseRequestInterface {
     List<LeaseRequest> getLeaseRequests();
-    List<LeaseRequest> getLeaseRequestsWithoutContract();
+    List<LeaseRequest> getLeaseRequestsWithoutContract(Long id);
 
     LeaseRequest getLeaseRequest(Long id) throws NullPointerException;
 

@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface LeaseRequestRepository extends JpaRepository<LeaseRequest, Long> {
-    List<LeaseRequest> findByLeasingContractIsNull();
+    List<LeaseRequest> findByTenantIdAndLeasingContractIsNull(Long id);
 }

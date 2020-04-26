@@ -246,7 +246,15 @@ public class LeaseRequestViewModel extends AndroidViewModel {
         return allLeaseRequests;
     }
 
-    public void getAll(String url) {
+    public MutableLiveData<List<LeaseRequest>> getAllNotCompleted(Long id) {
+        allLeaseRequests = new MutableLiveData<>();
+
+        getAll(this.url + "/notCompeted/" + id);
+
+        return allLeaseRequests;
+    }
+
+    private void getAll(String url) {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
             Request.Method.GET,
             url,

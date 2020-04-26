@@ -29,8 +29,8 @@ public class LeaseRequestService implements LeaseRequestInterface {
     }
 
     @Override
-    public List<LeaseRequest> getLeaseRequestsWithoutContract() {
-        List<LeaseRequest> leaseRequests = leaseRequestRepository.findByLeasingContractIsNull();
+    public List<LeaseRequest> getLeaseRequestsWithoutContract(Long id) {
+        List<LeaseRequest> leaseRequests = leaseRequestRepository.findByTenantIdAndLeasingContractIsNull(id);
 
         if(leaseRequests.size() > 0) {
             return leaseRequests;

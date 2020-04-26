@@ -64,4 +64,6 @@
     <string name="leased_at">Leased at</string>
     <string name="leased_till">Leased till</string>
     <string name="total_price">Total Price</string>
+    <string name="date_format">dd MMM YYYY</string>
+    <string name="months">Months</string>
 </resources>

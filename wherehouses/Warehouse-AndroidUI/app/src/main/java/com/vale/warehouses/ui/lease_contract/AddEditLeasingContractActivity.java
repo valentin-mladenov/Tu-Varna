@@ -1,12 +1,18 @@
 package com.vale.warehouses.ui.lease_contract;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -14,14 +20,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.vale.warehouses.R;
 import com.vale.warehouses.service.AppRequestQueue;
 import com.vale.warehouses.service.model.Category;
 import com.vale.warehouses.service.model.LeaseRequest;
+import com.vale.warehouses.service.model.RoleType;
 import com.vale.warehouses.service.model.SaleAgent;
 import com.vale.warehouses.service.model.LeasingContract;
 import com.vale.warehouses.service.model.Tenant;
+import com.vale.warehouses.service.model.User;
 import com.vale.warehouses.service.model.Warehouse;
 import com.vale.warehouses.service.view_model.LeaseRequestViewModel;
 import com.vale.warehouses.service.view_model.LeasingContractViewModel;
@@ -30,88 +39,277 @@ import com.vale.warehouses.service.view_model.TenantViewModel;
 import com.vale.warehouses.service.view_model.WarehouseViewModel;
 
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 
 public class AddEditLeasingContractActivity extends AppCompatActivity {
     public static final String LEASE_CONTRACT_ID = "LEASE_CONTRACT_ID";
+    private DateTimeFormatter format;
 
     private WarehouseViewModel warehouseViewModel;
     private LeasingContractViewModel leaseContractViewModel;
     private TenantViewModel tenantViewModel;
     private LeaseRequestViewModel leaseRequestViewModel;
     private LeasingContract leaseContract;
-    private TextInputLayout editTextLeasedAt, editTextLeasedTill, editTextTotalPrice;
+    private TextInputEditText editTextLeasedAt, editTextLeasedTill;
+    private TextInputLayout editTextTotalPrice, editTextMonths;
+    private TextView textLeaseRequest;
 
     private Spinner editSpinnerWarehouse, editSpinnerTenant, editSpinnerLeaseRequests;
-
-    private ArrayList<Category> categories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.leasing_contract_activity_add_edit);
+        final AddEditLeasingContractActivity that = this;
+        format = DateTimeFormatter.ofPattern(getString(R.string.date_format));
 
         Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(R.drawable.ic_close);
 
-        categories = new ArrayList<>(Arrays.asList(Category.values()));
-
         editTextLeasedAt = findViewById(R.id.edit_text_leased_at);
-        editTextLeasedAt.addTextChangedListener();
+        editTextLeasedAt.setOnClickListener(getClickListener(this, editTextLeasedAt));
 
         editTextLeasedTill = findViewById(R.id.edit_text_leased_till);
+        editTextLeasedTill.setOnClickListener(getClickListener(this, editTextLeasedTill));
+
         editTextTotalPrice = findViewById(R.id.edit_text_total_price);
+        editTextMonths = findViewById(R.id.edit_text_total_months);
 
         editSpinnerWarehouse = findViewById(R.id.spinner_warehouses);
-        editSpinnerWarehouse.setAdapter(new ArrayAdapter<>(
-                this, android.R.layout.simple_list_item_1, new ArrayList<Warehouse>()));
+        editSpinnerWarehouse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                Warehouse warehouse = (Warehouse)editSpinnerWarehouse.getSelectedItem();
+
+                leaseContract.setWarehouse(warehouse);
+                calculateTotalMonthsAndPrice();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+        });
 
         editSpinnerTenant = findViewById(R.id.spinner_tenants);
-        editSpinnerTenant.setAdapter(new ArrayAdapter<>(
-                        this, android.R.layout.simple_list_item_2, new ArrayList<Tenant>()));
+        editSpinnerTenant.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                Tenant tenant = (Tenant)editSpinnerTenant.getSelectedItem();
+
+                leaseContract.setTenant(tenant);
+                getLeaseRequests(that, tenant.getId());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+        });
 
         editSpinnerLeaseRequests = findViewById(R.id.spinner_lease_requests);
-        editSpinnerLeaseRequests.setAdapter(new ArrayAdapter<>(
-                this, android.R.layout.simple_list_item_single_choice, new ArrayList<LeaseRequest>()));
+        editSpinnerLeaseRequests.setVisibility(View.GONE);
+        editSpinnerLeaseRequests.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                LeaseRequest leaseRequest = (LeaseRequest)editSpinnerLeaseRequests.getSelectedItem();
+
+                leaseContract.setLeaseRequest(leaseRequest);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+        });
+
+        textLeaseRequest = findViewById(R.id.text_lease_requests);
+        textLeaseRequest.setVisibility(View.GONE);
 
         leaseContract = new LeasingContract();
 
         // LeaseRequest a = (LeaseRequest) editSpinnerLeaseRequests.getSelectedItem();
 
-
-        final AddEditLeasingContractActivity that = this;
-
         buildViewModels();
-
-
 
         if (getIntent().hasExtra(LEASE_CONTRACT_ID)) {
             setTitle(getString(R.string.edit));
 
             Long leaseContractId = Objects.requireNonNull(getIntent().getExtras()).getLong(LEASE_CONTRACT_ID);
 
-            leaseContractViewModel.getOne(leaseContractId).observe(that, new Observer<LeasingContract>() {
+            leaseContractViewModel.getOne(leaseContractId).observe(this, new Observer<LeasingContract>() {
                 @Override
                 public void onChanged(@Nullable LeasingContract leaseContractRes) {
                     leaseContract = leaseContractRes;
 
-                    editTextLeasedAt.getEditText().setText(leaseContract.getLeasedAt().toString());
-                    editTextLeasedTill.getEditText().setText(leaseContract.getLeasedTill().toString());
+                    editTextLeasedAt.setText(leaseContract.getLeasedAt().format(format));
+                    editTextLeasedTill.setText(leaseContract.getLeasedTill().format(format));
 
                     String months = String.valueOf(ChronoUnit.MONTHS.between(leaseContract.getLeasedAt(), leaseContract.getLeasedTill()));
                     BigDecimal totalPrice = leaseContract.getWarehouse().getPricePerMonth().multiply(new BigDecimal(months));
 
-                    editTextTotalPrice.getEditText().setText(totalPrice.toString());
+                    calculateTotalMonthsAndPrice();
+
+                    List<Warehouse> warehouses = new ArrayList<>();
+                    warehouses.add(leaseContract.getWarehouse());
+
+                    editSpinnerWarehouse.setAdapter(new ArrayAdapter<>(
+                            that, android.R.layout.simple_list_item_1, warehouses));
+                    editSpinnerWarehouse.setSelection(0);
+                    editSpinnerWarehouse.setEnabled(false);
+
+                    List<Tenant> tenants = new ArrayList<>();
+                    tenants.add(leaseContract.getTenant());
+
+                    editSpinnerTenant.setAdapter(new ArrayAdapter<>(
+                            that, android.R.layout.simple_list_item_1, tenants));
+                    editSpinnerTenant.setSelection(0);
+                    editSpinnerTenant.setEnabled(false);
+
+                    if (leaseContract.getLeaseRequest() != null) {
+                        List<LeaseRequest> leaseRequests = new ArrayList<>();
+                        leaseRequests.add(leaseContract.getLeaseRequest());
+
+                        editSpinnerLeaseRequests.setAdapter(new ArrayAdapter<>(
+                                that, android.R.layout.simple_list_item_1, leaseRequests));
+
+                        editSpinnerLeaseRequests.setSelection(0);
+                        editSpinnerLeaseRequests.setEnabled(false);
+                    }
+                    else {
+                        getLeaseRequests(that, leaseContract.getTenant().getId());
+                    }
+
+//                    getLeaseRequests(that);
+//                    getTenants(that);
+//                    getWarehouses(that);
                 }
             });
         } else {
             setTitle(getString(R.string.add));
             leaseContract.setOwner(AppRequestQueue.getToken().getUser().getRelatedOwner());
+
+            getTenants(this);
+            getWarehouses(this);
         }
+    }
+
+    private void getWarehouses(final AddEditLeasingContractActivity that) {
+        User loggedUser = AppRequestQueue.getToken().getUser();
+        int rolePosition = (int) new ArrayList<>(loggedUser.getRoles()).get(0).getId();
+        RoleType roleType = RoleType.values()[rolePosition - 1];
+
+        warehouseViewModel.getAllWarehouses(roleType).observe(this, new Observer<List<Warehouse>>() {
+            @Override
+            public void onChanged(@Nullable List<Warehouse> warehouses) {
+                editSpinnerWarehouse.setAdapter(new ArrayAdapter<>(
+                        that, android.R.layout.simple_list_item_1, warehouses));
+
+                leaseContract.setWarehouse(warehouses.get(0));
+            }
+        });
+    }
+
+    private void getTenants(final AddEditLeasingContractActivity that) {
+        User loggedUser = AppRequestQueue.getToken().getUser();
+        int rolePosition = (int) new ArrayList<>(loggedUser.getRoles()).get(0).getId();
+        RoleType roleType = RoleType.values()[rolePosition - 1];
+
+        tenantViewModel.getAllTenants().observe(this, new Observer<List<Tenant>>() {
+            @Override
+            public void onChanged(@Nullable List<Tenant> tenants) {
+                editSpinnerTenant.setAdapter(new ArrayAdapter<>(
+                        that, android.R.layout.simple_list_item_1, tenants));
+
+                leaseContract.setTenant(tenants.get(0));
+            }
+        });
+    }
+
+    private void getLeaseRequests(final AddEditLeasingContractActivity that, long id) {
+        leaseRequestViewModel.getAllNotCompleted(id).observe(this, new Observer<List<LeaseRequest>>() {
+            @Override
+            public void onChanged(@Nullable List<LeaseRequest> leaseRequests) {
+                editSpinnerLeaseRequests.setAdapter(new ArrayAdapter<>(
+                        that, android.R.layout.simple_list_item_1, leaseRequests));
+
+                if (leaseRequests.size() > 0) {
+                    editSpinnerLeaseRequests.setVisibility(View.VISIBLE);
+                    textLeaseRequest.setVisibility(View.VISIBLE);
+                }
+                else {
+                    editSpinnerLeaseRequests.setVisibility(View.GONE);
+                    textLeaseRequest.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
+    private View.OnClickListener getClickListener(
+            final AddEditLeasingContractActivity that,
+            final TextInputEditText editText
+    ) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH);
+                int day = c.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(that,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+                                OffsetDateTime date = OffsetDateTime.of(
+                                        year, monthOfYear + 1, 1,
+                                        0, 0, 0, 0,
+                                        ZoneOffset.UTC);
+
+                                if (editText.getId() == R.id.edit_text_leased_till) {
+                                    leaseContract.setLeasedTill(date);
+                                }
+                                else if (editText.getId() == R.id.edit_text_leased_at) {
+                                    leaseContract.setLeasedAt(date);
+                                }
+
+                                editText.setText(date.format(format));
+
+                                calculateTotalMonthsAndPrice();
+                            }
+                        }, year, month, day);
+                datePickerDialog.show();
+            }
+        };
+    }
+
+    private void calculateTotalMonthsAndPrice() {
+        if (leaseContract.getLeasedAt() == null || leaseContract.getLeasedTill() == null) {
+            return;
+        }
+
+        long months = ChronoUnit.MONTHS.between(
+            leaseContract.getLeasedAt(), leaseContract.getLeasedTill());
+
+        String monthsStr = String.valueOf(months);
+        BigDecimal totalPrice = leaseContract
+                .getWarehouse()
+                .getPricePerMonth()
+                .multiply(new BigDecimal(monthsStr));
+
+        editTextMonths.getEditText().setText(monthsStr);
+        editTextTotalPrice.getEditText().setText(
+                String.format(Locale.getDefault(),"%.2f", totalPrice));
     }
 
     private void saveLeasingContract() {

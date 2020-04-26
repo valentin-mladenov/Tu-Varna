@@ -118,7 +118,7 @@ public class LeasingContractController {
 
         if (leasingContract.getLeaseRequest() != null) {
             leasingContract.getLeaseRequest().setLeasingContract(null);
-            leasingContract.getLeaseRequest().setTenant(null);
+            //leasingContract.getLeaseRequest().setTenant(null);
         }
     }
 }

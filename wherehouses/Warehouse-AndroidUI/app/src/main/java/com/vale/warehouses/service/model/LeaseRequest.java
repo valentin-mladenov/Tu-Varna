@@ -52,6 +52,6 @@ public class LeaseRequest {
     @NonNull
     @Override
     public String toString() {
-        return( "Type requested:" + warehouseType + ", by " + tenant.getFullName());
+        return( "Type requested: " + warehouseType);
     }
 }

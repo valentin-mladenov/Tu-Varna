@@ -137,6 +137,6 @@ public class Warehouse implements Serializable {
     @Override
     public String toString()
     {
-        return( address + " (" + pricePerMonth + ")");
+        return( address + ", Price: " + pricePerMonth + ", Type: " + type);
     }
 }
