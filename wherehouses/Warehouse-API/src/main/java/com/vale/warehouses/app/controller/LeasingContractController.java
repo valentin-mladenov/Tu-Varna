@@ -9,6 +9,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.List;
 
@@ -49,10 +50,24 @@ public class LeasingContractController {
 
     /*---get all warehouses---*/
     @GetMapping("forSaleAgent/{id}")
-    public ResponseEntity<List<LeasingContract>> listForSaleAgent(@PathVariable("id") long id) {
+    public ResponseEntity<List<LeasingContract>> listForSaleAgent(
+            @PathVariable("id") long id,
+            @RequestParam(required = false) OffsetDateTime fromDate,
+            @RequestParam(required = false) OffsetDateTime toDate
+    ) {
+        if (fromDate == null) {
+            fromDate = OffsetDateTime.now();
+            fromDate = fromDate.minusYears(100);
+        }
+
+        if (toDate == null) {
+            toDate = OffsetDateTime.now();
+            toDate = toDate.plusYears(100);
+        }
+
         throwExceptionIfAccessForbidden(RoleType.Agent);
 
-        List<LeasingContract> leasingContracts = service.getLeasingContractsForSaleAgent(id);
+        List<LeasingContract> leasingContracts = service.getLeasingContractsForSaleAgent(id, fromDate, toDate);
 
         for (LeasingContract leasingContract: leasingContracts) {
             nullifyNestedObjects(leasingContract);
@@ -108,7 +123,8 @@ public class LeasingContractController {
                 .getAuthentication()
                 .getAuthorities()
                 .stream()
-                .anyMatch(r -> r.getAuthority().equals(type.toString()));
+                .anyMatch(r -> r.getAuthority().equals(type.toString())
+                        || r.getAuthority().equals(RoleType.Admin.toString()));
 
         if (!isAllowed) {
             throw new AccessDeniedException("Only accessable for: " + type.toString());

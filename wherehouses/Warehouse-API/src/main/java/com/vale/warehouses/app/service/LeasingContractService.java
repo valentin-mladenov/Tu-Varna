@@ -6,6 +6,7 @@ import com.vale.warehouses.app.service.interfaces.LeasingContractInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -40,8 +41,9 @@ public class LeasingContractService implements LeasingContractInterface {
     }
 
     @Override
-    public List<LeasingContract> getLeasingContractsForSaleAgent(Long id) {
-        List<LeasingContract> leasingContracts = repository.findBySaleAgentId(id);
+    public List<LeasingContract> getLeasingContractsForSaleAgent(
+            Long id, OffsetDateTime fromDate, OffsetDateTime toDate) {
+        List<LeasingContract> leasingContracts = repository.findBySaleAgentIdAndLeasedAtBetween(id, fromDate, toDate);
 
         if(leasingContracts.size() > 0) {
             return leasingContracts;

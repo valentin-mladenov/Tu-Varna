@@ -69,4 +69,6 @@
     <string name="mandatory_dates">Start and end dates are mandatory!</string>
     <string name="leaseContract_updated">Leasing Contract updated.</string>
     <string name="leaseContract_created">Leasing Contract Created.</string>
+    <string name="leased_at_less_than_leased_till">Leased At month must be before Leased Till</string>
+    <string name="inspect">Inspect</string>
 </resources>

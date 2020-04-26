@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -80,18 +79,6 @@ public class AddEditWarehouseActivity extends AppCompatActivity {
 
         warehouse = new Warehouse();
 
-        if (AppRequestQueue.getToken().getUser().getRelatedSaleAgent() != null) {
-            editTextAddress.setEnabled(false);
-            editTextWidth.setEnabled(false);
-            editTextHeight.setEnabled(false);
-            editTextLength.setEnabled(false);
-            editTextPricePerMonth.setEnabled(false);
-            editSpinnerType.setEnabled(false);
-            editSpinnerCategory.setEnabled(false);
-            saleAgentSpinner.setEnabled(false);
-            findViewById(R.id.save_item).setEnabled(false);
-        }
-
         saleAgentSpinner = findViewById(R.id.sale_agent_spinner);
         saleAgentSpinner.getSelection().observe(this, new Observer<Set<SaleAgent>>() {
             @Override
@@ -99,7 +86,6 @@ public class AddEditWarehouseActivity extends AppCompatActivity {
                 warehouse.setSaleAgents(agents);
             }
         });
-
 
         final AddEditWarehouseActivity that = this;
 
@@ -130,6 +116,18 @@ public class AddEditWarehouseActivity extends AppCompatActivity {
                             editSpinnerType.setSelection(warehouseTypes.indexOf(warehouse.getType()));
 
                             saleAgentSpinner.setSelection(warehouse.getSaleAgents());
+
+                            if (AppRequestQueue.getToken().getUser().getRelatedSaleAgent() != null) {
+                                setTitle(getString(R.string.inspect));
+                                editTextAddress.setEnabled(false);
+                                editTextWidth.setEnabled(false);
+                                editTextHeight.setEnabled(false);
+                                editTextLength.setEnabled(false);
+                                editTextPricePerMonth.setEnabled(false);
+                                editSpinnerType.setEnabled(false);
+                                editSpinnerCategory.setEnabled(false);
+                                saleAgentSpinner.setEnabled(false);
+                            }
                         }
                     });
                 } else {
@@ -199,6 +197,12 @@ public class AddEditWarehouseActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.save_menu, menu);
+
+        if (AppRequestQueue.getToken().getUser().getRelatedSaleAgent() != null) {
+            menu.getItem(0).setEnabled(false);
+            menu.getItem(0).setVisible(false);
+        }
+
         return true;
     }
 

@@ -2,6 +2,7 @@ package com.vale.warehouses.app.service.interfaces;
 
 import com.vale.warehouses.app.model.LeasingContract;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 public interface LeasingContractInterface {
@@ -9,7 +10,7 @@ public interface LeasingContractInterface {
 
     List<LeasingContract> getLeasingContractsForOwner(Long id);
 
-    List<LeasingContract> getLeasingContractsForSaleAgent(Long id);
+    List<LeasingContract> getLeasingContractsForSaleAgent(Long id, OffsetDateTime fromDate, OffsetDateTime toDate);
 
     LeasingContract getLeasingContract(Long id) throws NullPointerException;
 

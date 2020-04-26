@@ -24,31 +24,27 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.vale.warehouses.R;
 import com.vale.warehouses.service.AppRequestQueue;
-import com.vale.warehouses.service.model.Category;
 import com.vale.warehouses.service.model.LeaseRequest;
 import com.vale.warehouses.service.model.RoleType;
-import com.vale.warehouses.service.model.SaleAgent;
 import com.vale.warehouses.service.model.LeasingContract;
 import com.vale.warehouses.service.model.Tenant;
 import com.vale.warehouses.service.model.User;
 import com.vale.warehouses.service.model.Warehouse;
 import com.vale.warehouses.service.view_model.LeaseRequestViewModel;
 import com.vale.warehouses.service.view_model.LeasingContractViewModel;
-import com.vale.warehouses.service.view_model.SaleAgentViewModel;
 import com.vale.warehouses.service.view_model.TenantViewModel;
 import com.vale.warehouses.service.view_model.WarehouseViewModel;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Set;
 
 public class AddEditLeasingContractActivity extends AppCompatActivity {
     public static final String LEASE_CONTRACT_ID = "LEASE_CONTRACT_ID";
@@ -150,9 +146,6 @@ public class AddEditLeasingContractActivity extends AppCompatActivity {
                     editTextLeasedAt.setText(leaseContract.getLeasedAt().format(format));
                     editTextLeasedTill.setText(leaseContract.getLeasedTill().format(format));
 
-                    String months = String.valueOf(ChronoUnit.MONTHS.between(leaseContract.getLeasedAt(), leaseContract.getLeasedTill()));
-                    BigDecimal totalPrice = leaseContract.getWarehouse().getPricePerMonth().multiply(new BigDecimal(months));
-
                     calculateTotalMonthsAndPrice();
 
                     List<Warehouse> warehouses = new ArrayList<>();
@@ -180,15 +173,23 @@ public class AddEditLeasingContractActivity extends AppCompatActivity {
 
                         editSpinnerLeaseRequests.setSelection(0);
                         editSpinnerLeaseRequests.setEnabled(false);
+                        editSpinnerLeaseRequests.setVisibility(View.VISIBLE);
+                        textLeaseRequest.setVisibility(View.VISIBLE);
                     }
                     else {
                         getLeaseRequests(that, leaseContract.getTenant().getId());
+                    }
+
+                    if (AppRequestQueue.getToken().getUser().getRelatedOwner() != null) {
+                        setTitle(getString(R.string.inspect));
+
+                        editTextLeasedAt.setEnabled(false);
+                        editTextLeasedTill.setEnabled(false);
                     }
                 }
             });
         } else {
             setTitle(getString(R.string.add));
-            // leaseContract.setOwner(AppRequestQueue.getToken().getUser().getRelatedOwner());
 
             getTenants(this);
             getWarehouses(this);
@@ -313,6 +314,14 @@ public class AddEditLeasingContractActivity extends AppCompatActivity {
                 return;
             }
 
+            LocalDate leasedAtLocal = leaseContract.getLeasedAt().toLocalDate();
+            LocalDate leasedTillLocal = leaseContract.getLeasedTill().toLocalDate();
+
+            if (leasedAtLocal.compareTo(leasedTillLocal) >= 0) {
+                Toast.makeText(this, R.string.leased_at_less_than_leased_till, Toast.LENGTH_LONG).show();
+                return;
+            }
+
             leaseContract.setOwner(leaseContract.getWarehouse().getOwner());
             leaseContract.setSaleAgent(AppRequestQueue.getToken().getUser().getRelatedSaleAgent());
 
@@ -360,6 +369,12 @@ public class AddEditLeasingContractActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.save_menu, menu);
+
+        if (AppRequestQueue.getToken().getUser().getRelatedOwner() != null) {
+            menu.getItem(0).setEnabled(false);
+            menu.getItem(0).setVisible(false);
+        }
+
         return true;
     }
 
