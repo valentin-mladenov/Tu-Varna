@@ -1,5 +1,7 @@
 package com.vale.warehouses.service.model;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 public class LeaseRequest {
@@ -45,5 +47,11 @@ public class LeaseRequest {
 
     public void setLeasingContract(LeasingContract leasingContract) {
         this.leasingContract = leasingContract;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return( "Type requested:" + warehouseType + ", by " + tenant.getFullName());
     }
 }

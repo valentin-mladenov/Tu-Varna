@@ -29,6 +29,17 @@ public class LeaseRequestService implements LeaseRequestInterface {
     }
 
     @Override
+    public List<LeaseRequest> getLeaseRequestsWithoutContract() {
+        List<LeaseRequest> leaseRequests = leaseRequestRepository.findByLeasingContractIsNull();
+
+        if(leaseRequests.size() > 0) {
+            return leaseRequests;
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
     public LeaseRequest getLeaseRequest(Long id) throws NullPointerException
     {
         Optional<LeaseRequest> leaseRequest = leaseRequestRepository.findById(id);

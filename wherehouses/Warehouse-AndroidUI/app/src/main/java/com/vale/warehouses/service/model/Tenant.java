@@ -1,5 +1,7 @@
 package com.vale.warehouses.service.model;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -90,5 +92,11 @@ public class Tenant implements Serializable {
 
     public String getFullName() {
         return firstName + " " + lastName;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return getFullName();
     }
 }

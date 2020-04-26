@@ -58,4 +58,10 @@
     <string name="warehouse_created">Warehose created</string>
     <string name="warehouse_updated">Warehouse updated</string>
     <string name="price_per_month">Price per Month</string>
+    <string name="warehouse">Warehouse</string>
+    <string name="tenant">Tenant</string>
+    <string name="lease_request">Lease request</string>
+    <string name="leased_at">Leased at</string>
+    <string name="leased_till">Leased till</string>
+    <string name="total_price">Total Price</string>
 </resources>

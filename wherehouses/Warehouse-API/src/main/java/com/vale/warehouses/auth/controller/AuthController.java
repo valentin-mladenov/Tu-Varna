@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashSet;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -29,6 +31,10 @@ public class AuthController {
         // hide password
         token.getUser().setPassword(null);
         token.getUser().setPasswordConfirm(null);
+
+        if(token.getUser().getRelatedSaleAgent() != null) {
+            token.getUser().getRelatedSaleAgent().setWarehouses(new HashSet<>());
+        }
 
         token.getUser().getRoles().forEach((r) -> {
             r.setUsers(null);

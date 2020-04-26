@@ -18,12 +18,19 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.vale.warehouses.R;
 import com.vale.warehouses.service.AppRequestQueue;
 import com.vale.warehouses.service.model.Category;
+import com.vale.warehouses.service.model.LeaseRequest;
 import com.vale.warehouses.service.model.SaleAgent;
 import com.vale.warehouses.service.model.LeasingContract;
+import com.vale.warehouses.service.model.Tenant;
+import com.vale.warehouses.service.model.Warehouse;
+import com.vale.warehouses.service.view_model.LeaseRequestViewModel;
 import com.vale.warehouses.service.view_model.LeasingContractViewModel;
 import com.vale.warehouses.service.view_model.SaleAgentViewModel;
+import com.vale.warehouses.service.view_model.TenantViewModel;
+import com.vale.warehouses.service.view_model.WarehouseViewModel;
 
 import java.math.BigDecimal;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,16 +40,14 @@ import java.util.Set;
 public class AddEditLeasingContractActivity extends AppCompatActivity {
     public static final String LEASE_CONTRACT_ID = "LEASE_CONTRACT_ID";
 
-    private SaleAgentViewModel saleAgentViewModel;
+    private WarehouseViewModel warehouseViewModel;
     private LeasingContractViewModel leaseContractViewModel;
+    private TenantViewModel tenantViewModel;
+    private LeaseRequestViewModel leaseRequestViewModel;
     private LeasingContract leaseContract;
-    private TextInputLayout editTextAddress,
-                            editTextWidth,
-                            editTextHeight,
-                            editTextLength,
-                            editTextPricePerMonth;
+    private TextInputLayout editTextLeasedAt, editTextLeasedTill, editTextTotalPrice;
 
-    private Spinner editSpinnerType, editSpinnerCategory;
+    private Spinner editSpinnerWarehouse, editSpinnerTenant, editSpinnerLeaseRequests;
 
     private ArrayList<Category> categories;
 
@@ -55,84 +60,58 @@ public class AddEditLeasingContractActivity extends AppCompatActivity {
 
         categories = new ArrayList<>(Arrays.asList(Category.values()));
 
-        editTextAddress = findViewById(R.id.edit_text_address);
-        editTextWidth = findViewById(R.id.edit_text_width);
-        editTextHeight = findViewById(R.id.edit_text_height);
-        editTextLength = findViewById(R.id.edit_text_length);
-        editTextPricePerMonth = findViewById(R.id.edit_text_price_per_month);
+        editTextLeasedAt = findViewById(R.id.edit_text_leased_at);
+        editTextLeasedAt.addTextChangedListener();
 
-        editSpinnerType = findViewById(R.id.spinner_types);
-//        editSpinnerType.setAdapter(new ArrayAdapter<>(
-//            this, android.R.layout.simple_list_item_1, LeasingContractType.values()));
+        editTextLeasedTill = findViewById(R.id.edit_text_leased_till);
+        editTextTotalPrice = findViewById(R.id.edit_text_total_price);
 
-        ArrayAdapter<Category> a = new ArrayAdapter<>(
-                this, android.R.layout.simple_list_item_1, Category.values());
+        editSpinnerWarehouse = findViewById(R.id.spinner_warehouses);
+        editSpinnerWarehouse.setAdapter(new ArrayAdapter<>(
+                this, android.R.layout.simple_list_item_1, new ArrayList<Warehouse>()));
 
+        editSpinnerTenant = findViewById(R.id.spinner_tenants);
+        editSpinnerTenant.setAdapter(new ArrayAdapter<>(
+                        this, android.R.layout.simple_list_item_2, new ArrayList<Tenant>()));
 
-        editSpinnerCategory = findViewById(R.id.spinner_category);
-        editSpinnerCategory.setAdapter(new ArrayAdapter<>(
-                        this, android.R.layout.simple_list_item_1, Category.values()));
+        editSpinnerLeaseRequests = findViewById(R.id.spinner_lease_requests);
+        editSpinnerLeaseRequests.setAdapter(new ArrayAdapter<>(
+                this, android.R.layout.simple_list_item_single_choice, new ArrayList<LeaseRequest>()));
 
         leaseContract = new LeasingContract();
 
-        if (AppRequestQueue.getToken().getUser().getRelatedSaleAgent() != null) {
-            editTextAddress.setEnabled(false);
-            editTextWidth.setEnabled(false);
-            editTextHeight.setEnabled(false);
-            editTextLength.setEnabled(false);
-            editTextPricePerMonth.setEnabled(false);
-            editSpinnerType.setEnabled(false);
-            editSpinnerCategory.setEnabled(false);
-//            saleAgentSpinner.setEnabled(false);
-            findViewById(R.id.save_item).setEnabled(false);
-        }
-
-//        saleAgentSpinner = findViewById(R.id.sale_agent_spinner);
-//        saleAgentSpinner.getSelection().observe(this, new Observer<Set<SaleAgent>>() {
-//            @Override
-//            public void onChanged(Set<SaleAgent> agents) {
-//                leaseContract.setSaleAgents(agents);
-//            }
-//        });
+        // LeaseRequest a = (LeaseRequest) editSpinnerLeaseRequests.getSelectedItem();
 
 
         final AddEditLeasingContractActivity that = this;
 
         buildViewModels();
 
-        saleAgentViewModel.getAllSaleAgents().observe(this, new Observer<List<SaleAgent>>() {
-            @Override
-            public void onChanged(@Nullable List<SaleAgent> saleAgents) {
-                //saleAgentSpinner.setSaleAgents(saleAgents);
 
-                if (getIntent().hasExtra(LEASE_CONTRACT_ID)) {
-                    setTitle(getString(R.string.edit));
 
-                    Long leaseContractId = getIntent().getExtras().getLong(LEASE_CONTRACT_ID);
+        if (getIntent().hasExtra(LEASE_CONTRACT_ID)) {
+            setTitle(getString(R.string.edit));
 
-                    leaseContractViewModel.getOne(leaseContractId).observe(that, new Observer<LeasingContract>() {
-                        @Override
-                        public void onChanged(@Nullable LeasingContract leaseContractRes) {
-                            // leaseContract = leaseContractRes;
+            Long leaseContractId = Objects.requireNonNull(getIntent().getExtras()).getLong(LEASE_CONTRACT_ID);
 
-//                            editTextAddress.getEditText().setText(leaseContract.getAddress());
-//                            editTextHeight.getEditText().setText(String.valueOf(leaseContract.getHeight()));
-//                            editTextWidth.getEditText().setText(String.valueOf(leaseContract.getWidth()));
-//                            editTextLength.getEditText().setText(String.valueOf(leaseContract.getLength()));
-//                            editTextPricePerMonth.getEditText().setText(String.valueOf(leaseContract.getPricePerMonth()));
-//
-//                            editSpinnerCategory.setSelection(categories.indexOf(leaseContract.getCategory()));
-//                            editSpinnerType.setSelection(leaseContractTypes.indexOf(leaseContract.getType()));
-//
-//                            saleAgentSpinner.setSelection(leaseContract.getSaleAgents());
-                        }
-                    });
-                } else {
-                    setTitle(getString(R.string.add));
-                    leaseContract.setOwner(AppRequestQueue.getToken().getUser().getRelatedOwner());
+            leaseContractViewModel.getOne(leaseContractId).observe(that, new Observer<LeasingContract>() {
+                @Override
+                public void onChanged(@Nullable LeasingContract leaseContractRes) {
+                    leaseContract = leaseContractRes;
+
+                    editTextLeasedAt.getEditText().setText(leaseContract.getLeasedAt().toString());
+                    editTextLeasedTill.getEditText().setText(leaseContract.getLeasedTill().toString());
+
+                    String months = String.valueOf(ChronoUnit.MONTHS.between(leaseContract.getLeasedAt(), leaseContract.getLeasedTill()));
+                    BigDecimal totalPrice = leaseContract.getWarehouse().getPricePerMonth().multiply(new BigDecimal(months));
+
+                    editTextTotalPrice.getEditText().setText(totalPrice.toString());
                 }
-            }
-        });
+            });
+        } else {
+            setTitle(getString(R.string.add));
+            leaseContract.setOwner(AppRequestQueue.getToken().getUser().getRelatedOwner());
+        }
     }
 
     private void saveLeasingContract() {
@@ -185,7 +164,11 @@ public class AddEditLeasingContractActivity extends AppCompatActivity {
     private void buildViewModels() {
         leaseContractViewModel = new ViewModelProvider(this).get(LeasingContractViewModel.class);
 
-        saleAgentViewModel = new ViewModelProvider(this).get(SaleAgentViewModel.class);
+        leaseRequestViewModel = new ViewModelProvider(this).get(LeaseRequestViewModel.class);
+
+        warehouseViewModel= new ViewModelProvider(this).get(WarehouseViewModel.class);
+
+        tenantViewModel = new ViewModelProvider(this).get(TenantViewModel.class);
     }
 
     @Override

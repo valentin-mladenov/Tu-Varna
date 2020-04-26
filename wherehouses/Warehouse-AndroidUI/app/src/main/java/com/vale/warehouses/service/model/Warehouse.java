@@ -1,5 +1,7 @@
 package com.vale.warehouses.service.model;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import org.json.JSONObject;
@@ -129,5 +131,12 @@ public class Warehouse implements Serializable {
 
     public double getVolume() {
         return getArea() * getHeight();
+    }
+
+    @NonNull
+    @Override
+    public String toString()
+    {
+        return( address + " (" + pricePerMonth + ")");
     }
 }

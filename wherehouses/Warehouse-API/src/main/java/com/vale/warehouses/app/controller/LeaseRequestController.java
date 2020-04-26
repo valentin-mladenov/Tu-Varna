@@ -27,6 +27,14 @@ public class LeaseRequestController {
         return ResponseEntity.ok(leaseRequests);
     }
 
+    /*---get all not completed leaseRequests---*/
+    @GetMapping("/notCompeted")
+    public ResponseEntity<List<LeaseRequest>> listNotCompeted() {
+        List<LeaseRequest> leaseRequests = service.getLeaseRequestsWithoutContract();
+
+        return ResponseEntity.ok(leaseRequests);
+    }
+
     /*---Get a leaseRequest by id---*/
     @GetMapping("/{id}")
     public ResponseEntity<LeaseRequest> get(@PathVariable("id") long id) {
