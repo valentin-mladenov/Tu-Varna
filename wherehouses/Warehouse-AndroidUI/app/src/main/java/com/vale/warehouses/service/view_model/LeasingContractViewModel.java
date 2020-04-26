@@ -21,6 +21,9 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 import com.vale.warehouses.R;
 import com.vale.warehouses.service.AppRequestQueue;
@@ -35,6 +38,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -170,21 +174,11 @@ public class LeasingContractViewModel extends AndroidViewModel {
         return oneLeasingContract;
     }
 
-    private JSONObject getJsonObject(LeasingContract leaseContract) {
-        JSONObject requestBody = null;
-        try {
-            requestBody = new JSONObject(new Gson().toJson(leaseContract));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return requestBody;
-    }
-
     public MutableLiveData<Boolean> delete(LeasingContract leaseContract) {
         deleteResult = new MutableLiveData<>();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-            Request.Method.PUT,
+            Request.Method.DELETE,
             url + "/" + leaseContract.getId(),
             getJsonObject(leaseContract),
             new Response.Listener<JSONObject>() {
@@ -248,7 +242,7 @@ public class LeasingContractViewModel extends AndroidViewModel {
         return allLeasingContracts;
     }
 
-    public void getAll(String url) {
+    private void getAll(String url) {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
             Request.Method.GET,
             url,
@@ -286,6 +280,27 @@ public class LeasingContractViewModel extends AndroidViewModel {
         };
 
         requestQueue.getRequestQueue().add(jsonArrayRequest);
+    }
+
+
+
+    private JSONObject getJsonObject(LeasingContract leaseContract) {
+        JSONObject requestBody = null;
+        try {
+            GsonBuilder builder = new GsonBuilder();
+            Gson gson = builder
+                    .registerTypeAdapter(OffsetDateTime.class, new JsonSerializer() {
+                        @Override
+                        public JsonElement serialize(Object src, Type typeOfSrc, JsonSerializationContext context) {
+                            OffsetDateTime date = (OffsetDateTime) src;
+                            return new JsonPrimitive(date.format(DateTimeFormatter.ISO_INSTANT));
+                        }
+                    }).create();
+            requestBody = new JSONObject(gson.toJson(leaseContract));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return requestBody;
     }
 
     private Gson buildGson() {

@@ -27,7 +27,7 @@ public class WarehouseController {
 
         for (Warehouse warehouse: warehouses) {
             warehouse.setSaleAgents(new HashSet<>());
-            warehouse.setOwner(null);
+            warehouse.getOwner().setWarehouses(null);
         }
 
         return ResponseEntity.ok().body(warehouses);
@@ -42,7 +42,7 @@ public class WarehouseController {
 
         for (Warehouse warehouse: warehouses) {
             warehouse.setSaleAgents(new HashSet<>());
-            warehouse.setOwner(null);
+            warehouse.getOwner().setWarehouses(null);
         }
 
         return ResponseEntity.ok().body(warehouses);
@@ -57,7 +57,7 @@ public class WarehouseController {
 
         for (Warehouse warehouse: warehouses) {
             warehouse.setSaleAgents(new HashSet<>());
-            warehouse.setOwner(null);
+            warehouse.getOwner().setWarehouses(null);
         }
 
         return ResponseEntity.ok().body(warehouses);

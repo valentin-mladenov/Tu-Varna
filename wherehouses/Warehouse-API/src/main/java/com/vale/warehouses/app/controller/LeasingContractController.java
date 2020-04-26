@@ -77,6 +77,8 @@ public class LeasingContractController {
     public ResponseEntity<LeasingContract> save(@RequestBody LeasingContract leasingContract) {
         leasingContract = service.createLeasingContract(leasingContract);
 
+        nullifyNestedObjects(leasingContract);
+
         return ResponseEntity.ok(leasingContract);
     }
 
@@ -86,6 +88,8 @@ public class LeasingContractController {
             @PathVariable("id") long id, @RequestBody LeasingContract leasingContract
     ) {
         leasingContract = service.updateLeasingContract(leasingContract);
+
+        nullifyNestedObjects(leasingContract);
 
         return  ResponseEntity.ok(leasingContract);
     }

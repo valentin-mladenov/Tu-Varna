@@ -53,7 +53,7 @@ import java.util.Set;
 public class AddEditLeasingContractActivity extends AppCompatActivity {
     public static final String LEASE_CONTRACT_ID = "LEASE_CONTRACT_ID";
     private DateTimeFormatter format;
-
+    private AddEditLeasingContractActivity that = this;
     private WarehouseViewModel warehouseViewModel;
     private LeasingContractViewModel leaseContractViewModel;
     private TenantViewModel tenantViewModel;
@@ -69,7 +69,6 @@ public class AddEditLeasingContractActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.leasing_contract_activity_add_edit);
-        final AddEditLeasingContractActivity that = this;
         format = DateTimeFormatter.ofPattern(getString(R.string.date_format));
 
         Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(R.drawable.ic_close);
@@ -136,8 +135,6 @@ public class AddEditLeasingContractActivity extends AppCompatActivity {
 
         leaseContract = new LeasingContract();
 
-        // LeaseRequest a = (LeaseRequest) editSpinnerLeaseRequests.getSelectedItem();
-
         buildViewModels();
 
         if (getIntent().hasExtra(LEASE_CONTRACT_ID)) {
@@ -187,15 +184,11 @@ public class AddEditLeasingContractActivity extends AppCompatActivity {
                     else {
                         getLeaseRequests(that, leaseContract.getTenant().getId());
                     }
-
-//                    getLeaseRequests(that);
-//                    getTenants(that);
-//                    getWarehouses(that);
                 }
             });
         } else {
             setTitle(getString(R.string.add));
-            leaseContract.setOwner(AppRequestQueue.getToken().getUser().getRelatedOwner());
+            // leaseContract.setOwner(AppRequestQueue.getToken().getUser().getRelatedOwner());
 
             getTenants(this);
             getWarehouses(this);
@@ -214,6 +207,7 @@ public class AddEditLeasingContractActivity extends AppCompatActivity {
                         that, android.R.layout.simple_list_item_1, warehouses));
 
                 leaseContract.setWarehouse(warehouses.get(0));
+                leaseContract.setOwner(warehouses.get(0).getOwner());
             }
         });
     }
@@ -314,49 +308,42 @@ public class AddEditLeasingContractActivity extends AppCompatActivity {
 
     private void saveLeasingContract() {
         try {
-//            leaseContract.setAddress(editTextAddress.getEditText().getText().toString());
-//            leaseContract.setHeight(Double.parseDouble(editTextHeight.getEditText().getText().toString()));
-//            leaseContract.setWidth(Double.parseDouble(editTextWidth.getEditText().getText().toString()));
-//            leaseContract.setLength(Double.parseDouble(editTextLength.getEditText().getText().toString()));
-//            leaseContract.setPricePerMonth(new BigDecimal(editTextPricePerMonth.getEditText().getText().toString()));
-//
-//            leaseContract.setCategory(Category.valueOf(editSpinnerCategory.getSelectedItem().toString()));
-//            leaseContract.setType(LeasingContractType.valueOf(editSpinnerType.getSelectedItem().toString()));
+            if (leaseContract.getLeasedAt() == null || leaseContract.getLeasedTill() == null) {
+                Toast.makeText(this, R.string.mandatory_dates, Toast.LENGTH_LONG).show();
+                return;
+            }
 
-//            if (getIntent().hasExtra(LEASE_CONTRACT_ID)) {
-//                leaseContractViewModel.update(leaseContract).observe(this, new Observer<LeasingContract>() {
-//                    @Override
-//                    public void onChanged(LeasingContract updatedLeasingContract) {
-//                        Intent intent = new Intent();
-//                        intent.putExtras(getIntent());
-//
-//                        setResult(RESULT_OK);
-//
-//                        finish();
-//                    }
-//                });
-//
-//                Toast.makeText(this, R.string.leaseContract_updated, Toast.LENGTH_SHORT).show();
-//            } else {
-//                leaseContractViewModel.insertData(leaseContract).observe(this, new Observer<LeasingContract>() {
-//                    @Override
-//                    public void onChanged(@Nullable LeasingContract insertedLeasingContract) {
-//                        assert insertedLeasingContract != null;
-//
-//                        Intent intent = new Intent();
-//                        intent.putExtras(getIntent());
-//
-//                        setResult(RESULT_OK);
-//
-//                        finish();
-//                    }
-//                });
-//
-//                Toast.makeText(this, R.string.leaseContract_created, Toast.LENGTH_SHORT).show();
-//            }
+            leaseContract.setOwner(leaseContract.getWarehouse().getOwner());
+            leaseContract.setSaleAgent(AppRequestQueue.getToken().getUser().getRelatedSaleAgent());
+
+            if (getIntent().hasExtra(LEASE_CONTRACT_ID)) {
+                leaseContractViewModel.update(leaseContract).observe(this, new Observer<LeasingContract>() {
+                    @Override
+                    public void onChanged(LeasingContract updatedLeasingContract) {
+                        finishExecution(R.string.leaseContract_updated);
+                    }
+                });
+            } else {
+                leaseContractViewModel.insertData(leaseContract).observe(this, new Observer<LeasingContract>() {
+                    @Override
+                    public void onChanged(@Nullable LeasingContract insertedLeasingContract) {
+                        finishExecution(R.string.leaseContract_created);
+                    }
+                });
+            }
         } catch (Exception ignored) {
             ignored.printStackTrace();
         }
+    }
+
+    private void finishExecution(int message) {
+        Intent intent = new Intent();
+        intent.putExtras(getIntent());
+
+        Toast.makeText(that, message, Toast.LENGTH_SHORT).show();
+        setResult(RESULT_OK);
+
+        finish();
     }
 
     private void buildViewModels() {
