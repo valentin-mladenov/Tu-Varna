@@ -41,6 +41,34 @@ public class LeasingContractService implements LeasingContractInterface {
     }
 
     @Override
+    public List<LeasingContract> getCurrentlyActiveLeasingContractsForOwner(
+            Long id, OffsetDateTime leasedTill
+    ) {
+        List<LeasingContract> leasingContracts = repository
+                .findByOwnerIdAndLeasedTillAfter(id, leasedTill);
+
+        if(leasingContracts.size() > 0) {
+            return leasingContracts;
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public List<LeasingContract> getCurrentlyActiveLeasingContractsForSaleAgent(
+            Long id, OffsetDateTime leasedTill
+    ) {
+        List<LeasingContract> leasingContracts = repository
+                .findBySaleAgentIdAndLeasedTillAfter(id, leasedTill);
+
+        if(leasingContracts.size() > 0) {
+            return leasingContracts;
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
     public List<LeasingContract> getLeasingContractsForSaleAgent(
             Long id, OffsetDateTime fromDate, OffsetDateTime toDate) {
         List<LeasingContract> leasingContracts = repository
@@ -59,6 +87,18 @@ public class LeasingContractService implements LeasingContractInterface {
     ) {
         List<LeasingContract> leasingContracts = repository
                 .findBySaleAgentIdAndLeasedTillBeforeOrderByLeasedTillDesc(id, leasedTill);
+
+        if(leasingContracts.size() > 0) {
+            return leasingContracts;
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public List<LeasingContract> getEndingSoonLeasingContractsForOwner(Long id, OffsetDateTime leasedTill) {
+        List<LeasingContract> leasingContracts = repository
+                .findByOwnerIdAndLeasedTillBeforeOrderByLeasedTillDesc(id, leasedTill);
 
         if(leasingContracts.size() > 0) {
             return leasingContracts;

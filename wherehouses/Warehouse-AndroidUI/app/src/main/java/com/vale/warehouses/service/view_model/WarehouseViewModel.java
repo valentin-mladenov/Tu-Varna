@@ -20,6 +20,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.vale.warehouses.R;
 import com.vale.warehouses.service.AppRequestQueue;
+import com.vale.warehouses.service.model.LeasingContract;
 import com.vale.warehouses.service.model.RoleType;
 import com.vale.warehouses.service.model.Warehouse;
 

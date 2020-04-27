@@ -72,4 +72,7 @@
     <string name="leased_at_less_than_leased_till">Leased At month must be before Leased Till</string>
     <string name="inspect">Inspect</string>
     <string name="notifications">Notifications</string>
+    <string name="new_lease_requests">New Lease requests</string>
+    <string name="lease_contracts_about_to_expire">Lease contracts about to expire</string>
+    <string name="currently_leased_warehouses">Currently leased warehouses</string>
 </resources>

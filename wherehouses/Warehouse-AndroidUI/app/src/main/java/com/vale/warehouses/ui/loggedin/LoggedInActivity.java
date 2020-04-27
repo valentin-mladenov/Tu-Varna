@@ -24,8 +24,10 @@ import com.vale.warehouses.service.model.LeaseRequest;
 import com.vale.warehouses.service.model.LeasingContract;
 import com.vale.warehouses.service.model.Role;
 import com.vale.warehouses.service.model.RoleType;
+import com.vale.warehouses.service.model.Warehouse;
 import com.vale.warehouses.service.view_model.LeaseRequestViewModel;
 import com.vale.warehouses.service.view_model.LeasingContractViewModel;
+import com.vale.warehouses.service.view_model.WarehouseViewModel;
 import com.vale.warehouses.ui.lease_contract.LeaseContractListActivity;
 import com.vale.warehouses.ui.login.LoginActivity;
 import com.vale.warehouses.ui.users.UserListActivity;
@@ -39,8 +41,9 @@ public class LoggedInActivity extends AppCompatActivity {
 
     private Button usersButton, warehousesButton, warehouseContractsButton;
 
-    private TextView textNotifications;
-    private ListView listViewLeaseRequests, listViewAboutToExpireLeases;
+    private TextView textNotifications, textLeaseRequestsNotifications,
+            textExpiredNotifications, textCurrentlyLeasedWarehouses;
+    private ListView listViewLeaseRequests, listViewAboutToExpireLeases, listCurrentlyLeasedWarehouses;
 
     private LeaseRequestViewModel leaseRequestViewModel;
     private LeasingContractViewModel leasingContractViewModel;
@@ -59,42 +62,15 @@ public class LoggedInActivity extends AppCompatActivity {
         usersButton = findViewById(R.id.users);
         warehousesButton = findViewById(R.id.warehouses);
         warehouseContractsButton = findViewById(R.id.warehouse_contracts);
+
         textNotifications = findViewById(R.id.text_notifications);
-
-        listViewLeaseRequests = findViewById(R.id.lease_requests_notifications);
-        leaseRequestViewModel.getAllNotCompleted(null).observe(this, new Observer<List<LeaseRequest>>() {
-            @Override
-            public void onChanged(@Nullable List<LeaseRequest> leaseRequests) {
-                ArrayList<String> leaseRequestsStr = new ArrayList<>();
-
-                assert leaseRequests != null;
-                leaseRequests.forEach(lr -> leaseRequestsStr.add(lr.toString() + ", " + lr.getTenant().getFullName()));
-
-                listViewLeaseRequests.setAdapter(new ArrayAdapter<String>(
-                        that, R.layout.activity_listview, leaseRequestsStr));
-
-                if (leaseRequests.size() > 0) {
-                    listViewLeaseRequests.setVisibility(View.VISIBLE);
-                    textNotifications.setVisibility(View.VISIBLE);
-                }
-            }
-        });;
+        textLeaseRequestsNotifications = findViewById(R.id.text_lease_requests_notifications);
+        textExpiredNotifications = findViewById(R.id.text_expired_leases_notifications);
+        textCurrentlyLeasedWarehouses = findViewById(R.id.text_currently_leased_warehouses);
 
         listViewAboutToExpireLeases = findViewById(R.id.expired_leases_notifications);
-        leasingContractViewModel.getEndingSoonContracts(RoleType.SaleAgent).observe(this, leasingContracts -> {
-            ArrayList<String> leasingContractsStr = new ArrayList<>();
-
-            assert leasingContracts != null;
-            leasingContracts.forEach(lc -> leasingContractsStr.add(lc.toString() + ", " + lc.getTenant().getFullName()));
-
-            listViewAboutToExpireLeases.setAdapter(new ArrayAdapter<String>(
-                    that, R.layout.activity_listview, leasingContractsStr));
-
-            if (leasingContracts.size() > 0) {
-                listViewAboutToExpireLeases.setVisibility(View.VISIBLE);
-                textNotifications.setVisibility(View.VISIBLE);
-            }
-        });;
+        listViewLeaseRequests = findViewById(R.id.lease_requests_notifications);
+        listCurrentlyLeasedWarehouses = findViewById(R.id.currently_leased_warehouses);
 
         int roleId = (int) roles.get(0).getId();
         if (roleId == RoleType.Admin.getValue()) {
@@ -104,15 +80,79 @@ public class LoggedInActivity extends AppCompatActivity {
         if (roleId == RoleType.Owner.getValue()
                 || roleId == RoleType.SaleAgent.getValue()
         ) {
+            getEndingSoonContracts(roleId);
             warehousesButton.setVisibility(View.VISIBLE);
             warehouseContractsButton.setVisibility(View.VISIBLE);
         }
 
         if (roleId == RoleType.SaleAgent.getValue()) {
-            textNotifications.setVisibility(View.VISIBLE);
-            listViewLeaseRequests.setVisibility(View.VISIBLE);
-            listViewAboutToExpireLeases.setVisibility(View.VISIBLE);
+            getAllNotCompletedLeaseRequests();
         }
+
+        if (roleId == RoleType.Owner.getValue()) {
+            getAllCurrentlyLeasedWarehouses(roleId);
+        }
+    }
+
+    private void getAllNotCompletedLeaseRequests() {
+        leaseRequestViewModel.getAllNotCompleted(null)
+        .observe(this, leaseRequests -> {
+            ArrayList<String> leaseRequestsStr = new ArrayList<>();
+
+            assert leaseRequests != null;
+            leaseRequests.forEach(lr -> leaseRequestsStr.add(lr.toString()
+                    + ", Tenant: "
+                    + lr.getTenant().getFullName()
+                    + " with phone number: "
+                    + lr.getTenant().getPhoneNumber()));
+
+            listViewLeaseRequests.setAdapter(new ArrayAdapter<>(
+                    that, R.layout.activity_listview, leaseRequestsStr));
+
+            if (leaseRequests.size() > 0) {
+                textNotifications.setVisibility(View.VISIBLE);
+                listViewLeaseRequests.setVisibility(View.VISIBLE);
+                textLeaseRequestsNotifications.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    private void getAllCurrentlyLeasedWarehouses(int roleType) {
+        leasingContractViewModel.getCurrentlyLeasedWarehouses(roleType)
+        .observe(this, leasingContracts -> {
+            ArrayList<String> leasingContractsStr = new ArrayList<>();
+
+            assert leasingContracts != null;
+            leasingContracts.forEach(lc -> leasingContractsStr.add(lc.getWarehouse().toString()));
+
+            listCurrentlyLeasedWarehouses.setAdapter(new ArrayAdapter<>(
+                    that, R.layout.activity_listview, leasingContractsStr));
+
+            if (leasingContracts.size() > 0) {
+                textNotifications.setVisibility(View.VISIBLE);
+                listCurrentlyLeasedWarehouses.setVisibility(View.VISIBLE);
+                textCurrentlyLeasedWarehouses.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    private void getEndingSoonContracts(int roleType) {
+        leasingContractViewModel.getEndingSoonContracts(roleType)
+        .observe(this, leasingContracts -> {
+            ArrayList<String> leasingContractsStr = new ArrayList<>();
+
+            assert leasingContracts != null;
+            leasingContracts.forEach(lc -> leasingContractsStr.add(lc.toString()));
+
+            listViewAboutToExpireLeases.setAdapter(new ArrayAdapter<>(
+                    that, R.layout.activity_listview, leasingContractsStr));
+
+            if (leasingContracts.size() > 0) {
+                textNotifications.setVisibility(View.VISIBLE);
+                listViewAboutToExpireLeases.setVisibility(View.VISIBLE);
+                textExpiredNotifications.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     public void logout(View view) {

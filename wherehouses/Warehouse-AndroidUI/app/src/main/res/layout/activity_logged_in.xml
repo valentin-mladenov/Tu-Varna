@@ -19,68 +19,70 @@
         android:text="@string/users"
         android:visibility="gone" />
 
-        <Button
-            android:id="@+id/warehouse_contracts"
-            style="@style/Widget.AppCompat.Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
-            android:onClick="openLeasingContracts"
-            android:text="@string/warehouse_contracts"
-            android:visibility="gone" />
+    <Button
+        android:id="@+id/warehouse_contracts"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:onClick="openLeasingContracts"
+        android:text="@string/warehouse_contracts"
+        android:visibility="gone" />
 
-        <Button
-            android:id="@+id/warehouses"
-            style="@style/Widget.AppCompat.Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
-            android:onClick="openWarehouses"
-            android:text="@string/warehouses"
-            android:visibility="gone" />
+    <Button
+        android:id="@+id/warehouses"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:onClick="openWarehouses"
+        android:text="@string/warehouses"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/text_notifications"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/notifications"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
+    <TextView
+        android:id="@+id/text_lease_requests_notifications"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/new_lease_requests"
+        android:visibility="gone" />
 
     <ListView
         android:id="@+id/lease_requests_notifications"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible" />
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/text_expired_leases_notifications"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lease_contracts_about_to_expire"
+        android:visibility="gone" />
 
     <ListView
         android:id="@+id/expired_leases_notifications"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible"
-        />
+        android:visibility="gone"/>
 
-<!--    <Button-->
-<!--        android:id="@+id/warehouse_requests"-->
-<!--        style="@style/Widget.AppCompat.Button"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginVertical="10dp"-->
-<!--        android:onClick="openWarehouseRequests"-->
-<!--        android:text="@string/warehouse_requests"-->
-<!--        android:visibility="visible" />-->
-    <!--    <Button-->
-    <!--        android:id="@+id/owners"-->
-    <!--        style="@style/Widget.AppCompat.Button"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:onClick="openOwners"-->
-    <!--        android:text="@string/owners"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.498"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/users"-->
-    <!--        app:layout_constraintVertical_bias="0.12" />-->
+    <TextView
+        android:id="@+id/text_currently_leased_warehouses"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/currently_leased_warehouses"
+        android:visibility="gone" />
+
+    <ListView
+        android:id="@+id/currently_leased_warehouses"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
 
 </LinearLayout>

@@ -102,7 +102,9 @@ public class LeasingContract {
     public String toString() {
         return "Warehouse at: " + getWarehouse().getAddress()
                 + ", owned by: " + owner.getFullName()
+                + " phone: " + owner.getPhoneNumber()
                 + ", rented by: " + tenant.getFullName()
+                + " phone: " + tenant.getPhoneNumber()
                 + ", lease expires at: " + leasedTill.format(DateTimeFormatter.ofPattern("dd MMM YYYY"));
     }
 }

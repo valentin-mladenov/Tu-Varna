@@ -67,7 +67,8 @@ public class LeasingContractController {
 
         throwExceptionIfAccessForbidden(RoleType.Agent);
 
-        List<LeasingContract> leasingContracts = service.getLeasingContractsForSaleAgent(id, fromDate, toDate);
+        List<LeasingContract> leasingContracts = service.
+                getLeasingContractsForSaleAgent(id, fromDate, toDate);
 
         for (LeasingContract leasingContract: leasingContracts) {
             nullifyNestedObjects(leasingContract);
@@ -77,13 +78,67 @@ public class LeasingContractController {
     }
 
     /*---get all warehouses---*/
+    @GetMapping("currentlyLeased/forOwner/{id}")
+    public ResponseEntity<List<LeasingContract>> listCurrentlyLeasedForOwner(
+            @PathVariable("id") long id
+    ) {
+        throwExceptionIfAccessForbidden(RoleType.Owner);
+
+        List<LeasingContract> leasingContracts = service
+                .getCurrentlyActiveLeasingContractsForOwner(id, OffsetDateTime.now());
+
+        for (LeasingContract leasingContract: leasingContracts) {
+            nullifyNestedObjects(leasingContract);
+        }
+
+        return ResponseEntity.ok().body(leasingContracts);
+    }
+
+    /*---get all warehouses---*/
+    @GetMapping("currentlyLeased/forSaleAgent/{id}")
+    public ResponseEntity<List<LeasingContract>> listCurrentlyLeasedForSaleAgent(
+            @PathVariable("id") long id
+    ) {
+        throwExceptionIfAccessForbidden(RoleType.Agent);
+
+        List<LeasingContract> leasingContracts = service
+                .getCurrentlyActiveLeasingContractsForSaleAgent(id, OffsetDateTime.now());
+
+        for (LeasingContract leasingContract: leasingContracts) {
+            nullifyNestedObjects(leasingContract);
+        }
+
+        return ResponseEntity.ok().body(leasingContracts);
+    }
+
+    /*---get all warehouses---*/
     @GetMapping("endingSoon/forSaleAgent/{id}")
     public ResponseEntity<List<LeasingContract>> endingSoonForSaleAgent(@PathVariable("id") long id) {
         throwExceptionIfAccessForbidden(RoleType.Agent);
 
         OffsetDateTime monthFromNow = OffsetDateTime.now().plusMonths(1).plusDays(3);
 
-        List<LeasingContract> leasingContracts = service.getEndingSoonLeasingContractsForSaleAgent(id, monthFromNow);
+        List<LeasingContract> leasingContracts = service
+                .getEndingSoonLeasingContractsForSaleAgent(id, monthFromNow);
+
+        for (LeasingContract leasingContract: leasingContracts) {
+            nullifyNestedObjects(leasingContract);
+        }
+
+        return ResponseEntity.ok(leasingContracts);
+    }
+
+    /*---get all warehouses---*/
+    @GetMapping("endingSoon/forOwner/{id}")
+    public ResponseEntity<List<LeasingContract>> endingSoonForOwner(
+            @PathVariable("id") long id
+    ) {
+        throwExceptionIfAccessForbidden(RoleType.Owner);
+
+        OffsetDateTime monthFromNow = OffsetDateTime.now().plusMonths(1).plusDays(3);
+
+        List<LeasingContract> leasingContracts = service
+                .getEndingSoonLeasingContractsForOwner(id, monthFromNow);
 
         for (LeasingContract leasingContract: leasingContracts) {
             nullifyNestedObjects(leasingContract);

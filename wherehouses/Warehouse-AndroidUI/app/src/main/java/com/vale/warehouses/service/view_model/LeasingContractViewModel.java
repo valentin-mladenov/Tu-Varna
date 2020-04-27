@@ -45,6 +45,7 @@ import java.util.Map;
 public class LeasingContractViewModel extends AndroidViewModel {
     private AppRequestQueue requestQueue;
     private MutableLiveData<List<LeasingContract>> allLeasingContracts;
+    private MutableLiveData<List<LeasingContract>> endingSoonLeasingContracts;
     private MutableLiveData<LeasingContract> oneLeasingContract;
     private String url = getApplication().getResources().getString(R.string.base_url) + "/api/leasingContract";
     private MutableLiveData<Boolean> deleteResult;
@@ -239,36 +240,61 @@ public class LeasingContractViewModel extends AndroidViewModel {
             url = this.url + "/forSaleAgent/" + id;
         }
 
-        getAll(url);
+        getAll(url, allLeasingContracts);
 
         return allLeasingContracts;
     }
 
-    public MutableLiveData<List<LeasingContract>> getEndingSoonContracts(
-            RoleType roleType
+
+    public MutableLiveData<List<LeasingContract>> getCurrentlyLeasedWarehouses(
+            int roleType
     ) {
         allLeasingContracts = new MutableLiveData<>();
 
         String url = "";
 
-        if (roleType.getValue() == RoleType.Admin.getValue()) {
+        if (roleType == RoleType.Admin.getValue()) {
             url = this.url;
         }
-        else if (roleType.getValue() == RoleType.Owner.getValue()) {
+        else if (roleType == RoleType.Owner.getValue()) {
             long id = AppRequestQueue.getToken().getUser().getRelatedOwner().getId();
-            url = this.url + "/endingSoon/forOwner/" + id;
+            url = this.url + "/currentlyLeased/forOwner/" + id;
         }
-        else if (roleType.getValue() == RoleType.SaleAgent.getValue()) {
+        else if (roleType == RoleType.SaleAgent.getValue()) {
             long id = AppRequestQueue.getToken().getUser().getRelatedSaleAgent().getId();
-            url = this.url + "/endingSoon/forSaleAgent/" + id;
+            url = this.url + "/currentlyLeased/forSaleAgent/" + id;
         }
 
-        getAll(url);
+        getAll(url, allLeasingContracts);
 
         return allLeasingContracts;
     }
 
-    private void getAll(String url) {
+    public MutableLiveData<List<LeasingContract>> getEndingSoonContracts(
+            int roleType
+    ) {
+        endingSoonLeasingContracts = new MutableLiveData<>();
+
+        String url = "";
+
+        if (roleType == RoleType.Admin.getValue()) {
+            url = this.url;
+        }
+        else if (roleType == RoleType.Owner.getValue()) {
+            long id = AppRequestQueue.getToken().getUser().getRelatedOwner().getId();
+            url = this.url + "/endingSoon/forOwner/" + id;
+        }
+        else if (roleType == RoleType.SaleAgent.getValue()) {
+            long id = AppRequestQueue.getToken().getUser().getRelatedSaleAgent().getId();
+            url = this.url + "/endingSoon/forSaleAgent/" + id;
+        }
+
+        getAll(url, endingSoonLeasingContracts);
+
+        return endingSoonLeasingContracts;
+    }
+
+    private void getAll(String url, MutableLiveData<List<LeasingContract>> leasingContracts) {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
             Request.Method.GET,
             url,
@@ -283,7 +309,7 @@ public class LeasingContractViewModel extends AndroidViewModel {
 
                     Type listType = new TypeToken<List<LeasingContract>>(){}.getType();
                     List<LeasingContract> leaseContracts = gson.fromJson(response.toString(), listType);
-                    allLeasingContracts.setValue(leaseContracts);
+                    leasingContracts.setValue(leaseContracts);
                 }
             },
             requestQueue.getErrorListener()) {
@@ -307,8 +333,6 @@ public class LeasingContractViewModel extends AndroidViewModel {
 
         requestQueue.getRequestQueue().add(jsonArrayRequest);
     }
-
-
 
     private JSONObject getJsonObject(LeasingContract leaseContract) {
         JSONObject requestBody = null;

@@ -87,7 +87,10 @@ public class WarehouseController {
 
     /*---Update a warehouse by id---*/
     @PutMapping("/{id}")
-    public ResponseEntity<Warehouse> update(@PathVariable("id") long id, @RequestBody Warehouse warehouse) {
+    public ResponseEntity<Warehouse> update(
+            @PathVariable("id") long id,
+            @RequestBody Warehouse warehouse
+    ) {
         throwExceptionIfAccessForbidden(RoleType.Owner);
 
         service.updateWarehouse(warehouse);
