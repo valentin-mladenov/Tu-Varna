@@ -10,6 +10,8 @@ public interface LeasingContractInterface {
 
     List<LeasingContract> getLeasingContractsForOwner(Long id);
 
+    List<LeasingContract> getLeasingContractsForWarehouse(Long id);
+
     List<LeasingContract> getLeasingContractsForSaleAgent(Long id, OffsetDateTime fromDate, OffsetDateTime toDate);
 
     List<LeasingContract> getCurrentlyActiveLeasingContractsForOwner(Long id, OffsetDateTime leasedTill);

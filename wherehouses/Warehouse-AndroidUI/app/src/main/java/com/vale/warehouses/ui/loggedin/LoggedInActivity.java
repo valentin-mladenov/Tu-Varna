@@ -81,6 +81,7 @@ public class LoggedInActivity extends AppCompatActivity {
     private List<String> leaseRequests = new ArrayList<>();
     private List<LeasingContract> leasingContracts = new ArrayList<>();
     private List<Warehouse> warehouses = new ArrayList<>();
+    private int roleId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +117,7 @@ public class LoggedInActivity extends AppCompatActivity {
         editTextDateFrom = findViewById(R.id.edit_text_date_from);
         editTextDateTo = findViewById(R.id.edit_text_date_to);
 
-        int roleId = (int) roles.get(0).getId();
+        roleId = (int) roles.get(0).getId();
         if (roleId == RoleType.Admin.getValue()) {
             handleAdminUser();
         }

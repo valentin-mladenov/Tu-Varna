@@ -5,8 +5,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -21,10 +24,13 @@ import com.vale.warehouses.service.model.Category;
 import com.vale.warehouses.service.model.SaleAgent;
 import com.vale.warehouses.service.model.Warehouse;
 import com.vale.warehouses.service.model.WarehouseType;
+import com.vale.warehouses.service.view_model.LeasingContractViewModel;
 import com.vale.warehouses.service.view_model.SaleAgentViewModel;
 import com.vale.warehouses.service.view_model.WarehouseViewModel;
+import com.vale.warehouses.ui.lease_contract.LeaseContractListActivity;
 
 import java.math.BigDecimal;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,6 +42,11 @@ public class AddEditWarehouseActivity extends AppCompatActivity {
 
     private SaleAgentViewModel saleAgentViewModel;
     private WarehouseViewModel warehouseViewModel;
+    private LeasingContractViewModel leasingContractViewModel;
+
+
+    private DateTimeFormatter format;
+
     private SaleAgentMultiSelectionSpinner saleAgentSpinner;
     private Warehouse warehouse;
     private TextInputLayout editTextAddress,
@@ -43,6 +54,9 @@ public class AddEditWarehouseActivity extends AppCompatActivity {
                             editTextHeight,
                             editTextLength,
                             editTextPricePerMonth;
+
+    private TextView textViewTenantHistory;
+    private ListView listViewTenantHistory;
 
     private Spinner editSpinnerType, editSpinnerCategory;
 
@@ -53,6 +67,7 @@ public class AddEditWarehouseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.warehouse_activity_add_edit);
+        format = DateTimeFormatter.ofPattern(getString(R.string.date_format));
 
         Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(R.drawable.ic_close);
 
@@ -64,6 +79,9 @@ public class AddEditWarehouseActivity extends AppCompatActivity {
         editTextHeight = findViewById(R.id.edit_text_height);
         editTextLength = findViewById(R.id.edit_text_length);
         editTextPricePerMonth = findViewById(R.id.edit_text_price_per_month);
+
+        textViewTenantHistory = findViewById(R.id.label_tenant_history);
+        listViewTenantHistory = findViewById(R.id.tenant_history);
 
         editSpinnerType = findViewById(R.id.spinner_types);
         editSpinnerType.setAdapter(new ArrayAdapter<>(
@@ -91,51 +109,69 @@ public class AddEditWarehouseActivity extends AppCompatActivity {
 
         buildViewModels();
 
-        saleAgentViewModel.getAllSaleAgents().observe(this, new Observer<List<SaleAgent>>() {
-            @Override
-            public void onChanged(@Nullable List<SaleAgent> saleAgents) {
-                saleAgentSpinner.setSaleAgents(saleAgents);
+        saleAgentViewModel.getAllSaleAgents().observe(this, saleAgents -> {
+            saleAgentSpinner.setSaleAgents(saleAgents);
 
-                if (getIntent().hasExtra(WAREHOUSE_ID)) {
-                    setTitle(getString(R.string.edit));
+            if (getIntent().hasExtra(WAREHOUSE_ID)) {
+                setTitle(getString(R.string.edit));
 
-                    Long warehouseId = getIntent().getExtras().getLong(WAREHOUSE_ID);
+                Long warehouseId = getIntent().getExtras().getLong(WAREHOUSE_ID);
 
-                    warehouseViewModel.getOne(warehouseId).observe(that, new Observer<Warehouse>() {
-                        @Override
-                        public void onChanged(@Nullable Warehouse warehouseRes) {
-                            warehouse = warehouseRes;
+                warehouseViewModel.getOne(warehouseId).observe(that, warehouseRes -> {
+                    warehouse = warehouseRes;
 
-                            editTextAddress.getEditText().setText(warehouse.getAddress());
-                            editTextHeight.getEditText().setText(String.valueOf(warehouse.getHeight()));
-                            editTextWidth.getEditText().setText(String.valueOf(warehouse.getWidth()));
-                            editTextLength.getEditText().setText(String.valueOf(warehouse.getLength()));
-                            editTextPricePerMonth.getEditText().setText(String.valueOf(warehouse.getPricePerMonth()));
+                    editTextAddress.getEditText().setText(warehouse.getAddress());
+                    editTextHeight.getEditText().setText(String.valueOf(warehouse.getHeight()));
+                    editTextWidth.getEditText().setText(String.valueOf(warehouse.getWidth()));
+                    editTextLength.getEditText().setText(String.valueOf(warehouse.getLength()));
+                    editTextPricePerMonth.getEditText().setText(String.valueOf(warehouse.getPricePerMonth()));
 
-                            editSpinnerCategory.setSelection(categories.indexOf(warehouse.getCategory()));
-                            editSpinnerType.setSelection(warehouseTypes.indexOf(warehouse.getType()));
-
-                            saleAgentSpinner.setSelection(warehouse.getSaleAgents());
-
-                            if (AppRequestQueue.getToken().getUser().getRelatedSaleAgent() != null) {
-                                setTitle(getString(R.string.inspect));
-                                editTextAddress.setEnabled(false);
-                                editTextWidth.setEnabled(false);
-                                editTextHeight.setEnabled(false);
-                                editTextLength.setEnabled(false);
-                                editTextPricePerMonth.setEnabled(false);
-                                editSpinnerType.setEnabled(false);
-                                editSpinnerCategory.setEnabled(false);
-                                saleAgentSpinner.setEnabled(false);
-                            }
-                        }
-                    });
-                } else {
-                    setTitle(getString(R.string.add));
-                    warehouse.setOwner(AppRequestQueue.getToken().getUser().getRelatedOwner());
+                    editSpinnerCategory.setSelection(categories.indexOf(warehouse.getCategory()));
+                    editSpinnerType.setSelection(warehouseTypes.indexOf(warehouse.getType()));
 
                     saleAgentSpinner.setSelection(warehouse.getSaleAgents());
-                }
+
+                    if (AppRequestQueue.getToken().getUser().getRelatedSaleAgent() != null) {
+                        setTitle(getString(R.string.inspect));
+                        editTextAddress.setEnabled(false);
+                        editTextWidth.setEnabled(false);
+                        editTextHeight.setEnabled(false);
+                        editTextLength.setEnabled(false);
+                        editTextPricePerMonth.setEnabled(false);
+                        editSpinnerType.setEnabled(false);
+                        editSpinnerCategory.setEnabled(false);
+                        saleAgentSpinner.setEnabled(false);
+
+                        leasingContractViewModel.getAllLeasingContractsForWarehouse(warehouse.getId())
+                        .observe(that, leasingContracts -> {
+                            List<String> tenantHistoryData = new ArrayList<>();
+
+                            assert leasingContracts != null;
+                            leasingContracts.forEach(lc -> tenantHistoryData.add(
+                                    "Occupied from: "
+                                    + lc.getLeasedAt().format(format)
+                                    + " to "
+                                    + lc.getLeasedTill().format(format)
+                                    + "\r\nby Tenant: "
+                                    + lc.getTenant().getFullName()
+                                    + " with phone number: "
+                                    + lc.getTenant().getPhoneNumber()
+                            ));
+
+                            listViewTenantHistory.setAdapter(
+                                    new ArrayAdapter<>(that, android.R.layout.simple_list_item_1, tenantHistoryData));
+
+                            listViewTenantHistory.setVisibility(View.VISIBLE);
+                            textViewTenantHistory.setVisibility(View.VISIBLE);
+                        });
+
+                    }
+                });
+            } else {
+                setTitle(getString(R.string.add));
+                warehouse.setOwner(AppRequestQueue.getToken().getUser().getRelatedOwner());
+
+                saleAgentSpinner.setSelection(warehouse.getSaleAgents());
             }
         });
     }
@@ -191,6 +227,8 @@ public class AddEditWarehouseActivity extends AppCompatActivity {
         warehouseViewModel = new ViewModelProvider(this).get(WarehouseViewModel.class);
 
         saleAgentViewModel = new ViewModelProvider(this).get(SaleAgentViewModel.class);
+
+        leasingContractViewModel = new ViewModelProvider(this).get(LeasingContractViewModel.class);
     }
 
     @Override

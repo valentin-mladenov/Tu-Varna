@@ -11,6 +11,8 @@ import java.util.List;
 public interface LeasingContractRepository extends JpaRepository<LeasingContract, Long> {
     List<LeasingContract> findBySaleAgentId(Long id);
 
+    List<LeasingContract> findByWarehouseIdOrderByLeasedAtDesc(Long id);
+
     List<LeasingContract> findBySaleAgentIdAndLeasedAtBetween(Long id, OffsetDateTime fromDate, OffsetDateTime toDate);
 
     List<LeasingContract> findBySaleAgentIdAndLeasedTillBeforeOrderByLeasedTillDesc(Long id, OffsetDateTime leasedTill);

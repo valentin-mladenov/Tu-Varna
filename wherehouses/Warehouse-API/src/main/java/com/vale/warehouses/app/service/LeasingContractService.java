@@ -41,6 +41,17 @@ public class LeasingContractService implements LeasingContractInterface {
     }
 
     @Override
+    public List<LeasingContract> getLeasingContractsForWarehouse(Long id) {
+        List<LeasingContract> leasingContracts = repository.findByWarehouseIdOrderByLeasedAtDesc(id);
+
+        if(leasingContracts.size() > 0) {
+            return leasingContracts;
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
     public List<LeasingContract> getCurrentlyActiveLeasingContractsForOwner(
             Long id, OffsetDateTime leasedTill
     ) {

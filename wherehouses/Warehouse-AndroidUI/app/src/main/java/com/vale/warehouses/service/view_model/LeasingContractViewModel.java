@@ -223,6 +223,14 @@ public class LeasingContractViewModel extends AndroidViewModel {
         return deleteResult;
     }
 
+    public MutableLiveData<List<LeasingContract>> getAllLeasingContractsForWarehouse(Long id) {
+        allLeasingContracts = new MutableLiveData<>();
+
+        getAll(url + "/warehouse/" + id, allLeasingContracts);
+
+        return allLeasingContracts;
+    }
+
     public MutableLiveData<List<LeasingContract>> getAllLeasingContracts(
             RoleType roleType, OffsetDateTime fromDate, OffsetDateTime toDate, Long id
     ) {

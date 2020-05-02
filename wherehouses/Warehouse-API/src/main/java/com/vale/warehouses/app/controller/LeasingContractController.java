@@ -38,6 +38,19 @@ public class LeasingContractController {
         return ResponseEntity.ok(leasingContracts);
     }
 
+    /*---get all warehouses---*/
+    @GetMapping("warehouse/{id}")
+    public ResponseEntity<List<LeasingContract>> allForWarehouse(@PathVariable("id") long id) {
+        throwExceptionIfAccessForbidden(RoleType.Agent);
+
+        List<LeasingContract> leasingContracts = service.getLeasingContractsForWarehouse(id);
+
+        for (LeasingContract leasingContract: leasingContracts) {
+            nullifyNestedObjects(leasingContract);
+        }
+
+        return ResponseEntity.ok(leasingContracts);
+    }
 
     /*---get all warehouses---*/
     @GetMapping("forOwner/{id}")
