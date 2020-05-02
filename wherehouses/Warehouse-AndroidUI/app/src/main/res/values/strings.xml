@@ -72,7 +72,12 @@
     <string name="leased_at_less_than_leased_till">Leased At month must be before Leased Till</string>
     <string name="inspect">Inspect</string>
     <string name="notifications">Notifications</string>
-    <string name="new_lease_requests">New Lease requests</string>
-    <string name="lease_contracts_about_to_expire">Lease contracts about to expire</string>
-    <string name="currently_leased_warehouses">Currently leased warehouses</string>
+    <string name="new_lease_requests">Show new Lease requests</string>
+    <string name="lease_contracts_about_to_expire">Show lease contracts about to expire</string>
+    <string name="currently_leased_warehouses">Show currently leased warehouses</string>
+    <string name="search_contracts">Search contracts</string>
+    <string name="report_for_sale_agent_contracts">Report for contracts made for sale agent in time frame</string>
+    <string name="make_another_report">Make Another Report</string>
+    <string name="from_date">From Date</string>
+    <string name="to_date">To Date</string>
 </resources>

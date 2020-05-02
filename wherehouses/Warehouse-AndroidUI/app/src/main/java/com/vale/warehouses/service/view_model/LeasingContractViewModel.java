@@ -1,6 +1,7 @@
 package com.vale.warehouses.service.view_model;
 
 import android.app.Application;
+import android.net.Uri;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,6 +40,7 @@ import org.json.JSONObject;
 import java.lang.reflect.Type;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -222,7 +224,7 @@ public class LeasingContractViewModel extends AndroidViewModel {
     }
 
     public MutableLiveData<List<LeasingContract>> getAllLeasingContracts(
-            RoleType roleType, OffsetDateTime fromDate, OffsetDateTime toDate
+            RoleType roleType, OffsetDateTime fromDate, OffsetDateTime toDate, Long id
     ) {
         allLeasingContracts = new MutableLiveData<>();
 
@@ -232,15 +234,28 @@ public class LeasingContractViewModel extends AndroidViewModel {
             url = this.url;
         }
         else if (roleType.getValue() == RoleType.Owner.getValue()) {
-            long id = AppRequestQueue.getToken().getUser().getRelatedOwner().getId();
+            if (id == null) {
+                id = AppRequestQueue.getToken().getUser().getRelatedOwner().getId();
+            }
             url = this.url + "/forOwner/" + id;
         }
         else if (roleType.getValue() == RoleType.SaleAgent.getValue()) {
-            long id = AppRequestQueue.getToken().getUser().getRelatedSaleAgent().getId();
+            if (id == null) {
+                id = AppRequestQueue.getToken().getUser().getRelatedSaleAgent().getId();
+            }
             url = this.url + "/forSaleAgent/" + id;
         }
 
-        getAll(url, allLeasingContracts);
+        Uri.Builder builder = Uri.parse(url).buildUpon();
+        if (fromDate != null) {
+            builder.appendQueryParameter("fromDate", fromDate.format(DateTimeFormatter.ISO_INSTANT));
+        }
+
+        if (toDate != null) {
+            builder.appendQueryParameter("toDate", toDate.format(DateTimeFormatter.ISO_INSTANT));
+        }
+
+        getAll(builder.build().toString(), allLeasingContracts);
 
         return allLeasingContracts;
     }
@@ -299,10 +314,7 @@ public class LeasingContractViewModel extends AndroidViewModel {
             Request.Method.GET,
             url,
             null,
-            new Response.Listener<JSONArray>() {
-                @Override
-                public void onResponse(JSONArray response) {
-
+                response -> {
                     VolleyLog.wtf(response.toString(), "utf-8");
 
                     Gson gson = buildGson();
@@ -310,8 +322,7 @@ public class LeasingContractViewModel extends AndroidViewModel {
                     Type listType = new TypeToken<List<LeasingContract>>(){}.getType();
                     List<LeasingContract> leaseContracts = gson.fromJson(response.toString(), listType);
                     leasingContracts.setValue(leaseContracts);
-                }
-            },
+                },
             requestQueue.getErrorListener()) {
             //This is for Headers If You Needed
 

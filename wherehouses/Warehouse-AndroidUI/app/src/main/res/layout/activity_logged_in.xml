@@ -39,6 +39,77 @@
         android:text="@string/warehouses"
         android:visibility="gone" />
 
+    <Button
+        android:id="@+id/make_another_search"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="makeAnotherSearch"
+        android:text="@string/make_another_report"
+        android:visibility="gone" />
+
+    <Spinner
+        android:id="@+id/spinner_sale_agents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_date_from"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/from_date"
+            android:importantForAutofill="no"
+            android:focusable="false"
+            android:inputType="date" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_date_to"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/to_date"
+            android:importantForAutofill="no"
+            android:focusable="false"
+            android:inputType="date" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/search_contracts"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="searchContractsForSaleAgent"
+        android:text="@string/search_contracts"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/Label_spinner_sale_agents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:text="@string/report_for_sale_agent_contracts" />
+
+    <ListView
+        android:id="@+id/report_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
     <TextView
         android:id="@+id/text_notifications"
         android:layout_width="match_parent"
@@ -46,43 +117,107 @@
         android:text="@string/notifications"
         android:visibility="gone" />
 
-    <TextView
-        android:id="@+id/text_lease_requests_notifications"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/new_lease_requests"
-        android:visibility="gone" />
-
-    <ListView
+    <RelativeLayout
         android:id="@+id/lease_requests_notifications"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone" />
+        android:visibility="gone">
 
-    <TextView
-        android:id="@+id/text_expired_leases_notifications"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/lease_contracts_about_to_expire"
-        android:visibility="gone" />
+        <RelativeLayout
+            android:id="@+id/relative_layout_lease_requests_notifications"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-    <ListView
+            <Button
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/new_lease_requests"
+                android:onClick="showNewLeaseContractsRequests" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/badge_notification_lease_requests_notifications"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/relative_layout_lease_requests_notifications"
+            android:layout_alignBaseline="@+id/relative_layout_lease_requests_notifications"
+            android:background="@drawable/item_count"
+            android:layout_marginEnd="15dp"
+            android:textColor="#FFF"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/expired_leases_notifications"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"/>
+        android:visibility="gone">
 
-    <TextView
-        android:id="@+id/text_currently_leased_warehouses"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/currently_leased_warehouses"
-        android:visibility="gone" />
+        <RelativeLayout
+            android:id="@+id/relative_layout_expired_leases_notifications"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-    <ListView
+            <Button
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/lease_contracts_about_to_expire"
+                android:onClick="showExpiredLeaseContracts" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/badge_notification_expired_leases_notifications"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/relative_layout_expired_leases_notifications"
+            android:layout_alignBaseline="@+id/relative_layout_expired_leases_notifications"
+            android:background="@drawable/item_count"
+            android:layout_marginEnd="15dp"
+            android:layout_marginVertical="15dp"
+            android:textColor="#FFF"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/currently_leased_warehouses"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"/>
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:id="@+id/relative_layout_currently_leased_warehouses"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/currently_leased_warehouses"
+                android:onClick="showCurrentlyLeasedWarehouses" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/badge_notification_currently_leased_warehouses"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/relative_layout_currently_leased_warehouses"
+            android:layout_alignBaseline="@+id/relative_layout_currently_leased_warehouses"
+            android:background="@drawable/item_count"
+            android:layout_marginEnd="15dp"
+            android:textColor="#FFF"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
 
 </LinearLayout>

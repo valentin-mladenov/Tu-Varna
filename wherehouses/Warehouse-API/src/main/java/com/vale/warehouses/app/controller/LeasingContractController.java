@@ -3,7 +3,10 @@ package com.vale.warehouses.app.controller;
 import com.vale.warehouses.app.model.LeasingContract;
 import com.vale.warehouses.app.service.interfaces.LeasingContractInterface;
 import com.vale.warehouses.auth.models.RoleType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +19,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/leasingContract")
 public class LeasingContractController {
+    private static final Logger logger = LogManager.getLogger(LeasingContractController.class);
+
     @Autowired
     private LeasingContractInterface service;
 
@@ -52,7 +57,9 @@ public class LeasingContractController {
     @GetMapping("forSaleAgent/{id}")
     public ResponseEntity<List<LeasingContract>> listForSaleAgent(
             @PathVariable("id") long id,
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
             @RequestParam(required = false) OffsetDateTime fromDate,
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
             @RequestParam(required = false) OffsetDateTime toDate
     ) {
         if (fromDate == null) {
@@ -61,8 +68,7 @@ public class LeasingContractController {
         }
 
         if (toDate == null) {
-            toDate = OffsetDateTime.now();
-            toDate = toDate.plusYears(100);
+            toDate = fromDate.plusYears(200);
         }
 
         throwExceptionIfAccessForbidden(RoleType.Agent);

@@ -138,54 +138,51 @@ public class AddEditLeasingContractActivity extends AppCompatActivity {
 
             Long leaseContractId = Objects.requireNonNull(getIntent().getExtras()).getLong(LEASE_CONTRACT_ID);
 
-            leaseContractViewModel.getOne(leaseContractId).observe(this, new Observer<LeasingContract>() {
-                @Override
-                public void onChanged(@Nullable LeasingContract leaseContractRes) {
-                    leaseContract = leaseContractRes;
+            leaseContractViewModel.getOne(leaseContractId).observe(this, leaseContractRes -> {
+                leaseContract = leaseContractRes;
 
-                    editTextLeasedAt.setText(leaseContract.getLeasedAt().format(format));
-                    editTextLeasedTill.setText(leaseContract.getLeasedTill().format(format));
+                editTextLeasedAt.setText(leaseContract.getLeasedAt().format(format));
+                editTextLeasedTill.setText(leaseContract.getLeasedTill().format(format));
 
-                    calculateTotalMonthsAndPrice();
+                calculateTotalMonthsAndPrice();
 
-                    List<Warehouse> warehouses = new ArrayList<>();
-                    warehouses.add(leaseContract.getWarehouse());
+                List<Warehouse> warehouses = new ArrayList<>();
+                warehouses.add(leaseContract.getWarehouse());
 
-                    editSpinnerWarehouse.setAdapter(new ArrayAdapter<>(
-                            that, android.R.layout.simple_list_item_1, warehouses));
-                    editSpinnerWarehouse.setSelection(0);
-                    editSpinnerWarehouse.setEnabled(false);
+                editSpinnerWarehouse.setAdapter(new ArrayAdapter<>(
+                        that, android.R.layout.simple_list_item_1, warehouses));
+                editSpinnerWarehouse.setSelection(0);
+                editSpinnerWarehouse.setEnabled(false);
 
-                    List<Tenant> tenants = new ArrayList<>();
-                    tenants.add(leaseContract.getTenant());
+                List<Tenant> tenants = new ArrayList<>();
+                tenants.add(leaseContract.getTenant());
 
-                    editSpinnerTenant.setAdapter(new ArrayAdapter<>(
-                            that, android.R.layout.simple_list_item_1, tenants));
-                    editSpinnerTenant.setSelection(0);
-                    editSpinnerTenant.setEnabled(false);
+                editSpinnerTenant.setAdapter(new ArrayAdapter<>(
+                        that, android.R.layout.simple_list_item_1, tenants));
+                editSpinnerTenant.setSelection(0);
+                editSpinnerTenant.setEnabled(false);
 
-                    if (leaseContract.getLeaseRequest() != null) {
-                        List<LeaseRequest> leaseRequests = new ArrayList<>();
-                        leaseRequests.add(leaseContract.getLeaseRequest());
+                if (leaseContract.getLeaseRequest() != null) {
+                    List<LeaseRequest> leaseRequests = new ArrayList<>();
+                    leaseRequests.add(leaseContract.getLeaseRequest());
 
-                        editSpinnerLeaseRequests.setAdapter(new ArrayAdapter<>(
-                                that, android.R.layout.simple_list_item_1, leaseRequests));
+                    editSpinnerLeaseRequests.setAdapter(new ArrayAdapter<>(
+                            that, android.R.layout.simple_list_item_1, leaseRequests));
 
-                        editSpinnerLeaseRequests.setSelection(0);
-                        editSpinnerLeaseRequests.setEnabled(false);
-                        editSpinnerLeaseRequests.setVisibility(View.VISIBLE);
-                        textLeaseRequest.setVisibility(View.VISIBLE);
-                    }
-                    else {
-                        getLeaseRequests(that, leaseContract.getTenant().getId());
-                    }
+                    editSpinnerLeaseRequests.setSelection(0);
+                    editSpinnerLeaseRequests.setEnabled(false);
+                    editSpinnerLeaseRequests.setVisibility(View.VISIBLE);
+                    textLeaseRequest.setVisibility(View.VISIBLE);
+                }
+                else {
+                    getLeaseRequests(that, leaseContract.getTenant().getId());
+                }
 
-                    if (AppRequestQueue.getToken().getUser().getRelatedOwner() != null) {
-                        setTitle(getString(R.string.inspect));
+                if (AppRequestQueue.getToken().getUser().getRelatedOwner() != null) {
+                    setTitle(getString(R.string.inspect));
 
-                        editTextLeasedAt.setEnabled(false);
-                        editTextLeasedTill.setEnabled(false);
-                    }
+                    editTextLeasedAt.setEnabled(false);
+                    editTextLeasedTill.setEnabled(false);
                 }
             });
         } else {
