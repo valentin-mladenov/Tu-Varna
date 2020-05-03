@@ -84,7 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top|end"
         android:layout_margin="5dp"
-        android:text="@string/add_lease_request"
+        android:text="@string/make_lease_request"
         android:onClick="openLeaseRequest"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

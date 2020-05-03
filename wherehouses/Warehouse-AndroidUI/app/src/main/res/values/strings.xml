@@ -83,5 +83,6 @@
     <string name="tenant_history">Tenant History</string>
     <string name="get_free_warehouses">Get Free Warehouses</string>
     <string name="report_free_warehouses">Report free warehouses</string>
-    <string name="add_lease_request">Add lease request</string>
+    <string name="make_lease_request">Make lease request</string>
+    <string name="warehouse_type">Warehouse Type</string>
 </resources>

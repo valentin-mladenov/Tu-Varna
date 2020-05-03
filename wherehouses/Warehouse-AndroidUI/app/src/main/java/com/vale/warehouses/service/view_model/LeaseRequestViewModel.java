@@ -40,7 +40,8 @@ public class LeaseRequestViewModel extends AndroidViewModel {
     private AppRequestQueue requestQueue;
     private MutableLiveData<List<LeaseRequest>> allLeaseRequests;
     private MutableLiveData<LeaseRequest> oneLeaseRequest;
-    private String url = getApplication().getResources().getString(R.string.base_url) + "/api/leaseRequest";
+    private String baseUrl = getApplication().getResources().getString(R.string.base_url);
+    private String url = baseUrl + "/api/leaseRequest";
     private MutableLiveData<Boolean> deleteResult;
 
     public LeaseRequestViewModel(@NonNull Application application) {
@@ -89,13 +90,13 @@ public class LeaseRequestViewModel extends AndroidViewModel {
         return oneLeaseRequest;
     }
 
-    public MutableLiveData<LeaseRequest> insertData(LeaseRequest leaseContract) {
+    public MutableLiveData<LeaseRequest> insertData(LeaseRequest leaseRequest) {
         oneLeaseRequest = new MutableLiveData<>();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
             Request.Method.POST,
-            url,
-            getJsonObject(leaseContract),
+            baseUrl + "/auth/createLeaseRequest",
+            getJsonObject(leaseRequest),
             new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {

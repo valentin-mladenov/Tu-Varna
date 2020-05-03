@@ -99,7 +99,8 @@ public class LeasingContractService implements LeasingContractInterface {
             Long id, OffsetDateTime leasedTill
     ) {
         List<LeasingContract> leasingContracts = repository
-                .findBySaleAgentIdAndLeasedTillBeforeOrderByLeasedTillDesc(id, leasedTill);
+                .findBySaleAgentIdAndLeasedTillBetweenOrderByLeasedTillDesc(
+                        id, OffsetDateTime.now(), leasedTill);
 
         if(leasingContracts.size() > 0) {
             return leasingContracts;
@@ -109,9 +110,11 @@ public class LeasingContractService implements LeasingContractInterface {
     }
 
     @Override
-    public List<LeasingContract> getEndingSoonLeasingContractsForOwner(Long id, OffsetDateTime leasedTill) {
+    public List<LeasingContract> getEndingSoonLeasingContractsForOwner(
+            Long id, OffsetDateTime leasedTill) {
         List<LeasingContract> leasingContracts = repository
-                .findByOwnerIdAndLeasedTillBeforeOrderByLeasedTillDesc(id, leasedTill);
+                .findByOwnerIdAndLeasedTillBetweenOrderByLeasedTillDesc(
+                        id, OffsetDateTime.now(), leasedTill);
 
         if(leasingContracts.size() > 0) {
             return leasingContracts;

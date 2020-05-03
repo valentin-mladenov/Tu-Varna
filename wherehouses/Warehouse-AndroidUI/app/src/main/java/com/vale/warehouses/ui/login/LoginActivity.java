@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.vale.warehouses.service.view_model.LoginViewModel;
 import com.vale.warehouses.service.model.Token;
+import com.vale.warehouses.ui.lease_request.CreateLeaseRequest;
 import com.vale.warehouses.ui.loggedin.LoggedInActivity;
 import com.vale.warehouses.R;
 
@@ -125,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void openLeaseRequest(View view) {
-        Intent intent = new Intent(LoginActivity.this, LoggedInActivity.class);
+        Intent intent = new Intent(LoginActivity.this, CreateLeaseRequest.class);
 
         startActivity(intent);
     }

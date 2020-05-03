@@ -187,32 +187,26 @@ public class AddEditWarehouseActivity extends AppCompatActivity {
             warehouse.setType(WarehouseType.valueOf(editSpinnerType.getSelectedItem().toString()));
 
             if (getIntent().hasExtra(WAREHOUSE_ID)) {
-                warehouseViewModel.update(warehouse).observe(this, new Observer<Warehouse>() {
-                    @Override
-                    public void onChanged(Warehouse updatedWarehouse) {
-                        Intent intent = new Intent();
-                        intent.putExtras(getIntent());
+                warehouseViewModel.update(warehouse).observe(this, updatedWarehouse -> {
+                    Intent intent = new Intent();
+                    intent.putExtras(getIntent());
 
-                        setResult(RESULT_OK);
+                    setResult(RESULT_OK);
 
-                        finish();
-                    }
+                    finish();
                 });
 
                 Toast.makeText(this, R.string.warehouse_updated, Toast.LENGTH_SHORT).show();
             } else {
-                warehouseViewModel.insertData(warehouse).observe(this, new Observer<Warehouse>() {
-                    @Override
-                    public void onChanged(@Nullable Warehouse insertedWarehouse) {
-                        assert insertedWarehouse != null;
+                warehouseViewModel.insertData(warehouse).observe(this, insertedWarehouse -> {
+                    assert insertedWarehouse != null;
 
-                        Intent intent = new Intent();
-                        intent.putExtras(getIntent());
+                    Intent intent = new Intent();
+                    intent.putExtras(getIntent());
 
-                        setResult(RESULT_OK);
+                    setResult(RESULT_OK);
 
-                        finish();
-                    }
+                    finish();
                 });
 
                 Toast.makeText(this, R.string.warehouse_created, Toast.LENGTH_SHORT).show();

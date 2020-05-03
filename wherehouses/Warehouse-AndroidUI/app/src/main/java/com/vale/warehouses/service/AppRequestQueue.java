@@ -75,7 +75,11 @@ public class AppRequestQueue {
     public Map<String, String> getHeaders() {
         Map<String, String> params = new HashMap<>();
         params.put("Content-Type", "application/json; charset=UTF-8");
-        params.put("Authorization", "Bearer " + token.getId());
+
+        if(token != null) {
+            params.put("Authorization", "Bearer " + token.getId());
+        }
+
         return params;
     }
 

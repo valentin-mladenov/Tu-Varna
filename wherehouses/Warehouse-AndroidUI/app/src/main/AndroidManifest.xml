@@ -13,7 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.lease_request.CreateLeaseRequest"></activity>
+        <activity
+            android:name=".ui.lease_request.CreateLeaseRequest"
+            android:parentActivityName=".ui.login.LoginActivity" />
         <activity
             android:name=".ui.users.AddEditUserActivity"
             android:parentActivityName=".ui.users.UserListActivity" />

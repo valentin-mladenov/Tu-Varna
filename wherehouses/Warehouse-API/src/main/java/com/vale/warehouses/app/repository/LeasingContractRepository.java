@@ -19,9 +19,9 @@ public interface LeasingContractRepository extends JpaRepository<LeasingContract
 
     List<LeasingContract> findBySaleAgentIdAndLeasedAtBetween(Long id, OffsetDateTime fromDate, OffsetDateTime toDate);
 
-    List<LeasingContract> findBySaleAgentIdAndLeasedTillBeforeOrderByLeasedTillDesc(Long id, OffsetDateTime leasedTill);
+    List<LeasingContract> findBySaleAgentIdAndLeasedTillBetweenOrderByLeasedTillDesc(Long id, OffsetDateTime fromDate, OffsetDateTime toDate);
 
-    List<LeasingContract> findByOwnerIdAndLeasedTillBeforeOrderByLeasedTillDesc(Long id, OffsetDateTime leasedTill);
+    List<LeasingContract> findByOwnerIdAndLeasedTillBetweenOrderByLeasedTillDesc(Long id, OffsetDateTime fromDate, OffsetDateTime toDate);
 
     List<LeasingContract> findBySaleAgentIdAndLeasedTillAfter(Long id, OffsetDateTime leasedTill);
 

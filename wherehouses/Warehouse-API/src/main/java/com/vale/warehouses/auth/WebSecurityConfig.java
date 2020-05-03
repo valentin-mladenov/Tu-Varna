@@ -47,7 +47,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(final WebSecurity webSecurity) {
-        webSecurity.ignoring().antMatchers("/auth/login");
+        webSecurity.ignoring().antMatchers("/auth/login")
+                .antMatchers("/auth/createLeaseRequest");
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.vale.warehouses.auth.controller;
 
+import com.vale.warehouses.app.model.LeaseRequest;
+import com.vale.warehouses.app.service.interfaces.LeaseRequestInterface;
 import com.vale.warehouses.app.service.interfaces.UserServiceInterface;
 import com.vale.warehouses.auth.models.TokenEntity;
 import com.vale.warehouses.auth.service.AuthService;
@@ -7,10 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
 
@@ -24,6 +23,9 @@ public class AuthController {
 
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    private LeaseRequestInterface leaseRequestService;
 
     @PostMapping("/login")
     public TokenEntity login(
@@ -49,6 +51,19 @@ public class AuthController {
         }
         catch (Exception ex){
             logger.error("Login Unsuccessful \r\n" + ex.toString());
+            throw ex;
+        }
+    }
+
+    @PostMapping("/createLeaseRequest")
+    public ResponseEntity<?> saveLeaseRequest(@RequestBody LeaseRequest leaseRequest) {
+        try {
+            leaseRequest = leaseRequestService.createLeaseRequest(leaseRequest);
+
+            return ResponseEntity.ok(leaseRequest);
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+
             throw ex;
         }
     }
