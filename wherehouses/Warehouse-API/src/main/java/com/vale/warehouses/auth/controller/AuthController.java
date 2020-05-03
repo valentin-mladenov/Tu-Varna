@@ -1,8 +1,10 @@
 package com.vale.warehouses.auth.controller;
 
+import com.vale.warehouses.app.service.interfaces.UserServiceInterface;
 import com.vale.warehouses.auth.models.TokenEntity;
 import com.vale.warehouses.auth.service.AuthService;
-import com.vale.warehouses.app.service.interfaces.UserServiceInterface;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +17,8 @@ import java.util.HashSet;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
+    private static final Logger logger = LogManager.getLogger(AuthController.class);
+
     @Autowired
     private UserServiceInterface userService;
 
@@ -26,21 +30,27 @@ public class AuthController {
             @RequestParam("username") final String username,
             @RequestParam("password") final String password
     ) {
-        TokenEntity token = authService.login(username, password);
+        try {
+            TokenEntity token = authService.login(username, password);
 
-        // hide password
-        token.getUser().setPassword(null);
-        token.getUser().setPasswordConfirm(null);
+            // hide password
+            token.getUser().setPassword(null);
+            token.getUser().setPasswordConfirm(null);
 
-        if(token.getUser().getRelatedSaleAgent() != null) {
-            token.getUser().getRelatedSaleAgent().setWarehouses(new HashSet<>());
+            if(token.getUser().getRelatedSaleAgent() != null) {
+                token.getUser().getRelatedSaleAgent().setWarehouses(new HashSet<>());
+            }
+
+            token.getUser().getRoles().forEach((r) -> {
+                r.setUsers(null);
+            });
+
+            return token;
         }
-
-        token.getUser().getRoles().forEach((r) -> {
-            r.setUsers(null);
-        });
-
-        return token;
+        catch (Exception ex){
+            logger.error("Login Unsuccessful \r\n" + ex.toString());
+            throw ex;
+        }
     }
 
     @PostMapping("/logout")
@@ -49,7 +59,7 @@ public class AuthController {
             authService.logout(token.getId());
         }
         catch (Exception ex){
-            // TODO log error
+            logger.error("Logout Unsuccessful \r\n" + ex.toString());
         }
 
         return ResponseEntity.ok().body(true);

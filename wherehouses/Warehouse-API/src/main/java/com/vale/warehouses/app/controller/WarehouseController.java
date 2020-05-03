@@ -34,46 +34,64 @@ public class WarehouseController {
     /*---get all warehouses---*/
     @GetMapping
     public ResponseEntity<List<Warehouse>> list() {
-        throwExceptionIfAccessForbidden(RoleType.Admin);
+        try {
+            throwExceptionIfAccessForbidden(RoleType.Admin);
 
-        List<Warehouse> warehouses = service.getWarehouses();
+            List<Warehouse> warehouses = service.getWarehouses();
 
-        for (Warehouse warehouse: warehouses) {
-            warehouse.setSaleAgents(new HashSet<>());
-            warehouse.getOwner().setWarehouses(null);
+            for (Warehouse warehouse : warehouses) {
+                warehouse.setSaleAgents(new HashSet<>());
+                warehouse.getOwner().setWarehouses(null);
+            }
+
+            return ResponseEntity.ok().body(warehouses);
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+
+            throw ex;
         }
-
-        return ResponseEntity.ok().body(warehouses);
     }
 
     /*---get all warehouses---*/
     @GetMapping("forOwner/{id}")
     public ResponseEntity<List<Warehouse>> listForOwner(@PathVariable("id") long id) {
-        throwExceptionIfAccessForbidden(RoleType.Owner);
+        try {
+            throwExceptionIfAccessForbidden(RoleType.Owner);
 
-        List<Warehouse> warehouses = service.getWarehousesForOwner(id);
+            List<Warehouse> warehouses = service.getWarehousesForOwner(id);
 
-        for (Warehouse warehouse: warehouses) {
-            warehouse.setSaleAgents(new HashSet<>());
-            warehouse.getOwner().setWarehouses(null);
+            for (Warehouse warehouse : warehouses) {
+                warehouse.setSaleAgents(new HashSet<>());
+                warehouse.getOwner().setWarehouses(null);
+            }
+
+            return ResponseEntity.ok().body(warehouses);
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+
+            throw ex;
         }
-
-        return ResponseEntity.ok().body(warehouses);
     }
 
     /*---get all warehouses---*/
     @GetMapping("forSaleAgent/{id}")
     public ResponseEntity<List<Warehouse>> listForSaleAgent(@PathVariable("id") long id) {
-        throwExceptionIfAccessForbidden(RoleType.Agent);
+        try {
+            throwExceptionIfAccessForbidden(RoleType.Agent);
 
-        List<Warehouse> warehouses = service.getWarehousesForSaleAgent(id);
+            List<Warehouse> warehouses = service.getWarehousesForSaleAgent(id);
 
-        for (Warehouse warehouse: warehouses) {
-            warehouse.setSaleAgents(new HashSet<>());
-            warehouse.getOwner().setWarehouses(null);
+            for (Warehouse warehouse : warehouses) {
+                warehouse.setSaleAgents(new HashSet<>());
+                warehouse.getOwner().setWarehouses(null);
+            }
+
+            return ResponseEntity.ok().body(warehouses);
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+
+            throw ex;
         }
-
-        return ResponseEntity.ok().body(warehouses);
     }
 
     /*---get all warehouses---*/
@@ -85,58 +103,76 @@ public class WarehouseController {
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
             @RequestParam(required = false) OffsetDateTime toDate
     ) {
-        if (fromDate == null) {
-            fromDate = OffsetDateTime.now();
-            fromDate = fromDate.minusYears(100);
+        try {
+            if (fromDate == null) {
+                fromDate = OffsetDateTime.now();
+                fromDate = fromDate.minusYears(100);
+            }
+
+            if (toDate == null) {
+                toDate = fromDate.plusYears(200);
+            }
+
+            throwExceptionIfAccessForbidden(RoleType.Agent);
+
+            Set<Long> ids = new HashSet<>();
+
+            Set<Warehouse> allWarehouses = new HashSet<>(service.getWarehousesForSaleAgent(id));
+            allWarehouses.forEach(w -> ids.add(w.getId()));
+
+            List<LeasingContract> leasingContracts = leasingContractService
+                    .getLeasingContractsForWarehouse(ids, fromDate, toDate);
+
+            Set<Warehouse> warehouses = new HashSet<>();
+            leasingContracts.forEach(lc -> warehouses.add(lc.getWarehouse()));
+
+            allWarehouses.removeAll(warehouses);
+
+            for (Warehouse warehouse : allWarehouses) {
+                warehouse.setSaleAgents(new HashSet<>());
+                warehouse.getOwner().setWarehouses(null);
+            }
+
+            return ResponseEntity.ok().body(new ArrayList<>(allWarehouses));
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+
+            throw ex;
         }
-
-        if (toDate == null) {
-            toDate = fromDate.plusYears(200);
-        }
-
-        throwExceptionIfAccessForbidden(RoleType.Agent);
-
-        Set<Long> ids = new HashSet<>();
-
-        Set<Warehouse> allWarehouses = new HashSet<>(service.getWarehousesForSaleAgent(id));
-        allWarehouses.forEach(w -> ids.add(w.getId()));
-
-        List<LeasingContract> leasingContracts = leasingContractService
-                .getLeasingContractsForWarehouse(ids, fromDate, toDate);
-
-        Set<Warehouse> warehouses = new HashSet<>();
-        leasingContracts.forEach(lc -> warehouses.add(lc.getWarehouse()));
-
-        allWarehouses.removeAll(warehouses);
-
-        for (Warehouse warehouse: allWarehouses) {
-            warehouse.setSaleAgents(new HashSet<>());
-            warehouse.getOwner().setWarehouses(null);
-        }
-
-        return ResponseEntity.ok().body(new ArrayList<>(allWarehouses));
     }
 
     /*---Get a warehouse by id---*/
     @GetMapping("/{id}")
     public ResponseEntity<Warehouse> get(@PathVariable("id") long id) {
-        Warehouse warehouse = service.getWarehouse(id);
+        try {
+            Warehouse warehouse = service.getWarehouse(id);
 
-        warehouse.getSaleAgents().forEach(saleAgent -> saleAgent.setWarehouses(new HashSet<>()));
+            warehouse.getSaleAgents().forEach(saleAgent -> saleAgent.setWarehouses(new HashSet<>()));
 
-        return ResponseEntity.ok(warehouse);
+            return ResponseEntity.ok(warehouse);
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+
+            throw ex;
+        }
     }
 
     /*---Add new warehouse---*/
     @PostMapping
     public ResponseEntity<?> save(@RequestBody Warehouse warehouse) {
-        throwExceptionIfAccessForbidden(RoleType.Owner);
+        try {
+            throwExceptionIfAccessForbidden(RoleType.Owner);
 
-        warehouse = service.createWarehouse(warehouse);
+            warehouse = service.createWarehouse(warehouse);
 
-        warehouse.getSaleAgents().forEach(saleAgent -> saleAgent.setWarehouses(new HashSet<>()));
+            warehouse.getSaleAgents().forEach(saleAgent -> saleAgent.setWarehouses(new HashSet<>()));
 
-        return ResponseEntity.ok(warehouse);
+            return ResponseEntity.ok(warehouse);
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+
+            throw ex;
+        }
     }
 
     /*---Update a warehouse by id---*/
@@ -145,21 +181,31 @@ public class WarehouseController {
             @PathVariable("id") long id,
             @RequestBody Warehouse warehouse
     ) {
-        throwExceptionIfAccessForbidden(RoleType.Owner);
+        try {
+            throwExceptionIfAccessForbidden(RoleType.Owner);
 
-        service.updateWarehouse(warehouse);
+            service.updateWarehouse(warehouse);
 
-        return  ResponseEntity.ok(warehouse);
+            return ResponseEntity.ok(warehouse);
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+            throw ex;
+        }
     }
 
     /*---Delete a warehouse by id---*/
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") long id) {
-        throwExceptionIfAccessForbidden(RoleType.Owner);
+        try {
+            throwExceptionIfAccessForbidden(RoleType.Owner);
 
-        service.deleteWarehouse(id);
+            service.deleteWarehouse(id);
 
-        return (ResponseEntity<?>) ResponseEntity.noContent();
+            return (ResponseEntity<?>) ResponseEntity.noContent();
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+            throw ex;
+        }
     }
 
     private void throwExceptionIfAccessForbidden(RoleType type) throws AccessDeniedException {

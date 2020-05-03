@@ -3,6 +3,7 @@ package com.vale.warehouses.app.service;
 import com.vale.warehouses.app.model.LeaseRequest;
 import com.vale.warehouses.app.repository.LeaseRequestRepository;
 import com.vale.warehouses.app.service.interfaces.LeaseRequestInterface;
+import com.vale.warehouses.app.service.interfaces.TenantInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,8 @@ import java.util.Optional;
 public class LeaseRequestService implements LeaseRequestInterface {
     @Autowired
     private LeaseRequestRepository leaseRequestRepository;
+    @Autowired
+    private TenantInterface tenantService;
 
     @Override
     public List<LeaseRequest> getLeaseRequests()
@@ -57,6 +60,8 @@ public class LeaseRequestService implements LeaseRequestInterface {
         {
             throw new IllegalArgumentException("Record with that ID already exists");
         }
+
+        tenantService.createTenant(entity.getTenant());
 
         return leaseRequestRepository.save(entity);
     }

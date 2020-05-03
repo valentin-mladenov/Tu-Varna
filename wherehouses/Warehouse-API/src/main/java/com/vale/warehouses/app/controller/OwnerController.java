@@ -2,6 +2,8 @@ package com.vale.warehouses.app.controller;
 
 import com.vale.warehouses.app.model.Owner;
 import com.vale.warehouses.app.service.interfaces.OwnerInterface;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,43 +16,63 @@ public class OwnerController {
     @Autowired
     private OwnerInterface service;
 
+    private static final Logger logger = LogManager.getLogger(AdminUserController.class);
+
     /*---get all owners---*/
     @GetMapping
     public ResponseEntity<List<Owner>> list() {
-        List<Owner> owners = service.getOwners();
+        try {
+            List<Owner> owners = service.getOwners();
 
-        return ResponseEntity.ok(owners);
+            return ResponseEntity.ok(owners);
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+
+            throw ex;
+        }
     }
 
     /*---Get a owner by id---*/
     @GetMapping("/{id}")
     public ResponseEntity<Owner> get(@PathVariable("id") long id) {
-        Owner owner = service.getOwner(id);
+        try {
+            Owner owner = service.getOwner(id);
 
-        return ResponseEntity.ok(owner);
+            return ResponseEntity.ok(owner);
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+
+            throw ex;
+        }
     }
 
-    /*---Add new owner---*/
-    @PostMapping
-    public ResponseEntity<?> save(@RequestBody Owner owner) {
-        owner = service.createOwner(owner);
+    /*---Update a owner by id---*/
+    @PutMapping("/{id}")
+    public ResponseEntity<Owner> update(
+            @PathVariable("id") long id,
+            @RequestBody Owner owner) {
+        try {
+            service.updateOwner(owner);
 
-        return ResponseEntity.ok(owner);
+            return ResponseEntity.ok(owner);
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+
+            throw ex;
+        }
     }
-
-//    /*---Update a owner by id---*/
-//    @PutMapping("/{id}")
-//    public ResponseEntity<Owner> update(@PathVariable("id") long id, @RequestBody Owner owner) {
-//        service.updateOwner(owner);
-//
-//        return  ResponseEntity.ok(owner);
-//    }
 
     /*---Delete a owner by id---*/
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") long id) {
-        service.deleteOwner(id);
+        try {
+            service.deleteOwner(id);
 
-        return (ResponseEntity<?>) ResponseEntity.noContent();
+            return (ResponseEntity<?>) ResponseEntity.noContent();
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+
+            throw ex;
+        }
     }
 }

@@ -28,15 +28,21 @@ public class LeasingContractController {
     /*---get all LeasingContracts---*/
     @GetMapping
     public ResponseEntity<List<LeasingContract>> list() {
-       throwExceptionIfAccessForbidden(RoleType.Admin);
+        try {
+            throwExceptionIfAccessForbidden(RoleType.Admin);
 
-        List<LeasingContract> leasingContracts = service.getLeasingContracts();
+            List<LeasingContract> leasingContracts = service.getLeasingContracts();
 
-        for (LeasingContract leasingContract: leasingContracts) {
-            nullifyNestedObjects(leasingContract);
+            for (LeasingContract leasingContract : leasingContracts) {
+                nullifyNestedObjects(leasingContract);
+            }
+
+            return ResponseEntity.ok(leasingContracts);
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+
+            throw ex;
         }
-
-        return ResponseEntity.ok(leasingContracts);
     }
 
     /*---get all warehouses---*/
@@ -44,31 +50,43 @@ public class LeasingContractController {
     public ResponseEntity<List<LeasingContract>> allForWarehouse(
             @PathVariable("id") long id
     ) {
-        throwExceptionIfAccessForbidden(RoleType.Agent);
+        try {
+            throwExceptionIfAccessForbidden(RoleType.Agent);
 
-        List<LeasingContract> leasingContracts = service
-            .getLeasingContractsForWarehouse(
-                new HashSet<>(Collections.singletonList(id)), null, null);
+            List<LeasingContract> leasingContracts = service
+                    .getLeasingContractsForWarehouse(
+                            new HashSet<>(Collections.singletonList(id)), null, null);
 
-        for (LeasingContract leasingContract: leasingContracts) {
-            nullifyNestedObjects(leasingContract);
+            for (LeasingContract leasingContract : leasingContracts) {
+                nullifyNestedObjects(leasingContract);
+            }
+
+            return ResponseEntity.ok(leasingContracts);
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+
+            throw ex;
         }
-
-        return ResponseEntity.ok(leasingContracts);
     }
 
     /*---get all warehouses---*/
     @GetMapping("forOwner/{id}")
     public ResponseEntity<List<LeasingContract>> listForOwner(@PathVariable("id") long id) {
-        throwExceptionIfAccessForbidden(RoleType.Owner);
+        try {
+            throwExceptionIfAccessForbidden(RoleType.Owner);
 
-        List<LeasingContract> leasingContracts = service.getLeasingContractsForOwner(id);
+            List<LeasingContract> leasingContracts = service.getLeasingContractsForOwner(id);
 
-        for (LeasingContract leasingContract: leasingContracts) {
-            nullifyNestedObjects(leasingContract);
+            for (LeasingContract leasingContract : leasingContracts) {
+                nullifyNestedObjects(leasingContract);
+            }
+
+            return ResponseEntity.ok(leasingContracts);
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+
+            throw ex;
         }
-
-        return ResponseEntity.ok(leasingContracts);
     }
 
     /*---get all warehouses---*/
@@ -80,25 +98,31 @@ public class LeasingContractController {
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
             @RequestParam(required = false) OffsetDateTime toDate
     ) {
-        if (fromDate == null) {
-            fromDate = OffsetDateTime.now();
-            fromDate = fromDate.minusYears(100);
+        try {
+            if (fromDate == null) {
+                fromDate = OffsetDateTime.now();
+                fromDate = fromDate.minusYears(100);
+            }
+
+            if (toDate == null) {
+                toDate = fromDate.plusYears(200);
+            }
+
+            throwExceptionIfAccessForbidden(RoleType.Agent);
+
+            List<LeasingContract> leasingContracts = service.
+                    getLeasingContractsForSaleAgent(id, fromDate, toDate);
+
+            for (LeasingContract leasingContract : leasingContracts) {
+                nullifyNestedObjects(leasingContract);
+            }
+
+            return ResponseEntity.ok(leasingContracts);
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+
+            throw ex;
         }
-
-        if (toDate == null) {
-            toDate = fromDate.plusYears(200);
-        }
-
-        throwExceptionIfAccessForbidden(RoleType.Agent);
-
-        List<LeasingContract> leasingContracts = service.
-                getLeasingContractsForSaleAgent(id, fromDate, toDate);
-
-        for (LeasingContract leasingContract: leasingContracts) {
-            nullifyNestedObjects(leasingContract);
-        }
-
-        return ResponseEntity.ok(leasingContracts);
     }
 
     /*---get all warehouses---*/
@@ -106,16 +130,22 @@ public class LeasingContractController {
     public ResponseEntity<List<LeasingContract>> listCurrentlyLeasedForOwner(
             @PathVariable("id") long id
     ) {
-        throwExceptionIfAccessForbidden(RoleType.Owner);
+        try {
+            throwExceptionIfAccessForbidden(RoleType.Owner);
 
-        List<LeasingContract> leasingContracts = service
-                .getCurrentlyActiveLeasingContractsForOwner(id, OffsetDateTime.now());
+            List<LeasingContract> leasingContracts = service
+                    .getCurrentlyActiveLeasingContractsForOwner(id, OffsetDateTime.now());
 
-        for (LeasingContract leasingContract: leasingContracts) {
-            nullifyNestedObjects(leasingContract);
+            for (LeasingContract leasingContract : leasingContracts) {
+                nullifyNestedObjects(leasingContract);
+            }
+
+            return ResponseEntity.ok().body(leasingContracts);
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+
+            throw ex;
         }
-
-        return ResponseEntity.ok().body(leasingContracts);
     }
 
     /*---get all warehouses---*/
@@ -123,33 +153,45 @@ public class LeasingContractController {
     public ResponseEntity<List<LeasingContract>> listCurrentlyLeasedForSaleAgent(
             @PathVariable("id") long id
     ) {
-        throwExceptionIfAccessForbidden(RoleType.Agent);
+        try {
+            throwExceptionIfAccessForbidden(RoleType.Agent);
 
-        List<LeasingContract> leasingContracts = service
-                .getCurrentlyActiveLeasingContractsForSaleAgent(id, OffsetDateTime.now());
+            List<LeasingContract> leasingContracts = service
+                    .getCurrentlyActiveLeasingContractsForSaleAgent(id, OffsetDateTime.now());
 
-        for (LeasingContract leasingContract: leasingContracts) {
-            nullifyNestedObjects(leasingContract);
+            for (LeasingContract leasingContract : leasingContracts) {
+                nullifyNestedObjects(leasingContract);
+            }
+
+            return ResponseEntity.ok().body(leasingContracts);
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+
+            throw ex;
         }
-
-        return ResponseEntity.ok().body(leasingContracts);
     }
 
     /*---get all warehouses---*/
     @GetMapping("endingSoon/forSaleAgent/{id}")
     public ResponseEntity<List<LeasingContract>> endingSoonForSaleAgent(@PathVariable("id") long id) {
-        throwExceptionIfAccessForbidden(RoleType.Agent);
+        try {
+            throwExceptionIfAccessForbidden(RoleType.Agent);
 
-        OffsetDateTime monthFromNow = OffsetDateTime.now().plusMonths(1).plusDays(3);
+            OffsetDateTime monthFromNow = OffsetDateTime.now().plusMonths(1).plusDays(3);
 
-        List<LeasingContract> leasingContracts = service
-                .getEndingSoonLeasingContractsForSaleAgent(id, monthFromNow);
+            List<LeasingContract> leasingContracts = service
+                    .getEndingSoonLeasingContractsForSaleAgent(id, monthFromNow);
 
-        for (LeasingContract leasingContract: leasingContracts) {
-            nullifyNestedObjects(leasingContract);
+            for (LeasingContract leasingContract : leasingContracts) {
+                nullifyNestedObjects(leasingContract);
+            }
+
+            return ResponseEntity.ok(leasingContracts);
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+
+            throw ex;
         }
-
-        return ResponseEntity.ok(leasingContracts);
     }
 
     /*---get all warehouses---*/
@@ -157,38 +199,56 @@ public class LeasingContractController {
     public ResponseEntity<List<LeasingContract>> endingSoonForOwner(
             @PathVariable("id") long id
     ) {
-        throwExceptionIfAccessForbidden(RoleType.Owner);
+        try {
+            throwExceptionIfAccessForbidden(RoleType.Owner);
 
-        OffsetDateTime monthFromNow = OffsetDateTime.now().plusMonths(1).plusDays(3);
+            OffsetDateTime monthFromNow = OffsetDateTime.now().plusMonths(1).plusDays(3);
 
-        List<LeasingContract> leasingContracts = service
-                .getEndingSoonLeasingContractsForOwner(id, monthFromNow);
+            List<LeasingContract> leasingContracts = service
+                    .getEndingSoonLeasingContractsForOwner(id, monthFromNow);
 
-        for (LeasingContract leasingContract: leasingContracts) {
-            nullifyNestedObjects(leasingContract);
+            for (LeasingContract leasingContract : leasingContracts) {
+                nullifyNestedObjects(leasingContract);
+            }
+
+            return ResponseEntity.ok(leasingContracts);
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+
+            throw ex;
         }
-
-        return ResponseEntity.ok(leasingContracts);
     }
 
     /*---Get a LeasingContract by id---*/
     @GetMapping("/{id}")
     public ResponseEntity<LeasingContract> get(@PathVariable("id") long id) {
-        LeasingContract leasingContract = service.getLeasingContract(id);
+        try {
+            LeasingContract leasingContract = service.getLeasingContract(id);
 
-        nullifyNestedObjects(leasingContract);
+            nullifyNestedObjects(leasingContract);
 
-        return ResponseEntity.ok(leasingContract);
+            return ResponseEntity.ok(leasingContract);
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+
+            throw ex;
+        }
     }
 
     /*---Add new LeasingContract---*/
     @PostMapping
     public ResponseEntity<LeasingContract> save(@RequestBody LeasingContract leasingContract) {
-        leasingContract = service.createLeasingContract(leasingContract);
+        try {
+            leasingContract = service.createLeasingContract(leasingContract);
 
-        nullifyNestedObjects(leasingContract);
+            nullifyNestedObjects(leasingContract);
 
-        return ResponseEntity.ok(leasingContract);
+            return ResponseEntity.ok(leasingContract);
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+
+            throw ex;
+        }
     }
 
     /*---Update a LeasingContract by id---*/
@@ -196,19 +256,31 @@ public class LeasingContractController {
     public ResponseEntity<LeasingContract> update(
             @PathVariable("id") long id, @RequestBody LeasingContract leasingContract
     ) {
-        leasingContract = service.updateLeasingContract(leasingContract);
+        try {
+            leasingContract = service.updateLeasingContract(leasingContract);
 
-        nullifyNestedObjects(leasingContract);
+            nullifyNestedObjects(leasingContract);
 
-        return  ResponseEntity.ok(leasingContract);
+            return ResponseEntity.ok(leasingContract);
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+
+            throw ex;
+        }
     }
 
     /*---Delete a LeasingContract by id---*/
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") long id) {
-        service.deleteLeasingContract(id);
+        try {
+            service.deleteLeasingContract(id);
 
-        return (ResponseEntity<?>) ResponseEntity.noContent();
+            return (ResponseEntity<?>) ResponseEntity.noContent();
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+
+            throw ex;
+        }
     }
 
     private void throwExceptionIfAccessForbidden(RoleType type) throws AccessDeniedException {

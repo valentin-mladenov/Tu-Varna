@@ -66,7 +66,6 @@ public class AdminUserController {
     }
 
     /*---Add new user---*/
-    // @PostMapping(consumes = MediaType.ALL_VALUE)
     @PostMapping
     public ResponseEntity<?> save(@RequestBody UserEntity user) {
         throwExceptionIfNotAdminUser();

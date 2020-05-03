@@ -2,6 +2,8 @@ package com.vale.warehouses.app.controller;
 
 import com.vale.warehouses.app.service.RoleService;
 import com.vale.warehouses.auth.models.RoleEntity;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -18,30 +20,46 @@ public class RoleController {
     @Autowired
     private RoleService roleService;
 
+    private static final Logger logger = LogManager.getLogger(RoleController.class);
+
     /*---get all roles---*/
     @GetMapping
     public ResponseEntity<List<RoleEntity>> list() {
-        throwExceptionIfNotRole();
+        try {
+            throwExceptionIfNotRole();
 
-        List<RoleEntity> roles = roleService.getRoles();
+            List<RoleEntity> roles = roleService.getRoles();
 
-        for (RoleEntity role: roles) {
-            role.setUsers(null);
+            for (RoleEntity role : roles) {
+                role.setUsers(null);
+            }
+
+            return ResponseEntity.ok().body(roles);
         }
+        catch (Exception ex) {
+            logger.error(ex.toString());
 
-        return ResponseEntity.ok().body(roles);
+            throw ex;
+        }
     }
 
     private void throwExceptionIfNotRole() throws AccessDeniedException {
-        boolean isAdmin = SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getAuthorities()
-                .stream()
-                .anyMatch(r -> r.getAuthority().toLowerCase().equals("admin"));
+        try {
+            boolean isAdmin = SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getAuthorities()
+                    .stream()
+                    .anyMatch(r -> r.getAuthority().toLowerCase().equals("admin"));
 
-        if (!isAdmin) {
-            throw new AccessDeniedException("Admins only");
+            if (!isAdmin) {
+                throw new AccessDeniedException("Admins only");
+            }
+        }
+        catch(Exception ex){
+            logger.error(ex.toString());
+
+            throw ex;
         }
     }
 }
