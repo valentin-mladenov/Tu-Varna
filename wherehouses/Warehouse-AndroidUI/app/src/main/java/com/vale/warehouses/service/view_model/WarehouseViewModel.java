@@ -1,6 +1,7 @@
 package com.vale.warehouses.service.view_model;
 
 import android.app.Application;
+import android.net.Uri;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -218,6 +221,25 @@ public class WarehouseViewModel extends AndroidViewModel {
         requestQueue.getRequestQueue().add(jsonObjectRequest);
 
         return deleteResult;
+    }
+
+    public MutableLiveData<List<Warehouse>> getAllFreeWarehouses(
+            OffsetDateTime fromDate, OffsetDateTime toDate) {
+        allWarehouses = new MutableLiveData<>();
+        long id = AppRequestQueue.getToken().getUser().getRelatedSaleAgent().getId();
+
+        Uri.Builder builder = Uri.parse(this.url + "/allFreeForSaleAgent/" + id).buildUpon();
+        if (fromDate != null) {
+            builder.appendQueryParameter("fromDate", fromDate.format(DateTimeFormatter.ISO_INSTANT));
+        }
+
+        if (toDate != null) {
+            builder.appendQueryParameter("toDate", toDate.format(DateTimeFormatter.ISO_INSTANT));
+        }
+
+        getAll(builder.build().toString());
+
+        return allWarehouses;
     }
 
     public MutableLiveData<List<Warehouse>> getAllWarehouses(RoleType roleType) {

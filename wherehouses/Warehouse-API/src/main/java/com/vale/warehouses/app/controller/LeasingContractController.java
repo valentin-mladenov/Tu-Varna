@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -40,10 +41,14 @@ public class LeasingContractController {
 
     /*---get all warehouses---*/
     @GetMapping("warehouse/{id}")
-    public ResponseEntity<List<LeasingContract>> allForWarehouse(@PathVariable("id") long id) {
+    public ResponseEntity<List<LeasingContract>> allForWarehouse(
+            @PathVariable("id") long id
+    ) {
         throwExceptionIfAccessForbidden(RoleType.Agent);
 
-        List<LeasingContract> leasingContracts = service.getLeasingContractsForWarehouse(id);
+        List<LeasingContract> leasingContracts = service
+            .getLeasingContractsForWarehouse(
+                new HashSet<>(Collections.singletonList(id)), null, null);
 
         for (LeasingContract leasingContract: leasingContracts) {
             nullifyNestedObjects(leasingContract);

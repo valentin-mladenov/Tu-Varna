@@ -1,18 +1,24 @@
 package com.vale.warehouses.app.controller;
 
+import com.vale.warehouses.app.model.LeasingContract;
 import com.vale.warehouses.app.model.Warehouse;
+import com.vale.warehouses.app.service.interfaces.LeasingContractInterface;
 import com.vale.warehouses.app.service.interfaces.WarehouseInterface;
 import com.vale.warehouses.auth.models.RoleType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/warehouse")
@@ -21,6 +27,9 @@ public class WarehouseController {
 
     @Autowired
     private WarehouseInterface service;
+
+    @Autowired
+    private LeasingContractInterface leasingContractService;
 
     /*---get all warehouses---*/
     @GetMapping
@@ -65,6 +74,47 @@ public class WarehouseController {
         }
 
         return ResponseEntity.ok().body(warehouses);
+    }
+
+    /*---get all warehouses---*/
+    @GetMapping("allFreeForSaleAgent/{id}")
+    public ResponseEntity<List<Warehouse>> listAllForSaleAgent(
+            @PathVariable("id") long id,
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+            @RequestParam(required = false) OffsetDateTime fromDate,
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+            @RequestParam(required = false) OffsetDateTime toDate
+    ) {
+        if (fromDate == null) {
+            fromDate = OffsetDateTime.now();
+            fromDate = fromDate.minusYears(100);
+        }
+
+        if (toDate == null) {
+            toDate = fromDate.plusYears(200);
+        }
+
+        throwExceptionIfAccessForbidden(RoleType.Agent);
+
+        Set<Long> ids = new HashSet<>();
+
+        Set<Warehouse> allWarehouses = new HashSet<>(service.getWarehousesForSaleAgent(id));
+        allWarehouses.forEach(w -> ids.add(w.getId()));
+
+        List<LeasingContract> leasingContracts = leasingContractService
+                .getLeasingContractsForWarehouse(ids, fromDate, toDate);
+
+        Set<Warehouse> warehouses = new HashSet<>();
+        leasingContracts.forEach(lc -> warehouses.add(lc.getWarehouse()));
+
+        allWarehouses.removeAll(warehouses);
+
+        for (Warehouse warehouse: allWarehouses) {
+            warehouse.setSaleAgents(new HashSet<>());
+            warehouse.getOwner().setWarehouses(null);
+        }
+
+        return ResponseEntity.ok().body(new ArrayList<>(allWarehouses));
     }
 
     /*---Get a warehouse by id---*/

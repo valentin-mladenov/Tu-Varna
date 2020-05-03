@@ -24,7 +24,6 @@
         style="@style/Widget.AppCompat.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="10dp"
         android:onClick="openLeasingContracts"
         android:text="@string/warehouse_contracts"
         android:visibility="gone" />
@@ -34,81 +33,9 @@
         style="@style/Widget.AppCompat.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="10dp"
         android:onClick="openWarehouses"
         android:text="@string/warehouses"
         android:visibility="gone" />
-
-    <Button
-        android:id="@+id/make_another_search"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="makeAnotherSearch"
-        android:text="@string/make_another_report"
-        android:visibility="gone" />
-
-    <Spinner
-        android:id="@+id/spinner_sale_agents"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:errorEnabled="true">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_text_date_from"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/from_date"
-            android:importantForAutofill="no"
-            android:focusable="false"
-            android:inputType="date" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:errorEnabled="true">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_text_date_to"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/to_date"
-            android:importantForAutofill="no"
-            android:focusable="false"
-            android:inputType="date" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Button
-        android:id="@+id/search_contracts"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="searchContractsForSaleAgent"
-        android:text="@string/search_contracts"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/Label_spinner_sale_agents"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:text="@string/report_for_sale_agent_contracts" />
-
-    <ListView
-        android:id="@+id/report_data"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/text_notifications"
@@ -219,5 +146,107 @@
             android:textStyle="bold" />
 
     </RelativeLayout>
+
+    <Spinner
+        android:id="@+id/spinner_sale_agents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_date_from"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/from_date"
+            android:importantForAutofill="no"
+            android:focusable="false"
+            android:inputType="date" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_date_to"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/to_date"
+            android:importantForAutofill="no"
+            android:focusable="false"
+            android:inputType="date" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/search_contracts"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="searchContractsForSaleAgent"
+        android:text="@string/search_contracts"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/make_another_contract_search"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="makeAnotherContractSearch"
+        android:text="@string/make_another_report"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/Label_spinner_sale_agents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:text="@string/report_for_sale_agent_contracts" />
+
+    <ListView
+        android:id="@+id/report_contract_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/search_warehouses"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="searchForFreeWarehouses"
+        android:text="@string/get_free_warehouses"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/make_another_warehouse_search"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="makeAnotherWarehouseSearch"
+        android:text="@string/make_another_report"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/label_warehouses"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:text="@string/report_free_warehouses" />
+
+    <ListView
+        android:id="@+id/report_warehouse_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
 
 </LinearLayout>

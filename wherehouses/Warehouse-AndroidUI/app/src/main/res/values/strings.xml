@@ -81,4 +81,6 @@
     <string name="from_date">From Date</string>
     <string name="to_date">To Date</string>
     <string name="tenant_history">Tenant History</string>
+    <string name="get_free_warehouses">Get Free Warehouses</string>
+    <string name="report_free_warehouses">Report free warehouses</string>
 </resources>

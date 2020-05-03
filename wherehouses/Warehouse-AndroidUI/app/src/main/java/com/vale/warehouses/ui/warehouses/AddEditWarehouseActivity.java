@@ -131,6 +131,8 @@ public class AddEditWarehouseActivity extends AppCompatActivity {
 
                     saleAgentSpinner.setSelection(warehouse.getSaleAgents());
 
+                    getTenantHistory(that);
+
                     if (AppRequestQueue.getToken().getUser().getRelatedSaleAgent() != null) {
                         setTitle(getString(R.string.inspect));
                         editTextAddress.setEnabled(false);
@@ -141,30 +143,6 @@ public class AddEditWarehouseActivity extends AppCompatActivity {
                         editSpinnerType.setEnabled(false);
                         editSpinnerCategory.setEnabled(false);
                         saleAgentSpinner.setEnabled(false);
-
-                        leasingContractViewModel.getAllLeasingContractsForWarehouse(warehouse.getId())
-                        .observe(that, leasingContracts -> {
-                            List<String> tenantHistoryData = new ArrayList<>();
-
-                            assert leasingContracts != null;
-                            leasingContracts.forEach(lc -> tenantHistoryData.add(
-                                    "Occupied from: "
-                                    + lc.getLeasedAt().format(format)
-                                    + " to "
-                                    + lc.getLeasedTill().format(format)
-                                    + "\r\nby Tenant: "
-                                    + lc.getTenant().getFullName()
-                                    + " with phone number: "
-                                    + lc.getTenant().getPhoneNumber()
-                            ));
-
-                            listViewTenantHistory.setAdapter(
-                                    new ArrayAdapter<>(that, android.R.layout.simple_list_item_1, tenantHistoryData));
-
-                            listViewTenantHistory.setVisibility(View.VISIBLE);
-                            textViewTenantHistory.setVisibility(View.VISIBLE);
-                        });
-
                     }
                 });
             } else {
@@ -173,6 +151,27 @@ public class AddEditWarehouseActivity extends AppCompatActivity {
 
                 saleAgentSpinner.setSelection(warehouse.getSaleAgents());
             }
+        });
+    }
+
+    private void getTenantHistory(AddEditWarehouseActivity that) {
+        leasingContractViewModel.getAllLeasingContractsForWarehouse(warehouse.getId())
+        .observe(that, leasingContracts -> {
+            List<String> tenantHistoryData = new ArrayList<>();
+
+            assert leasingContracts != null;
+            leasingContracts.forEach(lc -> tenantHistoryData.add(
+                    "Occupied from: " + lc.getLeasedAt().format(format)
+                    + " to " + lc.getLeasedTill().format(format)
+                    + "\r\nby Tenant: "  + lc.getTenant().getFullName()
+                    + " with phone number: " + lc.getTenant().getPhoneNumber()
+            ));
+
+            listViewTenantHistory.setAdapter(
+                    new ArrayAdapter<>(that, android.R.layout.simple_list_item_1, tenantHistoryData));
+
+            listViewTenantHistory.setVisibility(View.VISIBLE);
+            textViewTenantHistory.setVisibility(View.VISIBLE);
         });
     }
 

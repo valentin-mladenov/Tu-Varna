@@ -4,13 +4,14 @@ import com.vale.warehouses.app.model.LeasingContract;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Set;
 
 public interface LeasingContractInterface {
     List<LeasingContract> getLeasingContracts();
 
     List<LeasingContract> getLeasingContractsForOwner(Long id);
 
-    List<LeasingContract> getLeasingContractsForWarehouse(Long id);
+    List<LeasingContract> getLeasingContractsForWarehouse(Set<Long> ids, OffsetDateTime fromDate, OffsetDateTime toDate);
 
     List<LeasingContract> getLeasingContractsForSaleAgent(Long id, OffsetDateTime fromDate, OffsetDateTime toDate);
 

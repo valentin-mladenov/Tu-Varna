@@ -42,6 +42,7 @@ import com.vale.warehouses.service.model.Warehouse;
 import com.vale.warehouses.service.view_model.LeaseRequestViewModel;
 import com.vale.warehouses.service.view_model.LeasingContractViewModel;
 import com.vale.warehouses.service.view_model.SaleAgentViewModel;
+import com.vale.warehouses.service.view_model.WarehouseViewModel;
 import com.vale.warehouses.ui.lease_contract.AddEditLeasingContractActivity;
 import com.vale.warehouses.ui.lease_contract.LeaseContractListActivity;
 import com.vale.warehouses.ui.login.LoginActivity;
@@ -52,15 +53,23 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 public class LoggedInActivity extends AppCompatActivity {
     private LoggedInActivity that = this;
     private DateTimeFormatter format;
 
-    private Button usersButton, warehousesButton, makeAnotherSearchButton,
-            warehouseContractsButton, searchContractsButton;
+    private LeaseRequestViewModel leaseRequestViewModel;
+    private LeasingContractViewModel leasingContractViewModel;
+    private SaleAgentViewModel saleAgentViewModel;
+    private WarehouseViewModel warehouseViewModel;
+
+    private Button usersButton, warehousesButton,
+            makeAnotherContractSearchButton, makeAnotherWarehouseSearchButton,
+            warehouseContractsButton, searchContractsButton, searchWarehousesButton;
     private TextInputEditText editTextDateFrom, editTextDateTo;
 
     private RelativeLayout RelativeLayoutAboutToExpireLeases,
@@ -68,25 +77,23 @@ public class LoggedInActivity extends AppCompatActivity {
 
     private TextView textNotifications,
             BadgeCurrentlyLeasedWarehouses, BadgeAboutToExpireLeases, BadgeLeaseRequests;
-    private ListView listViewReportData;
 
-    private LeaseRequestViewModel leaseRequestViewModel;
-    private LeasingContractViewModel leasingContractViewModel;
-    private SaleAgentViewModel saleAgentViewModel;
-
+    private ListView listViewReportContractData, listViewReportWarehouseData;
     private Spinner saleAgentsSpinner;
     private OffsetDateTime dateFrom, dateTo;
     private SaleAgent selectedSaleAgent;
 
     private List<String> leaseRequests = new ArrayList<>();
     private List<LeasingContract> leasingContracts = new ArrayList<>();
-    private List<Warehouse> warehouses = new ArrayList<>();
+    private List<Warehouse> leasedWarehouses = new ArrayList<>();
+    private List<Warehouse> allWarehouses = new ArrayList<>();
     private int roleId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logged_in);
+        format = DateTimeFormatter.ofPattern(getString(R.string.date_format));
 
         ArrayList<Role> roles  = new ArrayList<>(
                 AppRequestQueue.getToken().getUser().getRoles());
@@ -94,12 +101,16 @@ public class LoggedInActivity extends AppCompatActivity {
         leaseRequestViewModel = new ViewModelProvider(this).get(LeaseRequestViewModel.class);
         leasingContractViewModel = new ViewModelProvider(this).get(LeasingContractViewModel.class);
         saleAgentViewModel = new ViewModelProvider(this).get(SaleAgentViewModel.class);
+        warehouseViewModel = new ViewModelProvider(this).get(WarehouseViewModel.class);
 
         usersButton = findViewById(R.id.users);
         warehousesButton = findViewById(R.id.warehouses);
         warehouseContractsButton = findViewById(R.id.warehouse_contracts);
         searchContractsButton = findViewById(R.id.search_contracts);
-        makeAnotherSearchButton = findViewById(R.id.make_another_search);
+        searchWarehousesButton = findViewById(R.id.search_warehouses);
+
+        makeAnotherContractSearchButton = findViewById(R.id.make_another_contract_search);
+        makeAnotherWarehouseSearchButton = findViewById(R.id.make_another_warehouse_search);
 
         textNotifications = findViewById(R.id.text_notifications);
 
@@ -111,11 +122,16 @@ public class LoggedInActivity extends AppCompatActivity {
         BadgeCurrentlyLeasedWarehouses = findViewById(R.id.badge_notification_currently_leased_warehouses);
         BadgeLeaseRequests = findViewById(R.id.badge_notification_lease_requests_notifications);
 
-        listViewReportData = findViewById(R.id.report_data);
+        listViewReportContractData = findViewById(R.id.report_contract_data);
+        listViewReportWarehouseData = findViewById(R.id.report_warehouse_data);
 
         saleAgentsSpinner = findViewById(R.id.spinner_sale_agents);
+
         editTextDateFrom = findViewById(R.id.edit_text_date_from);
+        editTextDateFrom.setOnClickListener(getClickListener(this, editTextDateFrom));
+
         editTextDateTo = findViewById(R.id.edit_text_date_to);
+        editTextDateTo.setOnClickListener(getClickListener(this, editTextDateTo));
 
         roleId = (int) roles.get(0).getId();
         if (roleId == RoleType.Admin.getValue()) {
@@ -131,6 +147,10 @@ public class LoggedInActivity extends AppCompatActivity {
         }
 
         if (roleId == RoleType.SaleAgent.getValue()) {
+            findViewById(R.id.label_warehouses).setVisibility(View.VISIBLE);
+            searchWarehousesButton.setVisibility(View.VISIBLE);
+            ((TextInputLayout)editTextDateFrom.getParent().getParent()).setVisibility(View.VISIBLE);
+            ((TextInputLayout)editTextDateTo.getParent().getParent()).setVisibility(View.VISIBLE);
             getAllNotCompletedLeaseRequests();
         }
 
@@ -140,10 +160,6 @@ public class LoggedInActivity extends AppCompatActivity {
     }
 
     private void handleAdminUser() {
-        format = DateTimeFormatter.ofPattern(getString(R.string.date_format));
-        editTextDateFrom.setOnClickListener(getClickListener(this, editTextDateFrom));
-        editTextDateTo.setOnClickListener(getClickListener(this, editTextDateTo));
-
         usersButton.setVisibility(View.VISIBLE);
         findViewById(R.id.Label_spinner_sale_agents).setVisibility(View.VISIBLE);
         ((TextInputLayout)editTextDateFrom.getParent().getParent()).setVisibility(View.VISIBLE);
@@ -192,12 +208,12 @@ public class LoggedInActivity extends AppCompatActivity {
         leasingContractViewModel.getCurrentlyLeasedWarehouses(roleType)
         .observe(this, leasingContracts -> {
             assert leasingContracts != null;
-            leasingContracts.forEach(lc -> this.warehouses.add(lc.getWarehouse()));
+            leasingContracts.forEach(lc -> this.leasedWarehouses.add(lc.getWarehouse()));
 
             textNotifications.setVisibility(View.VISIBLE);
             RelativeLayoutCurrentlyLeasedWarehouses.setVisibility(View.VISIBLE);
             BadgeCurrentlyLeasedWarehouses.setText(
-                    String.format(Locale.getDefault(), "%d", this.warehouses.size()));
+                    String.format(Locale.getDefault(), "%d", this.leasedWarehouses.size()));
         });
     }
 
@@ -300,28 +316,53 @@ public class LoggedInActivity extends AppCompatActivity {
 
         leasingContractViewModel.getAllLeasingContracts(RoleType.SaleAgent, dateFrom, dateTo, selectedSaleAgent.getId())
         .observe(this, leasingContracts -> {
-            listViewReportData.setAdapter(new ArrayAdapter<>(
+            listViewReportContractData.setAdapter(new ArrayAdapter<>(
                     that, R.layout.activity_listview, leasingContracts));
 
-            listViewReportData.setVisibility(View.VISIBLE);
-            makeAnotherSearchButton.setVisibility(View.VISIBLE);
+            listViewReportContractData.setVisibility(View.VISIBLE);
+            makeAnotherContractSearchButton.setVisibility(View.VISIBLE);
         });
     }
 
-    public void makeAnotherSearch(View view) {
+    public void makeAnotherContractSearch(View view) {
         ((TextInputLayout)editTextDateFrom.getParent().getParent()).setVisibility(View.VISIBLE);
         ((TextInputLayout)editTextDateTo.getParent().getParent()).setVisibility(View.VISIBLE);
         saleAgentsSpinner.setEnabled(true);
         searchContractsButton.setVisibility(View.VISIBLE);
-        makeAnotherSearchButton.setVisibility(View.GONE);
+        makeAnotherContractSearchButton.setVisibility(View.GONE);
 
-        listViewReportData.setVisibility(View.GONE);
+        listViewReportContractData.setVisibility(View.GONE);
+    }
+
+    public void searchForFreeWarehouses(View view) {
+        ((TextInputLayout)editTextDateFrom.getParent().getParent()).setVisibility(View.GONE);
+        ((TextInputLayout)editTextDateTo.getParent().getParent()).setVisibility(View.GONE);
+
+        searchWarehousesButton.setVisibility(View.GONE);
+
+        warehouseViewModel.getAllFreeWarehouses(dateFrom, dateTo)
+        .observe(this, warehouses -> {
+            listViewReportWarehouseData.setAdapter(new ArrayAdapter<>(
+                    that, R.layout.activity_listview, warehouses));
+
+            listViewReportWarehouseData.setVisibility(View.VISIBLE);
+            makeAnotherWarehouseSearchButton.setVisibility(View.VISIBLE);
+        });
+    }
+
+    public void makeAnotherWarehouseSearch(View view) {
+        ((TextInputLayout)editTextDateFrom.getParent().getParent()).setVisibility(View.VISIBLE);
+        ((TextInputLayout)editTextDateTo.getParent().getParent()).setVisibility(View.VISIBLE);
+
+        searchWarehousesButton.setVisibility(View.VISIBLE);
+
+        makeAnotherWarehouseSearchButton.setVisibility(View.GONE);
+        listViewReportWarehouseData.setVisibility(View.GONE);
     }
 
     public void showExpiredLeaseContracts(View view) {
         showDialog(R.string.lease_contracts_about_to_expire,
                 new ArrayAdapter<>(that, android.R.layout.simple_list_item_1, leasingContracts));
-
     }
 
     public void showNewLeaseContractsRequests(View view) {
@@ -331,7 +372,7 @@ public class LoggedInActivity extends AppCompatActivity {
 
     public void showCurrentlyLeasedWarehouses(View view) {
         showDialog(R.string.currently_leased_warehouses,
-                new ArrayAdapter<>(that, android.R.layout.simple_list_item_1, warehouses));
+                new ArrayAdapter<>(that, android.R.layout.simple_list_item_1, leasedWarehouses));
     }
 
     private void showDialog(int titleId, ArrayAdapter adapter) {

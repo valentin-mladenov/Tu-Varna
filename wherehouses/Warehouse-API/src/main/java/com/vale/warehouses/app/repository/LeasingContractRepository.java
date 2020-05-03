@@ -6,12 +6,16 @@ import org.springframework.stereotype.Repository;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface LeasingContractRepository extends JpaRepository<LeasingContract, Long> {
     List<LeasingContract> findBySaleAgentId(Long id);
 
-    List<LeasingContract> findByWarehouseIdOrderByLeasedAtDesc(Long id);
+    List<LeasingContract> findByWarehouseIdInOrderByLeasedAtDesc(Set<Long> ids);
+
+    List<LeasingContract> findByWarehouseIdInAndLeasedTillAfterAndLeasedAtBeforeOrderByLeasedAtDesc(
+            Set<Long> ids, OffsetDateTime fromDate, OffsetDateTime toDate);
 
     List<LeasingContract> findBySaleAgentIdAndLeasedAtBetween(Long id, OffsetDateTime fromDate, OffsetDateTime toDate);
 

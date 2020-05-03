@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class LeasingContractService implements LeasingContractInterface {
@@ -41,10 +38,15 @@ public class LeasingContractService implements LeasingContractInterface {
     }
 
     @Override
-    public List<LeasingContract> getLeasingContractsForWarehouse(Long id) {
-        List<LeasingContract> leasingContracts = repository.findByWarehouseIdOrderByLeasedAtDesc(id);
+    public List<LeasingContract> getLeasingContractsForWarehouse(
+            Set<Long> ids, OffsetDateTime fromDate, OffsetDateTime toDate
+    ) {
+        List<LeasingContract> leasingContracts = fromDate != null && toDate != null
+            ?repository.findByWarehouseIdInAndLeasedTillAfterAndLeasedAtBeforeOrderByLeasedAtDesc(
+                        ids, fromDate, toDate)
+            : repository.findByWarehouseIdInOrderByLeasedAtDesc(ids);
 
-        if(leasingContracts.size() > 0) {
+        if(leasingContracts != null) {
             return leasingContracts;
         } else {
             return new ArrayList<>();
