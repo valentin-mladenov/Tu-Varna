@@ -98,28 +98,12 @@ public class BaseIntegrationTest {
     }
 
     protected Gson buildGson() {
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder
-                .registerTypeAdapter(OffsetDateTime.class,
-                        (JsonDeserializer<OffsetDateTime>)
-                        (json, typeOfT, context) -> OffsetDateTime.parse(json.getAsString()))
-                .create();
-
-        return gson;
+        return new GsonBuilder()
+            .registerTypeAdapter(OffsetDateTime.class,
+                    (JsonDeserializer<OffsetDateTime>)
+                    (json, typeOfT, context) -> OffsetDateTime.parse(json.getAsString()))
+            .create();
     }
-
-//    protected Gson buildGson1() {
-//        GsonBuilder builder = new GsonBuilder();
-//        Gson gson = builder
-//            .registerTypeAdapter(OffsetDateTime.class, (JsonSerializer) (src, typeOfSrc, context) -> {
-//                OffsetDateTime date = (OffsetDateTime) src;
-//                return new JsonPrimitive(date.format(DateTimeFormatter.ISO_INSTANT));
-//            })
-//                .registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY)
-//            .create();
-//
-//        return gson;
-//    }
 
     protected void baseRolesAndUsersSetup() {
         Map<String, RoleEntity> roleMap = createAllRoleEntities();
@@ -252,6 +236,19 @@ public class BaseIntegrationTest {
         leasingContract.setWarehouse(warehouseRepository.findById(1L).get());
 
         return leasingContract;
+    }
+
+    protected void createLeaseRequest() {
+        leaseRequestRepository.save(buildLeaseRequest());
+    }
+
+    protected LeaseRequest buildLeaseRequest() {
+        LeaseRequest entity = new LeaseRequest();
+
+        entity.setWarehouseType(WarehouseType.Clothing);
+        entity.setTenant(tenantRepository.findById(1L).get());
+
+        return entity;
     }
 
     protected Map<String, RoleEntity> createAllRoleEntities() {

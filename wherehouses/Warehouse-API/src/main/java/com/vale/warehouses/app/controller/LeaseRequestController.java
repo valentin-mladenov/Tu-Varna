@@ -3,10 +3,13 @@ package com.vale.warehouses.app.controller;
 import com.vale.warehouses.app.model.LeaseRequest;
 import com.vale.warehouses.app.model.LeasingContract;
 import com.vale.warehouses.app.service.interfaces.LeaseRequestInterface;
+import com.vale.warehouses.auth.models.RoleType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +25,8 @@ public class LeaseRequestController {
     /*---get all leaseRequests---*/
     @GetMapping
     public ResponseEntity<List<LeaseRequest>> list() {
+        throwExceptionIfAccessForbidden(RoleType.Admin);
+
         try {
             List<LeaseRequest> leaseRequests = service.getLeaseRequests();
 
@@ -40,6 +45,8 @@ public class LeaseRequestController {
     /*---get all not completed leaseRequests---*/
     @GetMapping("/notCompeted/{id}")
     public ResponseEntity<List<LeaseRequest>> listNotCompeted(@PathVariable("id") long id) {
+        throwExceptionIfAccessForbidden(RoleType.Agent);
+
         try {
             List<LeaseRequest> leaseRequests = service.getLeaseRequestsWithoutContract(id);
 
@@ -54,6 +61,8 @@ public class LeaseRequestController {
     /*---get all not completed leaseRequests---*/
     @GetMapping("/notCompeted")
     public ResponseEntity<List<LeaseRequest>> listNotCompeted() {
+        throwExceptionIfAccessForbidden(RoleType.Agent);
+
         try {
             List<LeaseRequest> leaseRequests = service.getLeaseRequestsWithoutContract(null);
 
@@ -68,40 +77,12 @@ public class LeaseRequestController {
     /*---Get a leaseRequest by id---*/
     @GetMapping("/{id}")
     public ResponseEntity<LeaseRequest> get(@PathVariable("id") long id) {
+        throwExceptionIfAccessForbidden(RoleType.Agent);
+
         try {
             LeaseRequest leaseRequest = service.getLeaseRequest(id);
 
             nullifyContractData(leaseRequest);
-
-            return ResponseEntity.ok(leaseRequest);
-        } catch (Exception ex) {
-            logger.error(ex.toString());
-
-            throw ex;
-        }
-    }
-
-    /*---Add new leaseRequest---*/
-    @PostMapping
-    public ResponseEntity<?> save(@RequestBody LeaseRequest leaseRequest) {
-        try {
-            leaseRequest = service.createLeaseRequest(leaseRequest);
-
-            return ResponseEntity.ok(leaseRequest);
-        } catch (Exception ex) {
-            logger.error(ex.toString());
-
-            throw ex;
-        }
-    }
-
-    /*---Update a leaseRequest by id---*/
-    @PutMapping("/{id}")
-    public ResponseEntity<LeaseRequest> update(
-            @PathVariable("id") long id,
-            @RequestBody LeaseRequest leaseRequest) {
-        try {
-            service.updateLeaseRequest(leaseRequest);
 
             return ResponseEntity.ok(leaseRequest);
         } catch (Exception ex) {
@@ -133,6 +114,20 @@ public class LeaseRequestController {
             leasingContract.getWarehouse().setSaleAgents(null);
             leasingContract.getWarehouse().setOwner(null);
             leasingContract.setTenant(null);
+        }
+    }
+
+    private void throwExceptionIfAccessForbidden(RoleType type) throws AccessDeniedException {
+        boolean isAllowed = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getAuthorities()
+                .stream()
+                .anyMatch(r -> r.getAuthority().equals(type.toString())
+                        || r.getAuthority().equals(RoleType.Admin.toString()));
+
+        if (!isAllowed) {
+            throw new AccessDeniedException("Only accessable for: " + type.toString());
         }
     }
 }
