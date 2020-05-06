@@ -360,7 +360,7 @@ public class LeasingContractViewModel extends AndroidViewModel {
             Gson gson = builder
                     .registerTypeAdapter(OffsetDateTime.class, (JsonSerializer) (src, typeOfSrc, context) -> {
                         OffsetDateTime date = (OffsetDateTime) src;
-                        return new JsonPrimitive(date.format(DateTimeFormatter.ISO_INSTANT));
+                            return new JsonPrimitive(date.format(DateTimeFormatter.ISO_INSTANT));
                     }).create();
             requestBody = new JSONObject(gson.toJson(leaseContract));
         } catch (JSONException e) {

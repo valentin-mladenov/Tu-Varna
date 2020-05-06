@@ -4,8 +4,6 @@ import com.google.gson.reflect.TypeToken;
 import com.vale.warehouses.Start;
 import com.vale.warehouses.auth.models.RoleEntity;
 import com.vale.warehouses.auth.models.TokenEntity;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,32 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT, classes= Start.class)
 
 public class RoleControllerIntegrationTest extends BaseIntegrationTest {
-    @After
-    public void resetDb() {
-//        tokenRepository.deleteAll();
-//
-//        List<UserEntity> a = repository.findAll();
-//        a.forEach(ala -> ala.setRoles(new HashSet<>()));
-//        repository.saveAll(a);
-//        repository.saveAndFlush(a1.get(0));
-//
-//        repository.deleteAll();
-//        roleRepository.deleteAll();
-//        List<UserEntity> a1 = repository.findAll();
-//        List<RoleEntity> r1 = roleRepository.findAll();
-    }
-
-    @Before
-    public void setUp() {
-        List<RoleEntity> roleEntities = roleRepository.findAll();
-
-        if(roleEntities.size() > 0) {
-            return;
-        }
-
-        baseRolesAndUsersSetup();
-    }
-
     @Test
     public void givenAdminUser_whenGetRoles_thenStatus200() throws Exception {
         TokenEntity token = this.userLogin("admin", "123456");

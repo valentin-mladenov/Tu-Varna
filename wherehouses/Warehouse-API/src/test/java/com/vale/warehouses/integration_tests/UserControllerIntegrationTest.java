@@ -7,8 +7,6 @@ import com.vale.warehouses.Start;
 import com.vale.warehouses.auth.models.RoleEntity;
 import com.vale.warehouses.auth.models.TokenEntity;
 import com.vale.warehouses.auth.models.UserEntity;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +17,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,34 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT, classes= Start.class)
 
 public class UserControllerIntegrationTest extends BaseIntegrationTest {
-    @After
-    public void resetDb() {
-//        tokenRepository.deleteAll();
-//
-//        List<UserEntity> a = repository.findAll();
-//        a.forEach(ala -> ala.setRoles(new HashSet<>()));
-//        repository.saveAll(a);
-//        repository.saveAndFlush(a1.get(0));
-//
-//        repository.deleteAll();
-//        roleRepository.deleteAll();
-//        List<UserEntity> a1 = repository.findAll();
-//        List<RoleEntity> r1 = roleRepository.findAll();
-    }
-
-    @Before
-    public void setUp() {
-        List<UserEntity> a = userRepository.findAll();
-
-        if(a.size() > 0) {
-            return;
-        }
-
-        Map<String, RoleEntity> roleMap = createAllRoleEntities();
-
-        createAdminUser(roleMap);
-    }
-
     @Test
     public void givenUsers_whenGetUsers_thenStatus200() throws Exception {
         createTestUser("bob");
@@ -82,7 +51,6 @@ public class UserControllerIntegrationTest extends BaseIntegrationTest {
         List<UserEntity> userEntities = buildGson().fromJson(resultString, listType);
 
         List<UserEntity> userDbEntities = userRepository.findAll();
-
 
         assertThat(userEntities).isNotNull();
         assertThat(userEntities).hasSize(userDbEntities.size());
@@ -126,10 +94,10 @@ public class UserControllerIntegrationTest extends BaseIntegrationTest {
         bob.setEmail("admin@admin.admin");
         bob.setRoles(roles);
 
+        TokenEntity token = this.userLogin("admin", "123456");
+
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-
-        TokenEntity token = this.userLogin("admin", "123456");
         byte[] bobByte = mapper.writeValueAsBytes(bob);
 
         String resultString = mvcPerformAction(bobByte, token.getId(), post("/api/user"));

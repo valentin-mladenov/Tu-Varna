@@ -238,6 +238,8 @@ public class LeasingContractController {
     /*---Add new LeasingContract---*/
     @PostMapping
     public ResponseEntity<LeasingContract> save(@RequestBody LeasingContract leasingContract) {
+        throwExceptionIfAccessForbidden(RoleType.Agent);
+
         try {
             leasingContract = service.createLeasingContract(leasingContract);
 
@@ -256,6 +258,8 @@ public class LeasingContractController {
     public ResponseEntity<LeasingContract> update(
             @PathVariable("id") long id, @RequestBody LeasingContract leasingContract
     ) {
+        throwExceptionIfAccessForbidden(RoleType.Agent);
+
         try {
             leasingContract = service.updateLeasingContract(leasingContract);
 
@@ -272,6 +276,8 @@ public class LeasingContractController {
     /*---Delete a LeasingContract by id---*/
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") long id) {
+        throwExceptionIfAccessForbidden(RoleType.Agent);
+
         try {
             service.deleteLeasingContract(id);
 

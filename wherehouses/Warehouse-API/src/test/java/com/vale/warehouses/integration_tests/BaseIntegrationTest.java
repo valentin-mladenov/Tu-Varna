@@ -1,6 +1,8 @@
 package com.vale.warehouses.integration_tests;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
 import com.vale.warehouses.app.model.*;
 import com.vale.warehouses.app.repository.*;
 import com.vale.warehouses.auth.models.RoleEntity;
@@ -8,6 +10,7 @@ import com.vale.warehouses.auth.models.TokenEntity;
 import com.vale.warehouses.auth.models.UserEntity;
 import com.vale.warehouses.auth.repository.RoleRepository;
 import com.vale.warehouses.auth.repository.UserRepository;
+import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,7 +20,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.*;
@@ -54,6 +56,20 @@ public class BaseIntegrationTest {
     @Autowired
     protected LeasingContractRepository leasingContractRepository;
 
+    @Autowired
+    protected LeaseRequestRepository leaseRequestRepository;
+
+    @Before
+    public void setUp() {
+        List<RoleEntity> roleEntities = roleRepository.findAll();
+
+        if(roleEntities.size() > 0) {
+            return;
+        }
+
+        baseRolesAndUsersSetup();
+    }
+
     protected TokenEntity userLogin(String username, String password) throws Exception {
         ResultActions result = mvc.perform(post("/auth/login")
                 .param("username", username)
@@ -84,16 +100,26 @@ public class BaseIntegrationTest {
     protected Gson buildGson() {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder
-                .registerTypeAdapter(OffsetDateTime.class, new JsonDeserializer<OffsetDateTime>() {
-                    @Override
-                    public OffsetDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-                            throws JsonParseException {
-                        return OffsetDateTime.parse(json.getAsString());
-                    }
-                }).create();
+                .registerTypeAdapter(OffsetDateTime.class,
+                        (JsonDeserializer<OffsetDateTime>)
+                        (json, typeOfT, context) -> OffsetDateTime.parse(json.getAsString()))
+                .create();
 
         return gson;
     }
+
+//    protected Gson buildGson1() {
+//        GsonBuilder builder = new GsonBuilder();
+//        Gson gson = builder
+//            .registerTypeAdapter(OffsetDateTime.class, (JsonSerializer) (src, typeOfSrc, context) -> {
+//                OffsetDateTime date = (OffsetDateTime) src;
+//                return new JsonPrimitive(date.format(DateTimeFormatter.ISO_INSTANT));
+//            })
+//                .registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY)
+//            .create();
+//
+//        return gson;
+//    }
 
     protected void baseRolesAndUsersSetup() {
         Map<String, RoleEntity> roleMap = createAllRoleEntities();
@@ -207,6 +233,25 @@ public class BaseIntegrationTest {
         warehouse.setSaleAgents(new HashSet<>(saleAgentRepository.findAll()));
 
         return warehouse;
+    }
+
+    protected void createLeasingContract() {
+        LeasingContract leasingContract = buildLeasingContract();
+
+        leasingContractRepository.save(leasingContract);
+    }
+
+    protected LeasingContract buildLeasingContract() {
+        LeasingContract leasingContract = new LeasingContract();
+
+        leasingContract.setLeasedAt(OffsetDateTime.now());
+        leasingContract.setLeasedTill(OffsetDateTime.now().plusMonths(5));
+        leasingContract.setTenant(tenantRepository.findById(1L).get());
+        leasingContract.setSaleAgent(saleAgentRepository.findById(1L).get());
+        leasingContract.setOwner(ownerRepository.findById(1L).get());
+        leasingContract.setWarehouse(warehouseRepository.findById(1L).get());
+
+        return leasingContract;
     }
 
     protected Map<String, RoleEntity> createAllRoleEntities() {
