@@ -7,8 +7,6 @@ import com.vale.warehouses.Start;
 import com.vale.warehouses.auth.models.RoleEntity;
 import com.vale.warehouses.auth.models.TokenEntity;
 import com.vale.warehouses.auth.models.UserEntity;
-import com.vale.warehouses.auth.repository.RoleRepository;
-import com.vale.warehouses.auth.repository.TokenRepository;
 import com.vale.warehouses.auth.repository.UserRepository;
 import org.junit.After;
 import org.junit.Before;
@@ -23,10 +21,11 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -39,12 +38,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserControllerIntegrationTest extends BaseIntegrationTest {
     @Autowired
     private UserRepository repository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private TokenRepository tokenRepository;
 
     @After
     public void resetDb() {
@@ -69,31 +62,17 @@ public class UserControllerIntegrationTest extends BaseIntegrationTest {
             return;
         }
 
-        RoleEntity role = new RoleEntity();
-        role.setId(1L);
-        role.setName("Admin");
+        Map<String, RoleEntity> roleMap = createAllRoleEntities();
 
-        roleRepository.saveAndFlush(role);
-
-        Set<RoleEntity> roles = new HashSet<>();
-        roles.add(role);
-
-        UserEntity user = new UserEntity();
-        user.setUsername("admin");
-        user.setPassword("$2a$10$1/Z488jcNgLExoA7P894n.uR7jQcFcissKqDzPEK0QK7gz30i.Cdm");
-        user.setEmail("admin@admin.admin");
-        user.setRoles(roles);
-
-        repository.saveAndFlush(user);
+        createAdminUser(roleMap);
     }
-
 
     @Test
     public void givenUsers_whenGetUsers_thenStatus200() throws Exception {
         createTestUser("bob");
         createTestUser("alex");
 
-        TokenEntity token = this.adminLogin();
+        TokenEntity token = this.userLogin("admin", "123456");
 
         ResultActions result = mvc.perform(get("/api/user").contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "Bearer " + token.getId()))
@@ -116,7 +95,7 @@ public class UserControllerIntegrationTest extends BaseIntegrationTest {
 
     @Test
     public void givenUsers_whenGetUser_thenStatus200() throws Exception {
-        TokenEntity token = this.adminLogin();
+        TokenEntity token = this.userLogin("admin", "123456");
 
         ResultActions result = mvc.perform(get("/api/user/1").contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "Bearer " + token.getId()))
@@ -155,7 +134,7 @@ public class UserControllerIntegrationTest extends BaseIntegrationTest {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
-        TokenEntity token = this.adminLogin();
+        TokenEntity token = this.userLogin("admin", "123456");
         byte[] bobByte = mapper.writeValueAsBytes(bob);
 
         String resultString = mvcPerformAction(bobByte, token.getId(), post("/api/user"));
@@ -186,7 +165,7 @@ public class UserControllerIntegrationTest extends BaseIntegrationTest {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
-        TokenEntity token = this.adminLogin();
+        TokenEntity token = this.userLogin("admin", "123456");
         byte[] bobByte = mapper.writeValueAsBytes(bob);
 
         String resultString = mvcPerformAction(
