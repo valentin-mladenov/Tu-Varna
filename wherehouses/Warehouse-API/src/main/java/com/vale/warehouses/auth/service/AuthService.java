@@ -48,7 +48,7 @@ public class AuthService implements AuthServiceInterface {
 
         UserEntity user = userRepository.findByUsername(username);
 
-        token.setId(UUID.randomUUID());
+        token.setUUID(UUID.randomUUID());
         token.setExpireAt((OffsetDateTime.now()).plusHours(1));
         token.setUser(user);
 

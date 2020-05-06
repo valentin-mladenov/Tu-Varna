@@ -16,11 +16,19 @@ public class TokenEntity {
     @JoinColumn(name = "fk_user")
     private UserEntity user;
 
-    public UUID getId() {
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public UUID getUUID() {
         return UUID.fromString(id);
     }
 
-    public void setId(UUID id) {
+    public void setUUID(UUID id) {
         this.id = id.toString();
     }
 

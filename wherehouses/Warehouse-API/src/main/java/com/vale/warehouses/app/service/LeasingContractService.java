@@ -42,7 +42,7 @@ public class LeasingContractService implements LeasingContractInterface {
             Set<Long> ids, OffsetDateTime fromDate, OffsetDateTime toDate
     ) {
         List<LeasingContract> leasingContracts = fromDate != null && toDate != null
-            ?repository.findByWarehouseIdInAndLeasedTillAfterAndLeasedAtBeforeOrderByLeasedAtDesc(
+            ? repository.findByWarehouseIdInAndLeasedTillAfterAndLeasedAtBeforeOrderByLeasedAtDesc(
                         ids, fromDate, toDate)
             : repository.findByWarehouseIdInOrderByLeasedAtDesc(ids);
 

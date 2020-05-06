@@ -71,7 +71,7 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<Boolean> logout(TokenEntity token) {
         try {
-            authService.logout(token.getId());
+            authService.logout(token.getUUID());
         }
         catch (Exception ex){
             logger.error("Logout Unsuccessful \r\n" + ex.toString());

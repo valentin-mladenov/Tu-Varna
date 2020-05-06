@@ -1,6 +1,6 @@
 package com.vale.warehouses.app.controller;
 
-import com.vale.warehouses.app.service.AdminUserService;
+import com.vale.warehouses.app.service.interfaces.UserServiceInterface;
 import com.vale.warehouses.auth.models.RoleType;
 import com.vale.warehouses.auth.models.UserEntity;
 import org.apache.logging.log4j.LogManager;
@@ -22,7 +22,7 @@ public class AdminUserController {
     private static final Logger logger = LogManager.getLogger(AdminUserController.class);
 
     @Autowired
-    private AdminUserService userService;
+    private UserServiceInterface userService;
 
 
     /*---get all users---*/

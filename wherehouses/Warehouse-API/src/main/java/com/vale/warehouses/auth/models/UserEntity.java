@@ -27,7 +27,7 @@ public class UserEntity {
 
     private String password;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     private Set<RoleEntity> roles;
 
     @Transient

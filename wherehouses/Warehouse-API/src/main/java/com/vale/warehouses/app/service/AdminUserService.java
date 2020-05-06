@@ -1,6 +1,8 @@
 package com.vale.warehouses.app.service;
 
 import com.vale.warehouses.app.service.interfaces.OwnerInterface;
+import com.vale.warehouses.app.service.interfaces.SaleAgentInterface;
+import com.vale.warehouses.app.service.interfaces.TenantInterface;
 import com.vale.warehouses.app.service.interfaces.UserServiceInterface;
 import com.vale.warehouses.auth.models.UserEntity;
 import com.vale.warehouses.auth.repository.UserRepository;
@@ -27,10 +29,10 @@ public class AdminUserService implements UserServiceInterface {
     private OwnerInterface ownerService;
 
     @Autowired
-    private SaleAgentService saleAgentService;
+    private SaleAgentInterface saleAgentService;
 
     @Autowired
-    private TenantService tenantService;
+    private TenantInterface tenantService;
 
     @Override
     public List<UserEntity> getUsers()

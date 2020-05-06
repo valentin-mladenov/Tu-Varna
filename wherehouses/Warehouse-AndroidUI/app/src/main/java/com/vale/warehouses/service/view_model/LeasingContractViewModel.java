@@ -358,12 +358,9 @@ public class LeasingContractViewModel extends AndroidViewModel {
         try {
             GsonBuilder builder = new GsonBuilder();
             Gson gson = builder
-                    .registerTypeAdapter(OffsetDateTime.class, new JsonSerializer() {
-                        @Override
-                        public JsonElement serialize(Object src, Type typeOfSrc, JsonSerializationContext context) {
-                            OffsetDateTime date = (OffsetDateTime) src;
-                            return new JsonPrimitive(date.format(DateTimeFormatter.ISO_INSTANT));
-                        }
+                    .registerTypeAdapter(OffsetDateTime.class, (JsonSerializer) (src, typeOfSrc, context) -> {
+                        OffsetDateTime date = (OffsetDateTime) src;
+                        return new JsonPrimitive(date.format(DateTimeFormatter.ISO_INSTANT));
                     }).create();
             requestBody = new JSONObject(gson.toJson(leaseContract));
         } catch (JSONException e) {
