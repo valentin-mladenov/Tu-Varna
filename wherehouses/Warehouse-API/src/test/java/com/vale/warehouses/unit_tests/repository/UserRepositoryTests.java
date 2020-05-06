@@ -1,37 +1,74 @@
 package com.vale.warehouses.unit_tests.repository;
 
-import com.vale.warehouses.auth.repository.UserRepository;
+import com.vale.warehouses.auth.models.UserEntity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-public class UserRepositoryTests {
+public class UserRepositoryTests extends BaseRepositoryTest {
     @Autowired
     private TestEntityManager entityManager;
 
-    @MockBean
-    private UserRepository repository;
-
     @Test
     public void whenFindByName_thenReturnUser() {
-//        // given
-//        UserEntity user = new UserEntity();
-//
-//        user.setUsername("alex");
-//
-//        entityManager.persistAndFlush(user);
-//
-//        // when
-//        UserEntity found = repository.findByUsername(user.getUsername());
-//
-//        // then
-//        assertThat(found.getUsername()).isEqualTo(user.getUsername());
+        // given
+        UserEntity user = new UserEntity();
+
+        user.setUsername("alex");
+        user.setEmail("admin@admin.admin");
+
+        entityManager.persist(user);
+
+        // when
+        UserEntity found = userRepository.findByUsername(user.getUsername());
+
+        // then
+        assertThat(found.getUsername()).isEqualTo(user.getUsername());
     }
 
+    @Test
+    public void whenInvalidName_thenReturnNull() {
+        UserEntity fromDb = userRepository.findByUsername("doesNotExist");
+
+        assertThat(fromDb).isNull();
+    }
+
+    @Test
+    public void whenFindById_thenReturnEmployee() {
+        UserEntity user = new UserEntity();
+
+        user.setUsername("alex");
+        user.setEmail("admin@admin.admin");
+
+        entityManager.persist(user);
+
+        UserEntity fromDb = userRepository.findById(user.getId()).orElse(null);
+        assertThat(fromDb.getUsername()).isEqualTo(user.getUsername());
+    }
+
+    @Test
+    public void whenInvalidId_thenReturnNull() {
+        UserEntity fromDb = userRepository.findById(-11L).orElse(null);
+        assertThat(fromDb).isNull();
+    }
+
+    @Test
+    public void givenSetOfUsers_whenFindAll_thenReturnAllUsers() {
+        baseRolesAndUsersSetup();
+        entityManager.flush();
+
+        List<UserEntity> allEmployees = userRepository.findAll();
+
+        assertThat(allEmployees).hasSize(4).extracting(UserEntity::getUsername)
+                .containsExactlyInAnyOrder("admin", "tenant", "saleagent", "owner");
+    }
 }
