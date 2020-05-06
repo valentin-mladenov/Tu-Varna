@@ -7,12 +7,10 @@ import com.vale.warehouses.Start;
 import com.vale.warehouses.auth.models.RoleEntity;
 import com.vale.warehouses.auth.models.TokenEntity;
 import com.vale.warehouses.auth.models.UserEntity;
-import com.vale.warehouses.auth.repository.UserRepository;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -36,9 +34,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT, classes= Start.class)
 
 public class UserControllerIntegrationTest extends BaseIntegrationTest {
-    @Autowired
-    private UserRepository repository;
-
     @After
     public void resetDb() {
 //        tokenRepository.deleteAll();
@@ -56,7 +51,7 @@ public class UserControllerIntegrationTest extends BaseIntegrationTest {
 
     @Before
     public void setUp() {
-        List<UserEntity> a = repository.findAll();
+        List<UserEntity> a = userRepository.findAll();
 
         if(a.size() > 0) {
             return;
@@ -86,7 +81,7 @@ public class UserControllerIntegrationTest extends BaseIntegrationTest {
         Type listType = new TypeToken<List<UserEntity>>(){}.getType();
         List<UserEntity> userEntities = buildGson().fromJson(resultString, listType);
 
-        List<UserEntity> userDbEntities = repository.findAll();
+        List<UserEntity> userDbEntities = userRepository.findAll();
 
 
         assertThat(userEntities).isNotNull();
@@ -109,7 +104,7 @@ public class UserControllerIntegrationTest extends BaseIntegrationTest {
         UserEntity userEntity = buildGson().fromJson(resultString, UserEntity.class);
         assertThat(userEntity).isNotNull();
 
-        UserEntity userDbEntity = repository.findById(1L).get();
+        UserEntity userDbEntity = userRepository.findById(1L).get();
         assertThat(userDbEntity).isNotNull();
 
         assertThat(userDbEntity).isEqualToComparingOnlyGivenFields(userEntity,
@@ -125,9 +120,9 @@ public class UserControllerIntegrationTest extends BaseIntegrationTest {
         roles.add(role);
 
         UserEntity bob = new UserEntity();
-        bob.setUsername("bob1");
-        bob.setPassword("123456");
-        bob.setPasswordConfirm("123456");
+        bob.setUsername("admin1");
+        bob.setPassword("1234567");
+        bob.setPasswordConfirm("1234567");
         bob.setEmail("admin@admin.admin");
         bob.setRoles(roles);
 
@@ -142,9 +137,12 @@ public class UserControllerIntegrationTest extends BaseIntegrationTest {
         UserEntity bobResult = buildGson().fromJson(resultString, UserEntity.class);
         assertThat(bobResult).isNotNull();
 
-        UserEntity found = repository.findById(bobResult.getId()).get();
+        UserEntity found = userRepository.findById(bobResult.getId()).get();
         assertThat(found).isNotNull();
         assertThat(bobResult).isEqualToComparingOnlyGivenFields(found, "id", "username");
+
+        TokenEntity tokenCreatedAdmin = this.userLogin(bob.getUsername(), bob.getPassword());
+        assertThat(tokenCreatedAdmin).isNotNull();
     }
 
     @Test
@@ -192,6 +190,6 @@ public class UserControllerIntegrationTest extends BaseIntegrationTest {
         user.setUsername(name);
         user.setEmail("admin@admin.admin");
 
-        repository.saveAndFlush(user);
+        userRepository.saveAndFlush(user);
     }
 }

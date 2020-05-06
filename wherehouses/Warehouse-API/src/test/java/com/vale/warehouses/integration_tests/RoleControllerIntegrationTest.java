@@ -4,12 +4,10 @@ import com.google.gson.reflect.TypeToken;
 import com.vale.warehouses.Start;
 import com.vale.warehouses.auth.models.RoleEntity;
 import com.vale.warehouses.auth.models.TokenEntity;
-import com.vale.warehouses.auth.repository.RoleRepository;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -29,9 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT, classes= Start.class)
 
 public class RoleControllerIntegrationTest extends BaseIntegrationTest {
-    @Autowired
-    private RoleRepository roleRepository;
-
     @After
     public void resetDb() {
 //        tokenRepository.deleteAll();

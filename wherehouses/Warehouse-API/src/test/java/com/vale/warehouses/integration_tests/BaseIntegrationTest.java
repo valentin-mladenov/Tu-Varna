@@ -1,6 +1,8 @@
 package com.vale.warehouses.integration_tests;
 
 import com.google.gson.*;
+import com.vale.warehouses.app.model.*;
+import com.vale.warehouses.app.repository.*;
 import com.vale.warehouses.auth.models.RoleEntity;
 import com.vale.warehouses.auth.models.TokenEntity;
 import com.vale.warehouses.auth.models.UserEntity;
@@ -16,6 +18,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.*;
 
@@ -31,10 +34,25 @@ public class BaseIntegrationTest {
     protected MockMvc mvc;
 
     @Autowired
-    private RoleRepository roleRepository;
+    protected RoleRepository roleRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    protected UserRepository userRepository;
+
+    @Autowired
+    protected OwnerRepository ownerRepository;
+
+    @Autowired
+    protected SaleAgentRepository saleAgentRepository;
+
+    @Autowired
+    protected TenantRepository tenantRepository;
+
+    @Autowired
+    protected WarehouseRepository warehouseRepository;
+
+    @Autowired
+    protected LeasingContractRepository leasingContractRepository;
 
     protected TokenEntity userLogin(String username, String password) throws Exception {
         ResultActions result = mvc.perform(post("/auth/login")
@@ -100,6 +118,15 @@ public class BaseIntegrationTest {
     }
 
     protected void createOwnerUser(Map<String, RoleEntity> roleMap) {
+        Owner profile = new Owner();
+        profile.setAddress("some owner address");
+        profile.setFirstName("owner's first name");
+        profile.setLastName("owner's last name");
+        profile.setPhoneNumber("1963574585");
+        profile.setUniqueCode(UUID.randomUUID().toString());
+
+        ownerRepository.save(profile);
+
         Set<RoleEntity> roles = new HashSet<>();
         roles.add(roleMap.get("Owner"));
 
@@ -108,24 +135,46 @@ public class BaseIntegrationTest {
         user.setPassword("$2a$10$7GUvTJcdfDFyaaTsa3GxEubmoLHUO0Z4M.b//LjDJJ6scvILT2u9G");
         user.setEmail("owner@owner.owner");
         user.setRoles(roles);
+        user.setRelatedOwner(profile);
 
         userRepository.save(user);
     }
 
     protected void createSaleAgentUser(Map<String, RoleEntity> roleMap) {
+        SaleAgent profile = new SaleAgent();
+        profile.setAddress("some owner address");
+        profile.setFirstName("owner's first name");
+        profile.setLastName("owner's last name");
+        profile.setPhoneNumber("1963574585");
+        profile.setUniqueCode(UUID.randomUUID().toString());
+        profile.setFee(BigDecimal.TEN);
+        profile.setRating(5);
+
+        saleAgentRepository.save(profile);
+
         Set<RoleEntity> roles = new HashSet<>();
-        roles.add(roleMap.get("SaleAgent"));
+        roles.add(roleMap.get("Agent"));
 
         UserEntity user = new UserEntity();
         user.setUsername("saleagent");
         user.setPassword("$2a$10$dyREUv4Z46dKm4ohv18KcO.C7A1VMUOfOcAfTgxRltVEFZ2Zc.BXi");
         user.setEmail("SaleAgent@SaleAgent.SaleAgent");
         user.setRoles(roles);
+        user.setRelatedSaleAgent(profile);
 
         userRepository.save(user);
     }
 
     protected void createTenantUser(Map<String, RoleEntity> roleMap) {
+        Tenant profile = new Tenant();
+        profile.setAddress("some owner address");
+        profile.setFirstName("owner's first name");
+        profile.setLastName("owner's last name");
+        profile.setPhoneNumber("1963574585");
+        profile.setUniqueCode(UUID.randomUUID().toString());
+
+        tenantRepository.save(profile);
+
         Set<RoleEntity> roles = new HashSet<>();
         roles.add(roleMap.get("Tenant"));
 
@@ -134,8 +183,30 @@ public class BaseIntegrationTest {
         user.setPassword("$2a$10$bO0JiPcffNGZFl1Mf4/vzOJsi0qOXwzrwS5Af79/20TwSnRHemqbe");
         user.setEmail("Tenant@Tenant.Tenant");
         user.setRoles(roles);
+        user.setRelatedTenant(profile);
 
         userRepository.save(user);
+    }
+
+    protected void createInitialWarehouse() {
+        Warehouse warehouse = buildWarehouse();
+
+        warehouseRepository.save(warehouse);
+    }
+
+    protected Warehouse buildWarehouse() {
+        Warehouse warehouse = new Warehouse();
+        warehouse.setAddress("some warehouse address");
+        warehouse.setPricePerMonth(BigDecimal.valueOf(555.22));
+        warehouse.setWidth(220.22);
+        warehouse.setHeight(15.22);
+        warehouse.setLength(100.00);
+        warehouse.setOwner(ownerRepository.getOne(1L));
+        warehouse.setCategory(Category.Fifth);
+        warehouse.setType(WarehouseType.Automated);
+        warehouse.setSaleAgents(new HashSet<>(saleAgentRepository.findAll()));
+
+        return warehouse;
     }
 
     protected Map<String, RoleEntity> createAllRoleEntities() {
@@ -145,7 +216,7 @@ public class BaseIntegrationTest {
         roles.put(admin.getName(), admin);
 
         RoleEntity saleAgent = new RoleEntity();
-        saleAgent.setName("SaleAgent");
+        saleAgent.setName("Agent");
         roles.put(saleAgent.getName(), saleAgent);
 
         RoleEntity owner = new RoleEntity();
