@@ -26,6 +26,8 @@ public class OwnerRepositoryTests extends BaseRepositoryTest {
         entityManager.persist(profile);
 
         Owner fromDb = ownerRepository.findById(profile.getId()).orElse(null);
+        
+        assertThat(fromDb).isNotNull();
         assertThat(fromDb.getUniqueCode()).isEqualTo(profile.getUniqueCode());
     }
 
@@ -38,9 +40,6 @@ public class OwnerRepositoryTests extends BaseRepositoryTest {
 
     @Test
     public void givenSetOfUsers_whenFindAll_thenReturnAllUsers() {
-        baseRolesAndUsersSetup();
-        entityManager.flush();
-
         List<Owner> allEntities = ownerRepository.findAll();
 
         assertThat(allEntities)

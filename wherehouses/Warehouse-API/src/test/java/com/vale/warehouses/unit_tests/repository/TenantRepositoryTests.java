@@ -26,6 +26,8 @@ public class TenantRepositoryTests extends BaseRepositoryTest {
         entityManager.persist(profile);
 
         Tenant fromDb = tenantRepository.findById(profile.getId()).orElse(null);
+
+        assertThat(fromDb).isNotNull();
         assertThat(fromDb.getUniqueCode()).isEqualTo(profile.getUniqueCode());
     }
 

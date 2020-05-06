@@ -6,6 +6,7 @@ import com.vale.warehouses.auth.models.RoleEntity;
 import com.vale.warehouses.auth.models.UserEntity;
 import com.vale.warehouses.auth.repository.RoleRepository;
 import com.vale.warehouses.auth.repository.UserRepository;
+import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -46,6 +47,17 @@ public class BaseRepositoryTest {
 
     @Autowired
     protected LeaseRequestRepository leaseRequestRepository;
+
+    @Before
+    public void setUp() {
+        List<RoleEntity> roleEntities = roleRepository.findAll();
+
+        if(roleEntities.size() > 0) {
+            return;
+        }
+
+        baseRolesAndUsersSetup();
+    }
 
     protected void baseRolesAndUsersSetup() {
         Map<String, RoleEntity> roleMap = createAllRoleEntities();
@@ -143,7 +155,7 @@ public class BaseRepositoryTest {
     protected void createInitialWarehouse() {
         Warehouse warehouse = buildWarehouse();
 
-        warehouseRepository.save(warehouse);
+        entityManager.persist(warehouse);
     }
 
     protected Warehouse buildWarehouse() {
@@ -153,10 +165,10 @@ public class BaseRepositoryTest {
         warehouse.setWidth(220.22);
         warehouse.setHeight(15.22);
         warehouse.setLength(100.00);
-        warehouse.setOwner(ownerRepository.getOne(1L));
+        warehouse.setSaleAgents(new HashSet<>(saleAgentRepository.findAll()));
+        warehouse.setOwner(ownerRepository.findAll().get(0));
         warehouse.setCategory(Category.Fifth);
         warehouse.setType(WarehouseType.Automated);
-        warehouse.setSaleAgents(new HashSet<>(saleAgentRepository.findAll()));
 
         return warehouse;
     }
@@ -164,7 +176,7 @@ public class BaseRepositoryTest {
     protected void createLeasingContract() {
         LeasingContract leasingContract = buildLeasingContract();
 
-        leasingContractRepository.save(leasingContract);
+        entityManager.persist(leasingContract);
     }
 
     protected LeasingContract buildLeasingContract() {
@@ -181,7 +193,7 @@ public class BaseRepositoryTest {
     }
 
     protected void createLeaseRequest() {
-        leaseRequestRepository.save(buildLeaseRequest());
+        entityManager.persist(buildLeaseRequest());
     }
 
     protected LeaseRequest buildLeaseRequest() {

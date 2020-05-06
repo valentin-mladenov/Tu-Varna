@@ -26,6 +26,8 @@ public class SaleAgentRepositoryTests extends BaseRepositoryTest {
         entityManager.persist(profile);
 
         SaleAgent fromDb = saleAgentRepository.findById(profile.getId()).orElse(null);
+
+        assertThat(fromDb).isNotNull();
         assertThat(fromDb.getUniqueCode()).isEqualTo(profile.getUniqueCode());
     }
 
@@ -38,9 +40,6 @@ public class SaleAgentRepositoryTests extends BaseRepositoryTest {
 
     @Test
     public void givenSetOfUsers_whenFindAll_thenReturnAllUsers() {
-        baseRolesAndUsersSetup();
-        entityManager.flush();
-
         List<SaleAgent> allEntities = saleAgentRepository.findAll();
 
         assertThat(allEntities)
