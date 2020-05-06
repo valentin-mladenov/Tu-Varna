@@ -21,7 +21,7 @@ import java.util.*;
 @AutoConfigureTestDatabase
 public class BaseRepositoryTest {
     @Autowired
-    private TestEntityManager entityManager;
+    protected TestEntityManager entityManager;
 
     @Autowired
     protected RoleRepository roleRepository;
@@ -94,9 +94,9 @@ public class BaseRepositoryTest {
 
     protected void createSaleAgentUser(Map<String, RoleEntity> roleMap) {
         SaleAgent profile = new SaleAgent();
-        profile.setAddress("some owner address");
-        profile.setFirstName("owner's first name");
-        profile.setLastName("owner's last name");
+        profile.setAddress("some sale agent address");
+        profile.setFirstName("sale agent's first name");
+        profile.setLastName("sale agent's last name");
         profile.setPhoneNumber("1963574585");
         profile.setUniqueCode(UUID.randomUUID().toString());
         profile.setFee(BigDecimal.TEN);
@@ -119,9 +119,9 @@ public class BaseRepositoryTest {
 
     protected void createTenantUser(Map<String, RoleEntity> roleMap) {
         Tenant profile = new Tenant();
-        profile.setAddress("some owner address");
-        profile.setFirstName("owner's first name");
-        profile.setLastName("owner's last name");
+        profile.setAddress("some tenant address");
+        profile.setFirstName("tenant's first name");
+        profile.setLastName("tenant's last name");
         profile.setPhoneNumber("1963574585");
         profile.setUniqueCode(UUID.randomUUID().toString());
 
