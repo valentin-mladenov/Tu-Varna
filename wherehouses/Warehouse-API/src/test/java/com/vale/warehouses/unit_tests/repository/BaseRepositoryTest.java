@@ -184,10 +184,10 @@ public class BaseRepositoryTest {
 
         leasingContract.setLeasedAt(OffsetDateTime.now());
         leasingContract.setLeasedTill(OffsetDateTime.now().plusMonths(5));
-        leasingContract.setTenant(tenantRepository.findById(1L).get());
-        leasingContract.setSaleAgent(saleAgentRepository.findById(1L).get());
-        leasingContract.setOwner(ownerRepository.findById(1L).get());
-        leasingContract.setWarehouse(warehouseRepository.findById(1L).get());
+        leasingContract.setTenant(tenantRepository.findAll().get(0));
+        leasingContract.setSaleAgent(saleAgentRepository.findAll().get(0));
+        leasingContract.setOwner(ownerRepository.findAll().get(0));
+        leasingContract.setWarehouse(warehouseRepository.findAll().get(0));
 
         return leasingContract;
     }
@@ -200,7 +200,7 @@ public class BaseRepositoryTest {
         LeaseRequest entity = new LeaseRequest();
 
         entity.setWarehouseType(WarehouseType.Clothing);
-        entity.setTenant(tenantRepository.findById(1L).get());
+        entity.setTenant(tenantRepository.findAll().get(0));
 
         return entity;
     }
