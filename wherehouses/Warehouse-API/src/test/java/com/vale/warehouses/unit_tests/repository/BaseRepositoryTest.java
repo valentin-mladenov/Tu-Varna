@@ -152,7 +152,7 @@ public class BaseRepositoryTest {
         entityManager.persist(user);
     }
 
-    protected void createInitialWarehouse() {
+    protected void createWarehouse() {
         Warehouse warehouse = buildWarehouse();
 
         entityManager.persist(warehouse);
@@ -182,12 +182,14 @@ public class BaseRepositoryTest {
     protected LeasingContract buildLeasingContract() {
         LeasingContract leasingContract = new LeasingContract();
 
+        Warehouse warehouse = warehouseRepository.findAll().get(0);
+
         leasingContract.setLeasedAt(OffsetDateTime.now());
         leasingContract.setLeasedTill(OffsetDateTime.now().plusMonths(5));
         leasingContract.setTenant(tenantRepository.findAll().get(0));
         leasingContract.setSaleAgent(saleAgentRepository.findAll().get(0));
-        leasingContract.setOwner(ownerRepository.findAll().get(0));
-        leasingContract.setWarehouse(warehouseRepository.findAll().get(0));
+        leasingContract.setOwner(warehouse.getOwner());
+        leasingContract.setWarehouse(warehouse);
 
         return leasingContract;
     }
