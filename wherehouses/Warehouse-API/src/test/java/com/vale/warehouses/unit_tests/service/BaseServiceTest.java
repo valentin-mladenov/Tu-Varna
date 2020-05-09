@@ -233,11 +233,24 @@ public class BaseServiceTest {
     protected void setupLeasingContractRepositoryMock() {
         LeasingContract entity = buildLeasingContract();
 
+        // WAREHOUSE Access
+        Long warehouseId = entity.getWarehouse().getId();
+        Mockito.when(leasingContractRepository
+            .findByWarehouseIdInAndLeasedTillAfterAndLeasedAtBeforeOrderByLeasedAtDesc(
+                new HashSet<>(Collections.singletonList(warehouseId)),
+                nowDateTime.minusDays(1),
+                nowDateTime.plusMonths(1)
+            ))
+            .thenReturn(Collections.singletonList(entity));
+
+        Mockito.when(leasingContractRepository
+            .findByWarehouseIdInOrderByLeasedAtDesc(
+                new HashSet<>(Collections.singletonList(warehouseId))
+            ))
+            .thenReturn(Collections.singletonList(entity));
+
         // OWNER Access
         Long ownerId = entity.getOwner().getId();
-        Mockito.when(leasingContractRepository.findByOwnerId(ownerId))
-                .thenReturn(Collections.singletonList(entity));
-
         Mockito.when(leasingContractRepository.findByOwnerId(ownerId))
                 .thenReturn(Collections.singletonList(entity));
 

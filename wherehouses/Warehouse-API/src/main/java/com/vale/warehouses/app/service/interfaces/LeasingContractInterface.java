@@ -19,9 +19,9 @@ public interface LeasingContractInterface {
 
     List<LeasingContract> getCurrentlyActiveLeasingContractsForSaleAgent(Long id, OffsetDateTime leasedTill);
 
-    List<LeasingContract> getEndingSoonLeasingContractsForSaleAgent(Long id, OffsetDateTime leasedTill);
+    List<LeasingContract> getEndingSoonLeasingContractsForSaleAgent(Long id, OffsetDateTime start, OffsetDateTime leasedTill);
 
-    List<LeasingContract> getEndingSoonLeasingContractsForOwner(Long id, OffsetDateTime leasedTill);
+    List<LeasingContract> getEndingSoonLeasingContractsForOwner(Long id, OffsetDateTime start, OffsetDateTime leasedTill);
 
     LeasingContract getLeasingContract(Long id) throws NullPointerException;
 

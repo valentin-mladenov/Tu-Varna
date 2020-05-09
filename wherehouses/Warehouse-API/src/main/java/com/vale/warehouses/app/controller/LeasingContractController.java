@@ -180,7 +180,8 @@ public class LeasingContractController {
             OffsetDateTime monthFromNow = OffsetDateTime.now().plusMonths(1).plusDays(3);
 
             List<LeasingContract> leasingContracts = service
-                    .getEndingSoonLeasingContractsForSaleAgent(id, monthFromNow);
+                    .getEndingSoonLeasingContractsForSaleAgent(
+                            id, OffsetDateTime.now(), monthFromNow);
 
             for (LeasingContract leasingContract : leasingContracts) {
                 nullifyNestedObjects(leasingContract);
@@ -205,7 +206,8 @@ public class LeasingContractController {
             OffsetDateTime monthFromNow = OffsetDateTime.now().plusMonths(1).plusDays(3);
 
             List<LeasingContract> leasingContracts = service
-                    .getEndingSoonLeasingContractsForOwner(id, monthFromNow);
+                    .getEndingSoonLeasingContractsForOwner(
+                            id, OffsetDateTime.now(), monthFromNow);
 
             for (LeasingContract leasingContract : leasingContracts) {
                 nullifyNestedObjects(leasingContract);
