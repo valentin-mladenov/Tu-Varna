@@ -58,9 +58,6 @@ public class UserRepositoryTests extends BaseRepositoryTest {
 
     @Test
     public void givenSetOfUsers_whenFindAll_thenReturnAllUsers() {
-        baseRolesAndUsersSetup();
-        entityManager.flush();
-
         List<UserEntity> allEmployees = userRepository.findAll();
 
         assertThat(allEmployees).hasSize(4).extracting(UserEntity::getUsername)

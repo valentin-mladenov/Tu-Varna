@@ -40,9 +40,6 @@ public class TenantRepositoryTests extends BaseRepositoryTest {
 
     @Test
     public void givenSetOfUsers_whenFindAll_thenReturnAllUsers() {
-        baseRolesAndUsersSetup();
-        entityManager.flush();
-
         List<Tenant> allEntities = tenantRepository.findAll();
 
         assertThat(allEntities)

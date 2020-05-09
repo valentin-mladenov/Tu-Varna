@@ -1,8 +1,5 @@
 package com.vale.warehouses.unit_tests.service;
 
-import com.vale.warehouses.app.repository.OwnerRepository;
-import com.vale.warehouses.app.repository.SaleAgentRepository;
-import com.vale.warehouses.app.repository.TenantRepository;
 import com.vale.warehouses.app.service.AdminUserService;
 import com.vale.warehouses.app.service.OwnerService;
 import com.vale.warehouses.app.service.SaleAgentService;
@@ -12,49 +9,19 @@ import com.vale.warehouses.app.service.interfaces.SaleAgentInterface;
 import com.vale.warehouses.app.service.interfaces.TenantInterface;
 import com.vale.warehouses.app.service.interfaces.UserServiceInterface;
 import com.vale.warehouses.auth.models.UserEntity;
-import com.vale.warehouses.auth.repository.UserRepository;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
-public class UserServiceTests {
-    @Autowired
-    private UserServiceInterface userService;
-
-    @MockBean
-    private UserRepository repository;
-
-    @MockBean
-    private OwnerRepository ownerRepository;
-
-    @MockBean
-    private SaleAgentRepository saleAgentRepository;
-
-    @MockBean
-    private TenantRepository tenantRepository;
-
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @Autowired
-    private OwnerInterface ownerService;
-
-    @Autowired
-    private SaleAgentInterface saleAgentService;
-
-    @Autowired
-    private TenantInterface tenantService;
-
+public class UserServiceTests extends BaseServiceTest {
     @TestConfiguration
     static class UserServiceTestContextConfiguration {
 
@@ -84,24 +51,48 @@ public class UserServiceTests {
         }
     }
 
-    @Before
-    public void setUp() {
-        UserEntity user = new UserEntity();
-        user.setUsername("alex");
-        user.setId(1L);
+    @Test
+    public void whenValidId_thenUserShouldBeFound() {
+        Long id = 1L;
+        UserEntity found = userService.getUser(id);
 
-        Mockito.when(repository.findByUsername(user.getUsername()))
-                .thenReturn(user);
-
-        Mockito.when(repository.findById(user.getId()))
-                .thenReturn(java.util.Optional.of(user));
+        assertThat(found.getId()).isEqualTo(id);
     }
 
     @Test
-    public void whenValidName_thenUserShouldBeFound() {
-        String name = "alex";
-        UserEntity found = userService.getUser(1L);
+    public void whenValidName_thenUsersShouldBeFound() {
+        String name = "admin";
+        UserEntity found = userService.findByUsername(name);
 
         assertThat(found.getUsername()).isEqualTo(name);
+    }
+
+    @Test
+    public void whenGetAll_thenListOfUsersShouldBeFound() {
+        List<UserEntity> found = userService.getUsers();
+
+        assertThat(found).isNotEmpty();
+        assertThat(found.size()).isGreaterThanOrEqualTo(1);
+    }
+
+    @Test
+    public void whenCreateNewUser_thenUserShouldBeFound() {
+        UserEntity given = buildUser();
+
+        given.setPassword("123456");
+        given.setPasswordConfirm("123456");
+
+        UserEntity found = userService.createUser(given);
+
+        assertThat(found.getUsername()).isEqualTo(given.getUsername());
+    }
+
+    @Test
+    public void whenUpdateUser_thenUserShouldBeFound() {
+        UserEntity given = buildUser();
+
+        UserEntity found = userService.updateUser(given.getId(), given);
+
+        assertThat(found.getUsername()).isEqualTo(given.getUsername());
     }
 }
