@@ -2,13 +2,11 @@ package com.vale.warehouses.unit_tests.service;
 
 import com.vale.warehouses.app.model.*;
 import com.vale.warehouses.app.repository.*;
-import com.vale.warehouses.app.service.interfaces.UserServiceInterface;
 import com.vale.warehouses.auth.models.RoleEntity;
 import com.vale.warehouses.auth.models.UserEntity;
 import com.vale.warehouses.auth.repository.UserRepository;
 import org.junit.Before;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.math.BigDecimal;
@@ -20,9 +18,6 @@ import java.util.UUID;
 
 public class BaseServiceTest {
     protected OffsetDateTime nowDateTime = OffsetDateTime.now();
-
-    @Autowired
-    protected UserServiceInterface userService;
 
     @MockBean
     protected UserRepository userRepository;
