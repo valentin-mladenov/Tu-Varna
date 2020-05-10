@@ -1,0 +1,566 @@
+@startuml
+
+title __WAREHOUSE-API's Class Diagram__\n
+
+  namespace com.vale.warehouses {
+    class com.vale.warehouses.Start {
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.controller {
+      class com.vale.warehouses.app.controller.AdminUserController {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.controller {
+      class com.vale.warehouses.app.controller.LeaseRequestController {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.controller {
+      class com.vale.warehouses.app.controller.LeasingContractController {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.controller {
+      class com.vale.warehouses.app.controller.OwnerController {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.controller {
+      class com.vale.warehouses.app.controller.RoleController {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.controller {
+      class com.vale.warehouses.app.controller.SaleAgentController {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.controller {
+      class com.vale.warehouses.app.controller.TenantController {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.controller {
+      class com.vale.warehouses.app.controller.WarehouseController {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.model {
+      class com.vale.warehouses.app.model.AbstractPerson {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.model {
+      enum Category {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.model {
+      class com.vale.warehouses.app.model.LeaseRequest {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.model {
+      class com.vale.warehouses.app.model.LeasingContract {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.model {
+      class com.vale.warehouses.app.model.Owner {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.model {
+      class com.vale.warehouses.app.model.SaleAgent {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.model {
+      class com.vale.warehouses.app.model.Tenant {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.model {
+      class com.vale.warehouses.app.model.Warehouse {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.model {
+      enum WarehouseType {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.repository {
+      interface com.vale.warehouses.app.repository.LeaseRequestRepository {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.repository {
+      interface com.vale.warehouses.app.repository.LeasingContractRepository {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.repository {
+      interface com.vale.warehouses.app.repository.OwnerRepository {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.repository {
+      interface com.vale.warehouses.app.repository.SaleAgentRepository {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.repository {
+      interface com.vale.warehouses.app.repository.TenantRepository {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.repository {
+      interface com.vale.warehouses.app.repository.WarehouseRepository {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.service {
+      class com.vale.warehouses.app.service.AdminUserService {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.service {
+      class com.vale.warehouses.app.service.LeaseRequestService {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.service {
+      class com.vale.warehouses.app.service.LeasingContractService {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.service {
+      class com.vale.warehouses.app.service.OwnerService {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.service {
+      class com.vale.warehouses.app.service.RoleService {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.service {
+      class com.vale.warehouses.app.service.SaleAgentService {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.service {
+      class com.vale.warehouses.app.service.TenantService {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.service {
+      class com.vale.warehouses.app.service.WarehouseService {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.service {
+      namespace interfaces {
+        interface com.vale.warehouses.app.service.interfaces.LeaseRequestInterface {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.service {
+      namespace interfaces {
+        interface com.vale.warehouses.app.service.interfaces.LeasingContractInterface {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.service {
+      namespace interfaces {
+        interface com.vale.warehouses.app.service.interfaces.OwnerInterface {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.service {
+      namespace interfaces {
+        interface com.vale.warehouses.app.service.interfaces.RoleServiceInterface {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.service {
+      namespace interfaces {
+        interface com.vale.warehouses.app.service.interfaces.SaleAgentInterface {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.service {
+      namespace interfaces {
+        interface com.vale.warehouses.app.service.interfaces.TenantInterface {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.service {
+      namespace interfaces {
+        interface com.vale.warehouses.app.service.interfaces.UserServiceInterface {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.service {
+      namespace interfaces {
+        interface com.vale.warehouses.app.service.interfaces.WarehouseInterface {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace auth {
+      class com.vale.warehouses.auth.WebSecurityConfig {
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace auth {
+      namespace controller {
+        class com.vale.warehouses.auth.controller.AuthController {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace auth {
+      namespace models {
+        class com.vale.warehouses.auth.models.RoleEntity {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace auth {
+      namespace models {
+        enum RoleType {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace auth {
+      namespace models {
+        class com.vale.warehouses.auth.models.TokenEntity {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace auth {
+      namespace models {
+        class com.vale.warehouses.auth.models.UserEntity {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace auth {
+      namespace repository {
+        interface com.vale.warehouses.auth.repository.RoleRepository {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace auth {
+      namespace repository {
+        interface com.vale.warehouses.auth.repository.TokenRepository {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace auth {
+      namespace repository {
+        interface com.vale.warehouses.auth.repository.UserRepository {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace auth {
+      namespace security {
+        class com.vale.warehouses.auth.security.AuthenticationFilter {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace auth {
+      namespace security {
+        class com.vale.warehouses.auth.security.AuthenticationProvider {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace auth {
+      namespace service {
+        class com.vale.warehouses.auth.service.AuthService {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace auth {
+      namespace service {
+        class com.vale.warehouses.auth.service.UserDetailsServiceImpl {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace auth {
+      namespace service {
+        namespace interfaces {
+          interface com.vale.warehouses.auth.service.interfaces.AuthServiceInterface {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace auth {
+      namespace validator {
+        class com.vale.warehouses.auth.validator.UserValidator {
+        }
+      }
+    }
+  }
+  
+
+  com.vale.warehouses.app.controller.AdminUserController o-- com.vale.warehouses.app.service.interfaces.UserServiceInterface : userService
+  com.vale.warehouses.app.controller.LeaseRequestController o-- com.vale.warehouses.app.service.interfaces.LeaseRequestInterface : service
+  com.vale.warehouses.app.controller.LeasingContractController o-- com.vale.warehouses.app.service.interfaces.LeasingContractInterface : service
+  com.vale.warehouses.app.controller.OwnerController o-- com.vale.warehouses.app.service.interfaces.OwnerInterface : service
+  com.vale.warehouses.app.controller.RoleController o-- com.vale.warehouses.app.service.RoleService : roleService
+  com.vale.warehouses.app.controller.SaleAgentController o-- com.vale.warehouses.app.service.interfaces.SaleAgentInterface : service
+  com.vale.warehouses.app.controller.TenantController o-- com.vale.warehouses.app.service.interfaces.TenantInterface : service
+  com.vale.warehouses.app.controller.WarehouseController o-- com.vale.warehouses.app.service.interfaces.LeasingContractInterface : leasingContractService
+  com.vale.warehouses.app.controller.WarehouseController o-- com.vale.warehouses.app.service.interfaces.WarehouseInterface : service
+  com.vale.warehouses.app.model.LeaseRequest o-- com.vale.warehouses.app.model.LeasingContract : leasingContract
+  com.vale.warehouses.app.model.LeaseRequest o-- com.vale.warehouses.app.model.Tenant : tenant
+  com.vale.warehouses.app.model.LeaseRequest o-- com.vale.warehouses.app.model.WarehouseType : warehouseType
+  com.vale.warehouses.app.model.LeasingContract o-- com.vale.warehouses.app.model.LeaseRequest : leaseRequest
+  com.vale.warehouses.app.model.LeasingContract o-- com.vale.warehouses.app.model.Owner : owner
+  com.vale.warehouses.app.model.LeasingContract o-- com.vale.warehouses.app.model.SaleAgent : saleAgent
+  com.vale.warehouses.app.model.LeasingContract o-- com.vale.warehouses.app.model.Tenant : tenant
+  com.vale.warehouses.app.model.LeasingContract o-- com.vale.warehouses.app.model.Warehouse : warehouse
+  com.vale.warehouses.app.model.Owner -up-|> com.vale.warehouses.app.model.AbstractPerson
+  com.vale.warehouses.app.model.Owner o-- com.vale.warehouses.auth.models.UserEntity : user
+  com.vale.warehouses.app.model.SaleAgent -up-|> com.vale.warehouses.app.model.AbstractPerson
+  com.vale.warehouses.app.model.SaleAgent o-- com.vale.warehouses.auth.models.UserEntity : user
+  com.vale.warehouses.app.model.Tenant -up-|> com.vale.warehouses.app.model.AbstractPerson
+  com.vale.warehouses.app.model.Tenant o-- com.vale.warehouses.auth.models.UserEntity : user
+  com.vale.warehouses.app.model.Warehouse o-- com.vale.warehouses.app.model.Category : category
+  com.vale.warehouses.app.model.Warehouse o-- com.vale.warehouses.app.model.Owner : owner
+  com.vale.warehouses.app.model.Warehouse o-- com.vale.warehouses.app.model.WarehouseType : type
+  com.vale.warehouses.app.service.AdminUserService .up.|> com.vale.warehouses.app.service.interfaces.UserServiceInterface
+  com.vale.warehouses.app.service.AdminUserService o-- com.vale.warehouses.app.service.interfaces.OwnerInterface : ownerService
+  com.vale.warehouses.app.service.AdminUserService o-- com.vale.warehouses.app.service.interfaces.SaleAgentInterface : saleAgentService
+  com.vale.warehouses.app.service.AdminUserService o-- com.vale.warehouses.app.service.interfaces.TenantInterface : tenantService
+  com.vale.warehouses.app.service.AdminUserService o-- com.vale.warehouses.auth.repository.UserRepository : userRepository
+  com.vale.warehouses.app.service.LeaseRequestService .up.|> com.vale.warehouses.app.service.interfaces.LeaseRequestInterface
+  com.vale.warehouses.app.service.LeaseRequestService o-- com.vale.warehouses.app.repository.LeaseRequestRepository : leaseRequestRepository
+  com.vale.warehouses.app.service.LeaseRequestService o-- com.vale.warehouses.app.service.interfaces.TenantInterface : tenantService
+  com.vale.warehouses.app.service.LeasingContractService .up.|> com.vale.warehouses.app.service.interfaces.LeasingContractInterface
+  com.vale.warehouses.app.service.LeasingContractService o-- com.vale.warehouses.app.repository.LeasingContractRepository : repository
+  com.vale.warehouses.app.service.OwnerService .up.|> com.vale.warehouses.app.service.interfaces.OwnerInterface
+  com.vale.warehouses.app.service.OwnerService o-- com.vale.warehouses.app.repository.OwnerRepository : repository
+  com.vale.warehouses.app.service.RoleService .up.|> com.vale.warehouses.app.service.interfaces.RoleServiceInterface
+  com.vale.warehouses.app.service.RoleService o-- com.vale.warehouses.auth.repository.RoleRepository : roleRepository
+  com.vale.warehouses.app.service.SaleAgentService .up.|> com.vale.warehouses.app.service.interfaces.SaleAgentInterface
+  com.vale.warehouses.app.service.SaleAgentService o-- com.vale.warehouses.app.repository.SaleAgentRepository : repository
+  com.vale.warehouses.app.service.TenantService .up.|> com.vale.warehouses.app.service.interfaces.TenantInterface
+  com.vale.warehouses.app.service.TenantService o-- com.vale.warehouses.app.repository.TenantRepository : repository
+  com.vale.warehouses.app.service.WarehouseService .up.|> com.vale.warehouses.app.service.interfaces.WarehouseInterface
+  com.vale.warehouses.app.service.WarehouseService o-- com.vale.warehouses.app.repository.WarehouseRepository : repository
+  com.vale.warehouses.auth.WebSecurityConfig -up-|> org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+  com.vale.warehouses.auth.WebSecurityConfig o-- com.vale.warehouses.auth.security.AuthenticationProvider : provider
+  com.vale.warehouses.auth.controller.AuthController o-- com.vale.warehouses.auth.service.AuthService : authService
+  com.vale.warehouses.auth.controller.AuthController o-- com.vale.warehouses.app.service.interfaces.LeaseRequestInterface : leaseRequestService
+  com.vale.warehouses.auth.controller.AuthController o-- com.vale.warehouses.app.service.interfaces.UserServiceInterface : userService
+  com.vale.warehouses.auth.models.TokenEntity o-- com.vale.warehouses.auth.models.UserEntity : user
+  com.vale.warehouses.auth.models.UserEntity o-- com.vale.warehouses.app.model.Owner : relatedOwner
+  com.vale.warehouses.auth.models.UserEntity o-- com.vale.warehouses.app.model.SaleAgent : relatedSaleAgent
+  com.vale.warehouses.auth.models.UserEntity o-- com.vale.warehouses.app.model.Tenant : relatedTenant
+  com.vale.warehouses.auth.security.AuthenticationFilter -up-|> org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
+  com.vale.warehouses.auth.security.AuthenticationFilter o-- com.vale.warehouses.auth.service.interfaces.AuthServiceInterface : authService
+  com.vale.warehouses.auth.security.AuthenticationFilter o-- com.vale.warehouses.auth.service.UserDetailsServiceImpl : userDetailsService
+  com.vale.warehouses.auth.security.AuthenticationProvider -up-|> org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider
+  com.vale.warehouses.auth.security.AuthenticationProvider o-- com.vale.warehouses.auth.repository.UserRepository : userRepository
+  com.vale.warehouses.auth.service.AuthService .up.|> com.vale.warehouses.auth.service.interfaces.AuthServiceInterface
+  com.vale.warehouses.auth.service.AuthService o-- com.vale.warehouses.auth.repository.TokenRepository : tokenRepository
+  com.vale.warehouses.auth.service.AuthService o-- com.vale.warehouses.auth.service.UserDetailsServiceImpl : userDetailsService
+  com.vale.warehouses.auth.service.AuthService o-- com.vale.warehouses.auth.repository.UserRepository : userRepository
+  com.vale.warehouses.auth.service.UserDetailsServiceImpl .up.|> org.springframework.security.core.userdetails.UserDetailsService
+  com.vale.warehouses.auth.service.UserDetailsServiceImpl o-- com.vale.warehouses.auth.repository.UserRepository : userRepository
+  com.vale.warehouses.auth.validator.UserValidator .up.|> org.springframework.validation.Validator
+  com.vale.warehouses.auth.validator.UserValidator o-- com.vale.warehouses.app.service.interfaces.UserServiceInterface : userService
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml

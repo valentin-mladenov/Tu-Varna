@@ -1,0 +1,227 @@
+@startuml
+
+title __VIEW_MODEL's Class Diagram__\n
+
+  namespace com.vale.warehouses {
+    namespace service {
+      namespace view_model {
+        class com.vale.warehouses.service.view_model.LeaseRequestViewModel {
+            - allLeaseRequests : MutableLiveData<List<LeaseRequest>>
+            - baseUrl : String
+            - deleteResult : MutableLiveData<Boolean>
+            - oneLeaseRequest : MutableLiveData<LeaseRequest>
+            - url : String
+            + LeaseRequestViewModel()
+            + delete()
+            + getAllLeaseRequests()
+            + getAllNotCompleted()
+            + getOne()
+            + insertData()
+            + update()
+            - buildGson()
+            - getAll()
+            - getJsonObject()
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace service {
+      namespace view_model {
+        class com.vale.warehouses.service.view_model.LeasingContractViewModel {
+            - allLeasingContracts : MutableLiveData<List<LeasingContract>>
+            - deleteResult : MutableLiveData<Boolean>
+            - endingSoonLeasingContracts : MutableLiveData<List<LeasingContract>>
+            - oneLeasingContract : MutableLiveData<LeasingContract>
+            - url : String
+            + LeasingContractViewModel()
+            + delete()
+            + getAllLeasingContracts()
+            + getAllLeasingContractsForWarehouse()
+            + getCurrentlyLeasedWarehouses()
+            + getEndingSoonContracts()
+            + getOne()
+            + insertData()
+            + update()
+            - buildGson()
+            - getAll()
+            - getJsonObject()
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace service {
+      namespace view_model {
+        class com.vale.warehouses.service.view_model.LoginViewModel {
+            - loginFormState : MutableLiveData<LoginFormState>
+            - loginResult : MutableLiveData<LoginResult>
+            + LoginViewModel()
+            + getLoginFormState()
+            + getLoginResult()
+            + login()
+            + loginDataChanged()
+            - isPasswordValid()
+            - isUserNameValid()
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace service {
+      namespace view_model {
+        class com.vale.warehouses.service.view_model.OwnerViewModel {
+            - allOwners : MutableLiveData<List<Owner>>
+            - deleteResult : MutableLiveData<Boolean>
+            - oneOwner : MutableLiveData<Owner>
+            - url : String
+            + OwnerViewModel()
+            + delete()
+            + getAllOwners()
+            + getOne()
+            + insertData()
+            + setToken()
+            + update()
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace service {
+      namespace view_model {
+        class com.vale.warehouses.service.view_model.RoleViewModel {
+            - allRoles : MutableLiveData<List<Role>>
+            - url : String
+            + RoleViewModel()
+            + getAllRoles()
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace service {
+      namespace view_model {
+        class com.vale.warehouses.service.view_model.SaleAgentViewModel {
+            - allSaleAgents : MutableLiveData<List<SaleAgent>>
+            - deleteResult : MutableLiveData<Boolean>
+            - oneSaleAgent : MutableLiveData<SaleAgent>
+            - url : String
+            + SaleAgentViewModel()
+            + delete()
+            + getAllSaleAgents()
+            + getOne()
+            + insertData()
+            + setToken()
+            + update()
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace service {
+      namespace view_model {
+        class com.vale.warehouses.service.view_model.TenantViewModel {
+            - allTenants : MutableLiveData<List<Tenant>>
+            - deleteResult : MutableLiveData<Boolean>
+            - oneTenant : MutableLiveData<Tenant>
+            - url : String
+            + TenantViewModel()
+            + delete()
+            + getAllTenants()
+            + getOne()
+            + insertData()
+            + setToken()
+            + update()
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace service {
+      namespace view_model {
+        class com.vale.warehouses.service.view_model.UserViewModel {
+            - allUsers : MutableLiveData<List<User>>
+            - deleteResult : MutableLiveData<Boolean>
+            - oneUser : MutableLiveData<User>
+            - url : String
+            + UserViewModel()
+            + delete()
+            + getAllUsers()
+            + getOne()
+            + insertData()
+            + update()
+            - getJsonObject()
+        }
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace service {
+      namespace view_model {
+        class com.vale.warehouses.service.view_model.WarehouseViewModel {
+            - allWarehouses : MutableLiveData<List<Warehouse>>
+            - deleteResult : MutableLiveData<Boolean>
+            - oneWarehouse : MutableLiveData<Warehouse>
+            - url : String
+            + WarehouseViewModel()
+            + delete()
+            + getAllFreeWarehouses()
+            + getAllWarehouses()
+            + getOne()
+            + insertData()
+            + update()
+            - getAll()
+            - getJsonObject()
+        }
+      }
+    }
+  }
+  
+
+  com.vale.warehouses.service.view_model.LeaseRequestViewModel -up-|> androidx.lifecycle.AndroidViewModel
+  com.vale.warehouses.service.view_model.LeaseRequestViewModel o-- com.vale.warehouses.service.AppRequestQueue : requestQueue
+  com.vale.warehouses.service.view_model.LeasingContractViewModel -up-|> androidx.lifecycle.AndroidViewModel
+  com.vale.warehouses.service.view_model.LeasingContractViewModel o-- com.vale.warehouses.service.AppRequestQueue : requestQueue
+  com.vale.warehouses.service.view_model.LoginViewModel -up-|> androidx.lifecycle.AndroidViewModel
+  com.vale.warehouses.service.view_model.LoginViewModel o-- com.vale.warehouses.service.AppRequestQueue : requestQueue
+  com.vale.warehouses.service.view_model.OwnerViewModel -up-|> androidx.lifecycle.AndroidViewModel
+  com.vale.warehouses.service.view_model.OwnerViewModel o-- com.vale.warehouses.service.AppRequestQueue : requestQueue
+  com.vale.warehouses.service.view_model.OwnerViewModel o-- com.vale.warehouses.service.model.Token : token
+  com.vale.warehouses.service.view_model.RoleViewModel -up-|> androidx.lifecycle.AndroidViewModel
+  com.vale.warehouses.service.view_model.RoleViewModel o-- com.vale.warehouses.service.AppRequestQueue : requestQueue
+  com.vale.warehouses.service.view_model.SaleAgentViewModel -up-|> androidx.lifecycle.AndroidViewModel
+  com.vale.warehouses.service.view_model.SaleAgentViewModel o-- com.vale.warehouses.service.AppRequestQueue : requestQueue
+  com.vale.warehouses.service.view_model.SaleAgentViewModel o-- com.vale.warehouses.service.model.Token : token
+  com.vale.warehouses.service.view_model.TenantViewModel -up-|> androidx.lifecycle.AndroidViewModel
+  com.vale.warehouses.service.view_model.TenantViewModel o-- com.vale.warehouses.service.AppRequestQueue : requestQueue
+  com.vale.warehouses.service.view_model.TenantViewModel o-- com.vale.warehouses.service.model.Token : token
+  com.vale.warehouses.service.view_model.UserViewModel -up-|> androidx.lifecycle.AndroidViewModel
+  com.vale.warehouses.service.view_model.UserViewModel o-- com.vale.warehouses.service.AppRequestQueue : requestQueue
+  com.vale.warehouses.service.view_model.WarehouseViewModel -up-|> androidx.lifecycle.AndroidViewModel
+  com.vale.warehouses.service.view_model.WarehouseViewModel o-- com.vale.warehouses.service.AppRequestQueue : requestQueue
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml

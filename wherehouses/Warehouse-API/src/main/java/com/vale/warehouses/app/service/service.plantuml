@@ -1,0 +1,146 @@
+@startuml
+
+title __SERVICE's Class Diagram__\n
+
+  namespace com.vale.warehouses {
+    namespace app.service {
+      class com.vale.warehouses.app.service.AdminUserService {
+          - bCryptPasswordEncoder : BCryptPasswordEncoder
+          + createUser()
+          + deleteUser()
+          + findByUsername()
+          + getUser()
+          + getUsers()
+          + updateUser()
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.service {
+      class com.vale.warehouses.app.service.LeaseRequestService {
+          + createLeaseRequest()
+          + deleteLeaseRequest()
+          + getLeaseRequest()
+          + getLeaseRequests()
+          + getLeaseRequestsWithoutContract()
+          + updateLeaseRequest()
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.service {
+      class com.vale.warehouses.app.service.LeasingContractService {
+          + createLeasingContract()
+          + deleteLeasingContract()
+          + getCurrentlyActiveLeasingContractsForOwner()
+          + getCurrentlyActiveLeasingContractsForSaleAgent()
+          + getEndingSoonLeasingContractsForOwner()
+          + getEndingSoonLeasingContractsForSaleAgent()
+          + getLeasingContract()
+          + getLeasingContracts()
+          + getLeasingContractsForOwner()
+          + getLeasingContractsForSaleAgent()
+          + getLeasingContractsForWarehouse()
+          + updateLeasingContract()
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.service {
+      class com.vale.warehouses.app.service.OwnerService {
+          + createOwner()
+          + deleteOwner()
+          + getOwner()
+          + getOwners()
+          + updateOwner()
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.service {
+      class com.vale.warehouses.app.service.RoleService {
+          + getRoles()
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.service {
+      class com.vale.warehouses.app.service.SaleAgentService {
+          + createSaleAgent()
+          + deleteSaleAgent()
+          + getSaleAgent()
+          + getSaleAgents()
+          + updateSaleAgent()
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.service {
+      class com.vale.warehouses.app.service.TenantService {
+          + createTenant()
+          + deleteTenant()
+          + getTenant()
+          + getTenants()
+          + updateTenant()
+      }
+    }
+  }
+  
+
+  namespace com.vale.warehouses {
+    namespace app.service {
+      class com.vale.warehouses.app.service.WarehouseService {
+          + createWarehouse()
+          + deleteWarehouse()
+          + getWarehouse()
+          + getWarehouses()
+          + getWarehousesForOwner()
+          + getWarehousesForSaleAgent()
+          + updateWarehouse()
+      }
+    }
+  }
+  
+
+  com.vale.warehouses.app.service.AdminUserService .up.|> com.vale.warehouses.app.service.interfaces.UserServiceInterface
+  com.vale.warehouses.app.service.AdminUserService o-- com.vale.warehouses.app.service.interfaces.OwnerInterface : ownerService
+  com.vale.warehouses.app.service.AdminUserService o-- com.vale.warehouses.app.service.interfaces.SaleAgentInterface : saleAgentService
+  com.vale.warehouses.app.service.AdminUserService o-- com.vale.warehouses.app.service.interfaces.TenantInterface : tenantService
+  com.vale.warehouses.app.service.AdminUserService o-- com.vale.warehouses.auth.repository.UserRepository : userRepository
+  com.vale.warehouses.app.service.LeaseRequestService .up.|> com.vale.warehouses.app.service.interfaces.LeaseRequestInterface
+  com.vale.warehouses.app.service.LeaseRequestService o-- com.vale.warehouses.app.repository.LeaseRequestRepository : leaseRequestRepository
+  com.vale.warehouses.app.service.LeaseRequestService o-- com.vale.warehouses.app.service.interfaces.TenantInterface : tenantService
+  com.vale.warehouses.app.service.LeasingContractService .up.|> com.vale.warehouses.app.service.interfaces.LeasingContractInterface
+  com.vale.warehouses.app.service.LeasingContractService o-- com.vale.warehouses.app.repository.LeasingContractRepository : repository
+  com.vale.warehouses.app.service.OwnerService .up.|> com.vale.warehouses.app.service.interfaces.OwnerInterface
+  com.vale.warehouses.app.service.OwnerService o-- com.vale.warehouses.app.repository.OwnerRepository : repository
+  com.vale.warehouses.app.service.RoleService .up.|> com.vale.warehouses.app.service.interfaces.RoleServiceInterface
+  com.vale.warehouses.app.service.RoleService o-- com.vale.warehouses.auth.repository.RoleRepository : roleRepository
+  com.vale.warehouses.app.service.SaleAgentService .up.|> com.vale.warehouses.app.service.interfaces.SaleAgentInterface
+  com.vale.warehouses.app.service.SaleAgentService o-- com.vale.warehouses.app.repository.SaleAgentRepository : repository
+  com.vale.warehouses.app.service.TenantService .up.|> com.vale.warehouses.app.service.interfaces.TenantInterface
+  com.vale.warehouses.app.service.TenantService o-- com.vale.warehouses.app.repository.TenantRepository : repository
+  com.vale.warehouses.app.service.WarehouseService .up.|> com.vale.warehouses.app.service.interfaces.WarehouseInterface
+  com.vale.warehouses.app.service.WarehouseService o-- com.vale.warehouses.app.repository.WarehouseRepository : repository
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml
