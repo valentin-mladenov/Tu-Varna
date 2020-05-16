@@ -2,43 +2,31 @@
 
 title __LOGIN's Class Diagram__\n
 
-  namespace com.vale.warehouses {
-    namespace ui.login {
-      class com.vale.warehouses.ui.login.LoginActivity {
-          + onCreate()
-          + openLeaseRequest()
-          - showLoginFailed()
-          - updateUiWithUser()
-      }
+  namespace com.vale.warehouses.ui.login {
+    class LoginActivity {
+      + onCreate()
+      + openLeaseRequest()
+      - showLoginFailed()
+      - updateUiWithUser()
     }
-  }
-  
 
-  namespace com.vale.warehouses {
-    namespace ui.login {
-      class com.vale.warehouses.ui.login.LoginFormState {
-          - isDataValid : boolean
-          - passwordError : Integer
-          - usernameError : Integer
-          + LoginFormState()
-          + LoginFormState()
-          ~ getPasswordError()
-          ~ getUsernameError()
-          ~ isDataValid()
-      }
+    class LoginFormState {
+      - isDataValid : boolean
+      - passwordError : Integer
+      - usernameError : Integer
+      + LoginFormState()
+      + LoginFormState()
+      ~ getPasswordError()
+      ~ getUsernameError()
+      ~ isDataValid()
     }
-  }
-  
 
-  namespace com.vale.warehouses {
-    namespace ui.login {
-      class com.vale.warehouses.ui.login.LoginResult {
-          - error : Integer
-          + LoginResult()
-          + LoginResult()
-          ~ getError()
-          ~ getSuccess()
-      }
+    class LoginResult {
+      - error : Integer
+      + LoginResult()
+      + LoginResult()
+      ~ getError()
+      ~ getSuccess()
     }
   }
   

@@ -98,16 +98,13 @@ public class TenantViewModel extends AndroidViewModel {
             Request.Method.POST,
             url,
             requestBody,
-            new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
+                response -> {
                     VolleyLog.wtf(response.toString(), "utf-8");
                     GsonBuilder builder = new GsonBuilder();
                     Gson gson = builder.create();
 
                     oneTenant.setValue(gson.fromJson(response.toString(), Tenant.class));
-                }
-            },
+                },
             requestQueue.getErrorListener()) {
 
             @Override
@@ -140,16 +137,11 @@ public class TenantViewModel extends AndroidViewModel {
             Request.Method.PUT,
             url + "/" + tenant.getId(),
             requestBody,
-            new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
+                response -> {
                     VolleyLog.wtf(response.toString(), "utf-8");
-                    GsonBuilder builder = new GsonBuilder();
-                    Gson gson = builder.create();
 
                     oneTenant.setValue(new Gson().fromJson(response.toString(), Tenant.class));
-                }
-            },
+                },
             requestQueue.getErrorListener()) {
 
             @Override
@@ -159,7 +151,6 @@ public class TenantViewModel extends AndroidViewModel {
 
                 return headers;
             }
-
 
             @Override
             public Priority getPriority() {
@@ -181,26 +172,18 @@ public class TenantViewModel extends AndroidViewModel {
             Request.Method.DELETE,
             url + "/" + tenant.getId(),
             requestBody,
-            new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    deleteResult.setValue(true);
-                }
-            },
-            new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
+                response -> deleteResult.setValue(true),
+                error -> {
                     deleteResult.setValue(false);
                     if (error instanceof NetworkError) {
                         Toast.makeText(getApplication(), R.string.no_network, Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(getApplication(), error.toString(), Toast.LENGTH_LONG).show();
                     }
-                }
-            }) {
+                }) {
 
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 return requestQueue.getHeaders();
             }
 
@@ -227,9 +210,7 @@ public class TenantViewModel extends AndroidViewModel {
             Request.Method.GET,
             url,
             null,
-            new Response.Listener<JSONArray>() {
-                @Override
-                public void onResponse(JSONArray response) {
+                response -> {
                     VolleyLog.wtf(response.toString(), "utf-8");
                     GsonBuilder builder = new GsonBuilder();
                     Gson gson = builder.create();
@@ -237,13 +218,11 @@ public class TenantViewModel extends AndroidViewModel {
                     Type listType = new TypeToken<List<Tenant>>(){}.getType();
                     List<Tenant> tenants = gson.fromJson(response.toString(), listType);
                     allTenants.setValue(tenants);
-                }
-            },
+                },
             requestQueue.getErrorListener()) {
-            //This is for Headers If You Needed
 
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 return requestQueue.getHeaders();
             }
 

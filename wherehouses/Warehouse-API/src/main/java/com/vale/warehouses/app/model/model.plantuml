@@ -2,191 +2,210 @@
 
 title __MODEL's Class Diagram__\n
 
-  namespace com.vale.warehouses {
-    namespace app.model {
-      class com.vale.warehouses.app.model.AbstractPerson {
-          - address : String
-          - firstName : String
-          - id : Long
-          - lastName : String
-          - phoneNumber : String
-          - uniqueCode : String
-          + getAddress()
-          + getFirstName()
-          + getFullName()
-          + getId()
-          + getLastName()
-          + getPhoneNumber()
-          + getUniqueCode()
-          + setAddress()
-          + setFirstName()
-          + setId()
-          + setLastName()
-          + setPhoneNumber()
-          + setUniqueCode()
-      }
+  namespace com.vale.warehouses.app.model {
+    class AbstractPerson {
+      - address : String
+      - firstName : String
+      - id : Long
+      - lastName : String
+      - phoneNumber : String
+      - uniqueCode : String
+      + getAddress()
+      + getFirstName()
+      + getFullName()
+      + getId()
+      + getLastName()
+      + getPhoneNumber()
+      + getUniqueCode()
+      + setAddress()
+      + setFirstName()
+      + setId()
+      + setLastName()
+      + setPhoneNumber()
+      + setUniqueCode()
+    }
+
+    enum Category {
+      Fifth
+      First
+      Forth
+      Second
+      Third
+    }
+
+    class LeaseRequest {
+      - id : Long
+      + getId()
+      + getLeasingContract()
+      + getTenant()
+      + getWarehouseType()
+      + setId()
+      + setLeasingContract()
+      + setTenant()
+      + setWarehouseType()
+    }
+
+    class LeasingContract {
+      - id : Long
+      - leasedAt : OffsetDateTime
+      - leasedTill : OffsetDateTime
+      + getId()
+      + getLeaseRequest()
+      + getLeasedAt()
+      + getLeasedTill()
+      + getOwner()
+      + getSaleAgent()
+      + getTenant()
+      + getWarehouse()
+      + setId()
+      + setLeaseRequest()
+      + setLeasedAt()
+      + setLeasedTill()
+      + setOwner()
+      + setSaleAgent()
+      + setTenant()
+      + setWarehouse()
+    }
+
+    class Owner {
+      - leasingContracts : Set<LeasingContract>
+      - warehouses : Set<Warehouse>
+      + getLeasingContracts()
+      + getUser()
+      + getWarehouses()
+      + setLeasingContracts()
+      + setUser()
+      + setWarehouses()
+    }
+
+    class SaleAgent {
+      - fee : BigDecimal
+      - leasingContracts : Set<LeasingContract>
+      - rating : int
+      - warehouses : Set<Warehouse>
+      + getFee()
+      + getLeasingContracts()
+      + getRating()
+      + getUser()
+      + getWarehouses()
+      + setFee()
+      + setLeasingContracts()
+      + setRating()
+      + setUser()
+      + setWarehouses()
+    }
+
+    class Tenant {
+      - leaseRequests : Set<LeaseRequest>
+      - leasingContracts : Set<LeasingContract>
+      + getLeaseRequests()
+      + getLeasingContracts()
+      + getUser()
+      + setLeaseRequests()
+      + setLeasingContracts()
+      + setUser()
+    }
+
+    class Warehouse {
+      + address : String
+      + height : double
+      + id : Long
+      + leasingContracts : Set<LeasingContract>
+      + length : double
+      + pricePerMonth : BigDecimal
+      + saleAgents : Set<SaleAgent>
+      + width : double
+      + getAddress()
+      + getCategory()
+      + getHeight()
+      + getId()
+      + getLeasingContracts()
+      + getLength()
+      + getOwner()
+      + getPricePerMonth()
+      + getSaleAgents()
+      + getType()
+      + getWidth()
+      + setAddress()
+      + setCategory()
+      + setHeight()
+      + setId()
+      + setLeasingContracts()
+      + setLength()
+      + setOwner()
+      + setPricePerMonth()
+      + setSaleAgents()
+      + setType()
+      + setWidth()
+    }
+
+    enum WarehouseType {
+      Automated
+      ClimateControlled
+      Clothing
+      Granary
+      Refrigerated
     }
   }
-  
 
-  namespace com.vale.warehouses {
-    namespace app.model {
-      enum Category {
-        Fifth
-        First
-        Forth
-        Second
-        Third
-      }
+  namespace com.vale.warehouses.auth.models {
+    class UserEntity {
+      - email : String
+      - id : Long
+      - password : String
+      - passwordConfirm : String
+      - roles : Set<RoleEntity>
+      - username : String
+      + getEmail()
+      + getId()
+      + getPassword()
+      + getPasswordConfirm()
+      + getRelatedOwner()
+      + getRelatedSaleAgent()
+      + getRelatedTenant()
+      + getRoles()
+      + getUsername()
+      + setEmail()
+      + setId()
+      + setPassword()
+      + setPasswordConfirm()
+      + setRelatedOwner()
+      + setRelatedSaleAgent()
+      + setRelatedTenant()
+      + setRoles()
+      + setUsername()
     }
-  }
-  
 
-  namespace com.vale.warehouses {
-    namespace app.model {
-      class com.vale.warehouses.app.model.LeaseRequest {
-          - id : Long
-          + getId()
-          + getLeasingContract()
-          + getTenant()
-          + getWarehouseType()
-          + setId()
-          + setLeasingContract()
-          + setTenant()
-          + setWarehouseType()
-      }
+    class RoleEntity {
+      - id : Long
+      - name : String
+      - users : Set<UserEntity>
+      + getId()
+      + getName()
+      + getUsers()
+      + setId()
+      + setName()
+      + setUsers()
     }
-  }
-  
 
-  namespace com.vale.warehouses {
-    namespace app.model {
-      class com.vale.warehouses.app.model.LeasingContract {
-          - id : Long
-          - leasedAt : OffsetDateTime
-          - leasedTill : OffsetDateTime
-          + getId()
-          + getLeaseRequest()
-          + getLeasedAt()
-          + getLeasedTill()
-          + getOwner()
-          + getSaleAgent()
-          + getTenant()
-          + getWarehouse()
-          + setId()
-          + setLeaseRequest()
-          + setLeasedAt()
-          + setLeasedTill()
-          + setOwner()
-          + setSaleAgent()
-          + setTenant()
-          + setWarehouse()
-      }
+    enum RoleType {
+      Admin
+      Agent
+      Owner
+      Tenant
     }
-  }
-  
 
-  namespace com.vale.warehouses {
-    namespace app.model {
-      class com.vale.warehouses.app.model.Owner {
-          - leasingContracts : Set<LeasingContract>
-          - warehouses : Set<Warehouse>
-          + getLeasingContracts()
-          + getUser()
-          + getWarehouses()
-          + setLeasingContracts()
-          + setUser()
-          + setWarehouses()
-      }
-    }
-  }
-  
-
-  namespace com.vale.warehouses {
-    namespace app.model {
-      class com.vale.warehouses.app.model.SaleAgent {
-          - fee : BigDecimal
-          - leasingContracts : Set<LeasingContract>
-          - rating : int
-          - warehouses : Set<Warehouse>
-          + getFee()
-          + getLeasingContracts()
-          + getRating()
-          + getUser()
-          + getWarehouses()
-          + setFee()
-          + setLeasingContracts()
-          + setRating()
-          + setUser()
-          + setWarehouses()
-      }
-    }
-  }
-  
-
-  namespace com.vale.warehouses {
-    namespace app.model {
-      class com.vale.warehouses.app.model.Tenant {
-          - leaseRequests : Set<LeaseRequest>
-          - leasingContracts : Set<LeasingContract>
-          + getLeaseRequests()
-          + getLeasingContracts()
-          + getUser()
-          + setLeaseRequests()
-          + setLeasingContracts()
-          + setUser()
-      }
-    }
-  }
-  
-
-  namespace com.vale.warehouses {
-    namespace app.model {
-      class com.vale.warehouses.app.model.Warehouse {
-          + address : String
-          + height : double
-          + id : Long
-          + leasingContracts : Set<LeasingContract>
-          + length : double
-          + pricePerMonth : BigDecimal
-          + saleAgents : Set<SaleAgent>
-          + width : double
-          + getAddress()
-          + getCategory()
-          + getHeight()
-          + getId()
-          + getLeasingContracts()
-          + getLength()
-          + getOwner()
-          + getPricePerMonth()
-          + getSaleAgents()
-          + getType()
-          + getWidth()
-          + setAddress()
-          + setCategory()
-          + setHeight()
-          + setId()
-          + setLeasingContracts()
-          + setLength()
-          + setOwner()
-          + setPricePerMonth()
-          + setSaleAgents()
-          + setType()
-          + setWidth()
-      }
-    }
-  }
-  
-
-  namespace com.vale.warehouses {
-    namespace app.model {
-      enum WarehouseType {
-        Automated
-        ClimateControlled
-        Clothing
-        Granary
-        Refrigerated
-      }
+    class TokenEntity {
+      - expireAt : OffsetDateTime
+      - id : String
+      + getExpireAt()
+      + getId()
+      + getUUID()
+      + getUser()
+      + setExpireAt()
+      + setId()
+      + setUUID()
+      + setUser()
     }
   }
   
@@ -198,7 +217,7 @@ title __MODEL's Class Diagram__\n
   com.vale.warehouses.app.model.LeasingContract o-- com.vale.warehouses.app.model.Owner : owner
   com.vale.warehouses.app.model.LeasingContract o-- com.vale.warehouses.app.model.SaleAgent : saleAgent
   com.vale.warehouses.app.model.LeasingContract o-- com.vale.warehouses.app.model.Tenant : tenant
-  com.vale.warehouses.app.model.LeasingContract o-- com.vale.warehouses.app.model.Warehouse : warehouse
+  com.vale.warehouses.app.model.LeasingContract o-left- com.vale.warehouses.app.model.Warehouse : warehouse
   com.vale.warehouses.app.model.Owner -up-|> com.vale.warehouses.app.model.AbstractPerson
   com.vale.warehouses.app.model.Owner o-- com.vale.warehouses.auth.models.UserEntity : user
   com.vale.warehouses.app.model.SaleAgent -up-|> com.vale.warehouses.app.model.AbstractPerson
@@ -208,6 +227,7 @@ title __MODEL's Class Diagram__\n
   com.vale.warehouses.app.model.Warehouse o-- com.vale.warehouses.app.model.Category : category
   com.vale.warehouses.app.model.Warehouse o-- com.vale.warehouses.app.model.Owner : owner
   com.vale.warehouses.app.model.Warehouse o-- com.vale.warehouses.app.model.WarehouseType : type
+  com.vale.warehouses.auth.models.TokenEntity o-left- com.vale.warehouses.auth.models.UserEntity : user
 
 
 right footer

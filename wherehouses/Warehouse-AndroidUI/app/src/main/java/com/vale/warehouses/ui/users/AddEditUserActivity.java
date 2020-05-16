@@ -26,7 +26,6 @@ import com.vale.warehouses.service.view_model.RoleViewModel;
 import com.vale.warehouses.service.view_model.UserViewModel;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -72,12 +71,9 @@ public class AddEditUserActivity extends AppCompatActivity {
         textViewRating = findViewById(R.id.text_view_rating);
 
         roleSpinner = findViewById(R.id.role_spinner);
-        roleSpinner.getSelection().observe(this, new Observer<Set<Role>>() {
-            @Override
-            public void onChanged(Set<Role> roles) {
-                user.setRoles(roles);
-                hideData(roles);
-            }
+        roleSpinner.getSelection().observe(this, roles -> {
+            user.setRoles(roles);
+            hideData(roles);
         });
 
         user = new User();
@@ -87,45 +83,42 @@ public class AddEditUserActivity extends AppCompatActivity {
 
         buildViewModels();
 
-        roleViewModel.getAllRoles().observe(this, new Observer<List<Role>>() {
-            @Override
-            public void onChanged(@Nullable List<Role> roles) {
-                roleSpinner.setRoles(roles);
+        roleViewModel.getAllRoles().observe(this, roles -> {
+            roleSpinner.setRoles(roles);
 
-                if (getIntent().hasExtra(USER_ID)) {
-                    setTitle(getString(R.string.edit));
-                    editTextUsername.setEnabled(false);
-                    roleSpinner.setEnabled(false);
+            if (getIntent().hasExtra(USER_ID)) {
+                setTitle(getString(R.string.edit));
+                editTextUsername.setEnabled(false);
+                roleSpinner.setEnabled(false);
 
-                    editTextPassword.setVisibility(View.GONE);
-                    editTextPasswordConfirm.setVisibility(View.GONE);
+                editTextPassword.setVisibility(View.GONE);
+                editTextPasswordConfirm.setVisibility(View.GONE);
 
-                    Long userId = getIntent().getExtras().getLong(USER_ID);
+                Long userId = getIntent().getExtras().getLong(USER_ID);
 
-                    userViewModel.getOne(userId).observe(that, new Observer<User>() {
-                        @Override
-                        public void onChanged(@Nullable User userRes) {
-                            user.setEmail(userRes.getEmail());
-                            user.setId(userRes.getId());
-                            user.setUserName(userRes.getUserName());
-                            user.setRoles(userRes.getRoles());
-                            user.setRelatedSaleAgent(userRes.getRelatedSaleAgent());
-                            user.setRelatedOwner(userRes.getRelatedOwner());
-                            user.setRelatedTenant(userRes.getRelatedTenant());
+                userViewModel.getOne(userId).observe(that, new Observer<User>() {
+                    @Override
+                    public void onChanged(@Nullable User userRes) {
+                        user.setEmail(userRes.getEmail());
+                        user.setId(userRes.getId());
+                        user.setUserName(userRes.getUserName());
+                        user.setRoles(userRes.getRoles());
+                        user.setRelatedSaleAgent(userRes.getRelatedSaleAgent());
+                        user.setRelatedOwner(userRes.getRelatedOwner());
+                        user.setRelatedTenant(userRes.getRelatedTenant());
 
-                            editTextUsername.getEditText().setText(user.getUserName());
-                            editTextEmail.getEditText().setText(user.getEmail());
+                        editTextUsername.getEditText().setText(user.getUserName());
+                        editTextEmail.getEditText().setText(user.getEmail());
 
-                            roleSpinner.setSelection(user.getRoles());
+                        roleSpinner.setSelection(user.getRoles());
 
-                            addUserDataToUi();
-                        }
-                    });
-                } else {
-                    setTitle(getString(R.string.add));
+                        addUserDataToUi();
+                    }
+                });
+            } else {
+                setTitle(getString(R.string.add));
 
-                    roleSpinner.setSelection(user.getRoles());
-                }
+                roleSpinner.setSelection(user.getRoles());
             }
         });
     }
@@ -196,17 +189,14 @@ public class AddEditUserActivity extends AppCompatActivity {
             handleUserRelatedData();
 
             if (getIntent().hasExtra(USER_ID)) {
-                userViewModel.update(user).observe(this, new Observer<User>() {
-                    @Override
-                    public void onChanged(User updatedUser) {
+                userViewModel.update(user).observe(this, updatedUser -> {
 
-                        Intent intent = new Intent();
-                        intent.putExtras(getIntent());
+                    Intent intent = new Intent();
+                    intent.putExtras(getIntent());
 
-                        setResult(RESULT_OK);
+                    setResult(RESULT_OK);
 
-                        finish();
-                    }
+                    finish();
                 });
 
                 Toast.makeText(this, R.string.user_updated, Toast.LENGTH_SHORT).show();

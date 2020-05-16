@@ -2,94 +2,69 @@
 
 title __MODELS's Class Diagram__\n
 
-  namespace com.vale.warehouses {
-    namespace auth {
-      namespace models {
-        class com.vale.warehouses.auth.models.RoleEntity {
-            - id : Long
-            - name : String
-            - users : Set<UserEntity>
-            + getId()
-            + getName()
-            + getUsers()
-            + setId()
-            + setName()
-            + setUsers()
-        }
-      }
+  namespace com.vale.warehouses.auth.models {
+    class UserEntity {
+        - email : String
+        - id : Long
+        - password : String
+        - passwordConfirm : String
+        - roles : Set<RoleEntity>
+        - username : String
+        + getEmail()
+        + getId()
+        + getPassword()
+        + getPasswordConfirm()
+        + getRelatedOwner()
+        + getRelatedSaleAgent()
+        + getRelatedTenant()
+        + getRoles()
+        + getUsername()
+        + setEmail()
+        + setId()
+        + setPassword()
+        + setPasswordConfirm()
+        + setRelatedOwner()
+        + setRelatedSaleAgent()
+        + setRelatedTenant()
+        + setRoles()
+        + setUsername()
+    }
+
+    class RoleEntity {
+        - id : Long
+        - name : String
+        - users : Set<UserEntity>
+        + getId()
+        + getName()
+        + getUsers()
+        + setId()
+        + setName()
+        + setUsers()
+    }
+
+    enum RoleType {
+      Admin
+      Agent
+      Owner
+      Tenant
+    }
+
+    class TokenEntity {
+        - expireAt : OffsetDateTime
+        - id : String
+        + getExpireAt()
+        + getId()
+        + getUUID()
+        + getUser()
+        + setExpireAt()
+        + setId()
+        + setUUID()
+        + setUser()
     }
   }
-  
 
-  namespace com.vale.warehouses {
-    namespace auth {
-      namespace models {
-        enum RoleType {
-          Admin
-          Agent
-          Owner
-          Tenant
-        }
-      }
-    }
-  }
-  
 
-  namespace com.vale.warehouses {
-    namespace auth {
-      namespace models {
-        class com.vale.warehouses.auth.models.TokenEntity {
-            - expireAt : OffsetDateTime
-            - id : String
-            + getExpireAt()
-            + getId()
-            + getUUID()
-            + getUser()
-            + setExpireAt()
-            + setId()
-            + setUUID()
-            + setUser()
-        }
-      }
-    }
-  }
-  
-
-  namespace com.vale.warehouses {
-    namespace auth {
-      namespace models {
-        class com.vale.warehouses.auth.models.UserEntity {
-            - email : String
-            - id : Long
-            - password : String
-            - passwordConfirm : String
-            - roles : Set<RoleEntity>
-            - username : String
-            + getEmail()
-            + getId()
-            + getPassword()
-            + getPasswordConfirm()
-            + getRelatedOwner()
-            + getRelatedSaleAgent()
-            + getRelatedTenant()
-            + getRoles()
-            + getUsername()
-            + setEmail()
-            + setId()
-            + setPassword()
-            + setPasswordConfirm()
-            + setRelatedOwner()
-            + setRelatedSaleAgent()
-            + setRelatedTenant()
-            + setRoles()
-            + setUsername()
-        }
-      }
-    }
-  }
-  
-
-  com.vale.warehouses.auth.models.TokenEntity o-- com.vale.warehouses.auth.models.UserEntity : user
+  com.vale.warehouses.auth.models.TokenEntity o-left- com.vale.warehouses.auth.models.UserEntity : user
   com.vale.warehouses.auth.models.UserEntity o-- com.vale.warehouses.app.model.Owner : relatedOwner
   com.vale.warehouses.auth.models.UserEntity o-- com.vale.warehouses.app.model.SaleAgent : relatedSaleAgent
   com.vale.warehouses.auth.models.UserEntity o-- com.vale.warehouses.app.model.Tenant : relatedTenant

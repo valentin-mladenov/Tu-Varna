@@ -57,16 +57,13 @@ public class LeaseRequestViewModel extends AndroidViewModel {
             Request.Method.GET,
             url + "/" + leaseContractId,
             null,
-            new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
+                response -> {
                     VolleyLog.wtf(response.toString(), "utf-8");
 
                     Gson gson = buildGson();
 
                     oneLeaseRequest.setValue(gson.fromJson(response.toString(), LeaseRequest.class));
-                }
-            },
+                },
             requestQueue.getErrorListener()) {
 
             @Override
@@ -97,16 +94,13 @@ public class LeaseRequestViewModel extends AndroidViewModel {
             Request.Method.POST,
             baseUrl + "/auth/createLeaseRequest",
             getJsonObject(leaseRequest),
-            new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
+                response -> {
                     VolleyLog.wtf(response.toString(), "utf-8");
 
                     Gson gson = buildGson();
 
                     oneLeaseRequest.setValue(gson.fromJson(response.toString(), LeaseRequest.class));
-                }
-            },
+                },
             requestQueue.getErrorListener()) {
 
             @Override
@@ -137,16 +131,13 @@ public class LeaseRequestViewModel extends AndroidViewModel {
             Request.Method.PUT,
             url + "/" + leaseContract.getId(),
             getJsonObject(leaseContract),
-            new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
+                response -> {
                     VolleyLog.wtf(response.toString(), "utf-8");
 
                     Gson gson = buildGson();
 
                     oneLeaseRequest.setValue(gson.fromJson(response.toString(), LeaseRequest.class));
-                }
-            },
+                },
             requestQueue.getErrorListener()) {
 
             @Override
@@ -186,23 +177,15 @@ public class LeaseRequestViewModel extends AndroidViewModel {
             Request.Method.PUT,
             url + "/" + leaseContract.getId(),
             getJsonObject(leaseContract),
-            new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    deleteResult.setValue(true);
-                }
-            },
-            new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
+                response -> deleteResult.setValue(true),
+                error -> {
                     deleteResult.setValue(false);
                     if (error instanceof NetworkError) {
                         Toast.makeText(getApplication(), R.string.no_network, Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(getApplication(), error.toString(), Toast.LENGTH_LONG).show();
                     }
-                }
-            }) {
+                }) {
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
@@ -264,9 +247,7 @@ public class LeaseRequestViewModel extends AndroidViewModel {
             Request.Method.GET,
             url,
             null,
-            new Response.Listener<JSONArray>() {
-                @Override
-                public void onResponse(JSONArray response) {
+                response -> {
 
                     VolleyLog.wtf(response.toString(), "utf-8");
 
@@ -275,10 +256,8 @@ public class LeaseRequestViewModel extends AndroidViewModel {
                     Type listType = new TypeToken<List<LeaseRequest>>(){}.getType();
                     List<LeaseRequest> leaseContracts = gson.fromJson(response.toString(), listType);
                     allLeaseRequests.setValue(leaseContracts);
-                }
-            },
+                },
             requestQueue.getErrorListener()) {
-            //This is for Headers If You Needed
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
@@ -302,13 +281,10 @@ public class LeaseRequestViewModel extends AndroidViewModel {
     private Gson buildGson() {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder
-                .registerTypeAdapter(OffsetDateTime.class, new JsonDeserializer<OffsetDateTime>() {
-                    @Override
-                    public OffsetDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-                            throws JsonParseException {
-                        return OffsetDateTime.parse(json.getAsString());
-                    }
-                }).create();
+                .registerTypeAdapter(OffsetDateTime.class,
+                        (JsonDeserializer<OffsetDateTime>) (json, typeOfT, context) ->
+                                OffsetDateTime.parse(json.getAsString())
+                ).create();
 
         return gson;
     }
