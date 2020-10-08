@@ -1,0 +1,11 @@
+{
+  "backend_api": "/",
+  "email_template": "/",
+  "legal_policies_api": "/",
+  "oidc": {
+    "authority": "~/identity/",
+    "clientId": "mmm.customization.spa",
+    "scope": "*",
+    "authorizationCodeFlow": true
+  }
+}

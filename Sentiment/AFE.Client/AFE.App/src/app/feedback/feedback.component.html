@@ -1,0 +1,18 @@
+<div *ngIf="isLoading" class="mt-5 w-100 d-flex flex-column justify-content-center align-items-center">
+  <div class="text-center text-muted font-weight-light text-large">{{'PROCESSING_FEEDBACK' | translate}}</div>
+  <!-- <spinner></spinner> -->
+</div>
+
+<div *ngIf="!isLoading">
+  <h3>
+    {{ "FEEDBACK" | translate}}
+  </h3>
+  <div class="card strong-shadow">
+    <div class="card-body p-3">
+      <textarea class="form-control mb-2" placeholder="{{'ENTER_FEEDBACK' | translate}}" [(ngModel)]="feedback.text" rows="5"></textarea>
+      <button class="btn btn-primary float-right" (click)="sendFeedback()">
+        {{ "SUBMIT" | translate}}
+      </button>
+    </div>
+  </div>
+</div>

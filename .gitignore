@@ -9,6 +9,8 @@
 *.user
 *.userosscache
 *.sln.docstates
+MLModel.zip
+train.data.tsv
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -143,6 +145,8 @@ _TeamCity*
 # Visual Studio code coverage results
 *.coverage
 *.coveragexml
+*.vscode
+
 
 # NCrunch
 _NCrunch_*

@@ -1,0 +1,20 @@
+<div *ngIf="isLoading" class="mt-5 w-100 d-flex flex-column justify-content-center align-items-center">
+  <div class="text-center text-muted font-weight-light text-large">Loading Users feedback chart!</div>
+  <!-- <spinner></spinner> -->
+</div>
+sdfsdf
+<div *ngIf="!isLoading" class="row">
+  <div class="mt-5">
+    <ngx-charts-advanced-pie-chart
+      [view]="view"
+      [scheme]="{domain: ['#5AA454', '#A10A28', '#C7B42C']}"
+      [results]="singleData"
+      [gradient]="gradient"
+      [legend]="showLegend"
+      [legendPosition]="legendPosition"
+      [labels]="showLabels"
+      [doughnut]="isDoughnut"
+      >
+    </ngx-charts-advanced-pie-chart>
+  </div>
+</div>

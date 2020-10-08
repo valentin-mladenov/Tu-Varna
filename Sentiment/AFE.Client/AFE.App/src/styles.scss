@@ -1,0 +1,212 @@
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+
+$stp-color: #0a3250;
+$stp-color-contrast: #daf2ff;
+
+@mixin keyframes($name) {
+  @-webkit-keyframes #{$name} {
+    @content;
+  }
+  @-moz-keyframes #{$name} {
+    @content;
+  }
+  @keyframes #{$name} {
+    @content;
+  }
+}
+
+// Remove outline on desktops
+@media (min-width: 720px) {
+  ngb-carousel,
+  .dropdown-item,
+  ngb-datepicker,
+  ngb-rating {
+    outline: 0 !important;
+  }
+}
+
+.dropdown-menu-right {
+  right: auto !important;
+}
+
+// *******************************************************************************
+// * Page transition
+
+.router-transitions {
+  opacity: 1;
+  transition: opacity 0.2s;
+
+  body.app-loading & {
+    opacity: 0.75;
+  }
+}
+
+// *******************************************************************************
+// * Tooltip and popover animations
+
+@include keyframes(ngTooltipAnimation) {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+ngb-tooltip-window {
+  animation: ngTooltipAnimation 0.25s;
+}
+
+// *******************************************************************************
+// * Modal animations
+
+@include keyframes(ngModalBackdropAnimation) {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+@include keyframes(ngMaterialModalBackdropAnimation) {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+@include keyframes(ngDefaultModalAnimation) {
+  0% {
+    opacity: 0;
+    transform: translateY(150px) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@include keyframes(ngTopModalAnimation) {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@include keyframes(ngSlideModalAnimation) {
+  0% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@include keyframes(ngRtlSlideModalAnimation) {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@include keyframes(ngFillInModalAnimation) {
+  0% {
+    opacity: 0;
+    transform: scale(0.5, 0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1, 1);
+  }
+}
+
+ngb-modal-backdrop.modal-backdrop {
+  opacity: 0.5;
+  animation: ngModalBackdropAnimation 0.15s ease-out;
+}
+
+ngb-modal-window {
+  &.modal .modal-dialog {
+    animation: ngDefaultModalAnimation 0.15s ease-out;
+  }
+
+  &.modal-top .modal-dialog {
+    animation: ngTopModalAnimation 0.15s ease-out;
+  }
+
+  &.modal-slide .modal-dialog {
+    animation: ngSlideModalAnimation 0.15s ease-out;
+  }
+
+  &.modal-fill-in .modal-dialog {
+    animation: ngFillInModalAnimation 0.15s ease-out;
+  }
+
+  [dir="rtl"] &.modal-slide .modal-dialog {
+    animation: ngRtlSlideModalAnimation 0.15s ease-out;
+  }
+}
+
+.modal-no-padding {
+  .modal-dialog {
+    @media (min-width: (map-get($grid-breakpoints, sm))) {
+      width: 25rem;
+    }
+  }
+  .modal-content {
+    padding-top: 0;
+    padding-bottom: 0;
+
+    .modal-body {
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
+
+.material-style ngb-modal-backdrop.modal-backdrop {
+  opacity: 0.2;
+  animation: ngMaterialModalBackdropAnimation 0.15s ease-out;
+}
+
+// Prevent horizontal scrollbar
+[dir="rtl"] .dz-hidden-input {
+  right: 0 !important;
+  left: auto !important;
+}
+
+.bg-stp {
+  background-color: #393d41;
+  color: $stp-color-contrast;
+}
+
+.bg-stp a {
+  color: $stp-color-contrast;
+}
+
+.sidenav.bg-dark {
+  background-color: $stp-color !important;
+}
+
+.sidenav.bg-dark .sidenav-item.active > .sidenav-link:not(.sidenav-toggle) {
+  background-color: #0e446d !important;
+}
+
+.selected {
+  background-color: rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.25) inset;
+}
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
+
+// html, body { height: 100%; }
+// body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
