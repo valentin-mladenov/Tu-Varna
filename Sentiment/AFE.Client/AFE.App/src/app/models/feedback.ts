@@ -1,6 +1,8 @@
 export class Feedback {
   id: string;
-  userName: string;
+  maritalStatusType: number;
+  sex: number;
+  ageType: number;
   text: string;
   sentiment: boolean;
   confirmedSentiment: boolean;

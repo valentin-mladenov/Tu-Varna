@@ -1,8 +1,11 @@
-@import "node_modules/bootstrap/scss/functions";
-@import "node_modules/bootstrap/scss/variables";
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
 
-$stp-color: #0a3250;
-$stp-color-contrast: #daf2ff;
+@import '~ngx-toastr/toastr-bs4-alert';
+@import "~@ng-select/ng-select/themes/default.theme.css";
 
 @mixin keyframes($name) {
   @-webkit-keyframes #{$name} {
@@ -183,30 +186,15 @@ ngb-modal-window {
   left: auto !important;
 }
 
-.bg-stp {
-  background-color: #393d41;
-  color: $stp-color-contrast;
-}
-
-.bg-stp a {
-  color: $stp-color-contrast;
-}
-
-.sidenav.bg-dark {
-  background-color: $stp-color !important;
-}
-
-.sidenav.bg-dark .sidenav-item.active > .sidenav-link:not(.sidenav-toggle) {
-  background-color: #0e446d !important;
-}
-
 .selected {
   background-color: rgba(0, 0, 0, 0.15);
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.25) inset;
 }
 
-/* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
+.sticky-offset {
+  top: 4rem!important;
+}
 
-// html, body { height: 100%; }
-// body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

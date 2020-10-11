@@ -11,7 +11,7 @@ using System.Data.Common;
 
 namespace AFE.Model.Fabric
 {
-    public class MLModelBuilder
+    public class MLModelBuilderLanguageDetector
     {
         public void Init()
         {

@@ -5,8 +5,8 @@
   "FEEDBACK-RESULT": "Feedback result",
   "DASHBOARD_TODAY": "Today is",
   "DASHBOARD_WELCOME": "Welcome back",
-  "GOOD_FEEDBACK": "Thank you for the feedback",
-  "BAD_FEEDBACK": "Sorry to hear that, we always try to improve!",
+  "GOOD_FEEDBACK": "Thank you for the feedback! 😊",
+  "BAD_FEEDBACK": "Sorry to hear that, we always try to improve! 😔",
   "PROCESSING_FEEDBACK": "We are processing your feedback",
   "ENTER_FEEDBACK": "Please enter your feedback here",
   "RETRAIN_MODEL": "Retrain Model",
@@ -24,5 +24,8 @@
   "RETRAIN_MODEL_START": "Model Training started!",
   "IT_WILL_TAKE_5": "It will take around 5min.",
   "RETRAIN_MODEL_FAILED": "Model Training failed!",
-  "SOMETHING_WENT_WRONG": "Something went wrong!"
+  "SOMETHING_WENT_WRONG": "Something went wrong!",
+  "positives": "Positives",
+  "negatives": "Negatives",
+  "neutrals": "Neutrals"
 }

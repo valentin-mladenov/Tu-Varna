@@ -1,6 +1,21 @@
-<div *ngIf="isLoading" class="mt-5 w-100 d-flex flex-column justify-content-center align-items-center">
-  <div class="text-center text-muted font-weight-light text-large">{{ 'FEEDBACK-RESULT' | translate }}</div>
-    <!-- <spinner></spinner> -->
+<ngx-spinner [fullScreen]="true" type="ball-clip-rotate-multiple" size="medium">{{ 'FEEDBACK-RESULT' | translate }}</ngx-spinner>
+
+
+<div *ngIf="!isLoadingPie" class="row">
+  <div class="mt-5">
+    <ngx-charts-advanced-pie-chart
+      [view]="view"
+      [scheme]="{domain: ['#5AA454', '#A10A28', '#C7B42C']}"
+      [results]="singleData"
+      [gradient]="gradient"
+      [legend]="showLegend"
+      [legendPosition]="legendPosition"
+      [labels]="showLabels"
+      label="{{ 'TOTAL' | translate }}"
+      [doughnut]="isDoughnut"
+      >
+    </ngx-charts-advanced-pie-chart>
+  </div>
 </div>
 
 <div *ngIf="!isLoading">
@@ -9,8 +24,8 @@
       <h3>{{'FEEDBACK-RESULT' | translate}}</h3>
     </div>
     <div class="form-group col-4 mb-1 text-right">
-      <button type="button" (click)="retrainModel()" class="btn btn-primary">
-        <i class="fas fa-plus"></i> {{'RETRAIN_MODEL' | translate}}
+      <button type="button" (click)="retrainModel()" class="btn btn-outline-secondary">
+        <i class="fas fa-cogs"></i> {{'RETRAIN_MODEL' | translate}}
       </button>
       <swal #retrainStart type="success" title="{{'RETRAIN_MODEL_START' | translate}}"
         html="{{'IT_WILL_TAKE_5' | translate}}">
@@ -26,62 +41,65 @@
       placeholder="{{'FILTER' | translate}}">
   </div>
 
-  <table class="w-100 mat-elevation-z8 cdk-table" mat-table [dataSource]="dataSource">
-
-    <!-- User Name Column -->
-    <ng-container matColumnDef="userName">
-      <th mat-header-cell *matHeaderCellDef>{{'USER_NAME' | translate}} </th>
-      <td mat-cell *matCellDef="let element"> {{element.userName}} </td>
-    </ng-container>
+  <table class="w-100 mat-elevation-z8" mat-table [dataSource]="dataSource">    
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="getRecord(row)"></tr>
 
     <!-- Feedback Column -->
     <ng-container matColumnDef="text">
       <th mat-header-cell *matHeaderCellDef>{{'FEEDBACK' | translate}} </th>
-      <td mat-cell *matCellDef="let element" class="w-50"> {{element.text}} </td>
+      <td mat-cell *matCellDef="let element" class="w-75 text-`justify"> {{element.text}} </td>
     </ng-container>
 
     <!-- probability Column -->
     <ng-container matColumnDef="probability">
       <th mat-header-cell *matHeaderCellDef>{{'PROBABILITY' | translate}} </th>
-      <td mat-cell *matCellDef="let element"> {{element.probability}} % </td>
+      <td mat-cell *matCellDef="let element" class="text-center"> {{element.probability}} % </td>
     </ng-container>
 
     <!-- score Column -->
     <ng-container matColumnDef="score">
       <th mat-header-cell *matHeaderCellDef>{{'SCORE' | translate}} </th>
-      <td mat-cell *matCellDef="let element"> {{element.score}} </td>
+      <td mat-cell *matCellDef="let element" class="text-center"> {{element.score}} </td>
     </ng-container>
 
     <!-- Sentimnet Column -->
     <ng-container matColumnDef="sentiment">
       <th mat-header-cell *matHeaderCellDef>{{'SENTIMENT' | translate}} </th>
-      <td mat-cell *matCellDef="let element">
-        <i *ngIf="element.sentiment && element.score > 0.05"
-          class="ion d-block ion-md-happy display-4 text-success"></i>
-        <i *ngIf="!element.sentiment && element.score < -0.05" class="ion d-block ion-md-sad display-4 text-danger"></i>
-        <i *ngIf="element.score >= -0.05 && element.score <= 0.05" class="far fa-meh display-4 text-secondary"></i>
+      <td mat-cell *matCellDef="let element" class="text-center">
+        <i *ngIf="element.sentiment && element.score > 0.15"
+            class="far fa-smile-wink d-block display-4 text-success"></i>
+        <i *ngIf="!element.sentiment && element.score < -0.15" 
+            class="far fa-sad-tear d-block display-4 text-danger"></i>
+        <i *ngIf="element.score >= -0.15 && element.score <= 0.15" 
+            class="far fa-meh display-4 text-secondary"></i>
       </td>
-
     </ng-container>
 
     <ng-container matColumnDef="Actions">
       <th mat-header-cell *matHeaderCellDef></th>
       <td class="text-right" class="text-right" mat-cell *matCellDef="let element">
         <div *ngIf="!element.sentToML">
-          <button [swal]="confirmSwal" class="w-50 col-md-auto btn icon-btn md-btn-flat btn-success">
-            <i class="fas fa-edit"></i>{{'CONFIRM' | translate}}
-            <swal #confirmSwal title="{{'CONFIRM_SENTIMENT_QUESTION' | translate}}"
-              html="{{'ARE_YOU_SURE_CONFIRM' | translate}}" type="warning" reverseButtons="true"
-              [showCancelButton]="true" (confirm)="confirmSentiment(element, false)">
-            </swal>
+          <button [swal]="confirmSwal" class="btn t btn-success" placement="left" ngbTooltip="{{'is-positive' | translate}}">
+            <i class="fas fa-plus-circle"></i>
           </button>
-          <button [swal]="denySwal" class="w-25 col-md-auto btn icon-btn md-btn-flat btn-danger">
-            <i class="fas fa-trash"></i>{{'DENY' | translate}}
-            <swal #denySwal title="{{'CONFIRM_SENTIMENT_QUESTION' | translate}}"
-              html="{{'ARE_YOU_SURE_DENY' | translate}}" type="warning" reverseButtons="true" [showCancelButton]="true"
-              (confirm)="confirmSentiment(element, true)">
-            </swal>
+          <swal #confirmSwal title="{{'CONFIRM_SENTIMENT_QUESTION' | translate}}"
+            html="{{'ARE_YOU_SURE_CONFIRM' | translate}}"
+            type="warning"
+            reverseButtons="true"
+            [showCancelButton]="true"
+            (confirm)="confirmSentiment(element, false)">
+          </swal>
+          <button [swal]="denySwal" class="ml-3 my-2 btn btn-danger" placement="left" ngbTooltip="{{'is-negative' | translate}}">
+            <i class="fas fa-minus-circle"></i>
           </button>
+          <swal #denySwal title="{{'CONFIRM_SENTIMENT_QUESTION' | translate}}"
+            html="{{'ARE_YOU_SURE_DENY' | translate}}"
+            type="warning"
+            reverseButtons="true"
+            [showCancelButton]="true"
+            (confirm)="confirmSentiment(element, true)">
+          </swal>
         </div>
         <div *ngIf="element.sentToML">
           {{'CONFIRM_SENTIMENT_IS' | translate}}
@@ -90,9 +108,6 @@
         </div>
       </td>
     </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
   <mat-paginator class="mat-elevation-z8" [pageSizeOptions]="[15, 25, 50, 100]" showFirstLastButtons></mat-paginator>

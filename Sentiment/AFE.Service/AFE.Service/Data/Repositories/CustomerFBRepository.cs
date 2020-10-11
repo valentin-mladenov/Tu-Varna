@@ -34,7 +34,10 @@ namespace AFE.Service.Data.Repositories
 
         public IEnumerable<CustomerFeedback> GetPage(int pageNumber, int pageSize)
         {
-            var feedbacks = _dbContext.CustomerFeedbacks.Skip(pageNumber * pageSize).Take(pageSize).ToList();
+            var feedbacks = _dbContext.CustomerFeedbacks
+                .Skip(pageNumber * pageSize)
+                .Take(pageSize)
+                .ToList();
 
             return feedbacks;
         }
@@ -62,19 +65,19 @@ namespace AFE.Service.Data.Repositories
 
             chartDS.Add(new PieChartElement
             {
-                Name = "Positives",
+                Name = "positives",
                 Value = positives
             });
 
             chartDS.Add(new PieChartElement
             {
-                Name = "Negatives",
+                Name = "negatives",
                 Value = negatives
             });
 
             chartDS.Add(new PieChartElement
             {
-                Name = "Neutrals",
+                Name = "neutrals",
                 Value = neutrals
             });
 

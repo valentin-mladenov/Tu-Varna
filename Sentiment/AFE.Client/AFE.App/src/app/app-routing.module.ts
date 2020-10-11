@@ -6,7 +6,6 @@ import { Routes, RouterModule } from '@angular/router';
 // Layouts
 
 
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { FeedbackComponent } from './feedback/feedback.component';
 import { FeedbackResultsComponent } from './feedback-results/feedback-results.component';
 
@@ -16,10 +15,6 @@ import { FeedbackResultsComponent } from './feedback-results/feedback-results.co
 
 /* tslint:disable */
 const routes: Routes = [
-  {
-    path: 'dashboard',
-    component: DashboardComponent
-  },
   {
     path: 'feedback',
     component: FeedbackComponent,

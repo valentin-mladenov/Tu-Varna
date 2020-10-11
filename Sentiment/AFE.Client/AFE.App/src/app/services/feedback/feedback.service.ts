@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Feedback } from '../../models/feedback/feedback';
+import { Feedback } from '../../models/feedback';
+import { PieChart } from '../../models/pieChart';
 
 @Injectable()
 export class FeedbackService {
@@ -18,7 +19,7 @@ export class FeedbackService {
   getChartFeedback() {
     const url = this.url + 'feedback/chart?api-version=1.0';
 
-    return this.httpClient.get<Array<Feedback>>(url, {
+    return this.httpClient.get<Array<PieChart>>(url, {
       headers: this.getHeader()
     });
   }
