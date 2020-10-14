@@ -46,10 +46,11 @@ namespace SentimentWeb.Service.Data.Repositories
         {
             var prediction = this.predictionService.Predict(feedback.Text);
             prediction.Text = feedback.Text;
-            prediction.UserName = feedback.UserName;
 
             _dbContext.CustomerFeedbacks.Add(prediction);
             await _dbContext.SaveChangesAsync();
+
+            // TODO return the language
 
             return prediction.Sentiment;
         }
@@ -57,8 +58,8 @@ namespace SentimentWeb.Service.Data.Repositories
 
         public IEnumerable<PieChartElement> GetChartData()
         {
-            var positives = _dbContext.CustomerFeedbacks.Count(f => f.Score > 0.15m);
-            var negatives = _dbContext.CustomerFeedbacks.Count(f => f.Score < -0.15m);
+            var positives = _dbContext.CustomerFeedbacks.Count(f => f.SentimentScore > 0.15m);
+            var negatives = _dbContext.CustomerFeedbacks.Count(f => f.SentimentScore < -0.15m);
             var neutrals = _dbContext.CustomerFeedbacks.Count() - positives - negatives;
 
             var chartDS = new List<PieChartElement>();

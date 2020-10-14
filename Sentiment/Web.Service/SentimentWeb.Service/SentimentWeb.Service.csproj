@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Migrations\20201014184623_ChangeGUIDtoLong.cs" />
+    <Compile Remove="Data\Migrations\20201014184623_ChangeGUIDtoLong.Designer.cs" />
+    <Compile Remove="Data\Migrations\20201014185236_ChangeGUIDtoLong.cs" />
+    <Compile Remove="Data\Migrations\20201014185236_ChangeGUIDtoLong.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8">
@@ -16,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LanguageML.Model\LanguageML.Model.csproj" />
     <ProjectReference Include="..\SentimentML.Model\SentimentML.Model.csproj" />
   </ItemGroup>
 

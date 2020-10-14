@@ -17,8 +17,6 @@ namespace SentimentWeb.Service.Data
 
 
 		protected override void OnModelCreating(ModelBuilder builder)
-		{
-			builder.Entity<MLInputFeedback>().Property(f => f.Id).HasDefaultValueSql("NEWID()");
-		}
+		{ }
 	}
 }

@@ -1,6 +1,6 @@
 using Microsoft.ML.Data;
 
-namespace AFE_ServiceML.Model
+namespace LanguageML.Model.Models
 {
     public class ModelInput
     {

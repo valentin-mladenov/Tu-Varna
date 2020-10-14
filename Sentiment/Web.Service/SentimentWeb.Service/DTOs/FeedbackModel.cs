@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SentimentWeb.Service.Data.Entities;
+using System;
 
 namespace SentimentWeb.Service.DTOs
 {
@@ -11,6 +12,11 @@ namespace SentimentWeb.Service.DTOs
         public decimal Probability { get; set; }
         public decimal Score { get; set; }
         public bool SentToML { get; set; }
-        public string UserName { get; set; }
+        public string Language { get; set; }
+        public string ConfirmedLanguage { get; set; }
+        public LanguageScore LanguageScore { get; set; }
+        public Sex Sex { get; set; }
+        public MaritalStatus MaritalStatus { get; set; }
+        public AgeRange AgeRange { get; set; }
     }
 }

@@ -3,21 +3,25 @@ using Microsoft.ML;
 
 namespace SentimentML.Model
 {
-    public class ConsumeModel
+    public class ConsumeSentimentModel
     {
         public static SentimentPrediction Predict(SentimentData input)
         {
-
             // Create new MLContext
             MLContext mlContext = new MLContext();
 
             // Load model & create prediction engine
             string modelPath = Constants.ConsumeModelURL;
-            ITransformer mlModel = mlContext.Model.Load(modelPath, out var modelInputSchema);
-            var predEngine = mlContext.Model.CreatePredictionEngine<SentimentData, SentimentPrediction>(mlModel);
+
+            ITransformer mlModel = mlContext.Model
+                .Load(modelPath, out var modelInputSchema);
+
+            var predEngine = mlContext.Model
+                .CreatePredictionEngine<SentimentData, SentimentPrediction>(mlModel);
 
             // Use model to make prediction on input data
             SentimentPrediction result = predEngine.Predict(input);
+
             return result;
         }
     }
