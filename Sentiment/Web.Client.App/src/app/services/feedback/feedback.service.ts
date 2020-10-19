@@ -11,7 +11,7 @@ export class FeedbackService {
 
   postFeedback(feedback: Feedback) {
     const url = this.url + 'feedback?api-version=1.0';
-    return this.httpClient.post(url, feedback, {
+    return this.httpClient.post<Feedback>(url, feedback, {
       headers: this.getHeader()
     });
   }

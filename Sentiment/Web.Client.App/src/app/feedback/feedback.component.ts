@@ -59,15 +59,15 @@ export class FeedbackComponent implements OnInit {
       this.spinner.hide();
       this.feedback = new Feedback();
 
-      if (res) {
-        this.translate.get('GOOD_FEEDBACK').subscribe(translatation => {
-          this.toastr.success(translatation);
+        this.translate.getTranslation(res.language).subscribe(lang => {
+          if (-0.15 > res.sentimentScore || res.sentimentScore < 0.15) {
+            this.toastr.info(lang['NEUTRAL_FEEDBACK']);
+          } else if (res.sentiment) {
+            this.toastr.success(lang['GOOD_FEEDBACK']);
+          } else {
+            this.toastr.error(lang['BAD_FEEDBACK']);
+          }
         });
-      } else {
-        this.translate.get('BAD_FEEDBACK').subscribe(translatation => {
-          this.toastr.info(translatation);
-        });
-      }
     },
     err => {
       this.spinner.hide();

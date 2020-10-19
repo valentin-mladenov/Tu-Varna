@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using LanguageML.Model.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.ML;
 using Microsoft.ML.Data;
 
 namespace LanguageML.Model
 {
-    public static class ModelBuilder
+    public static class LanguageMLModelBuilder
     {
         //private static string TRAIN_DATA_FILEPATH = @"C:\Users\hudso\source\repos\Tu-Varna\Sentiment\Web.Service\LanguageML.Model\Data\all_words1.tsv";
         //private static string MODEL_FILEPATH = @"C:\Users\hudso\source\repos\Tu-Varna\Sentiment\Web.Service\LanguageML.Model\MLModel.zip";
@@ -19,15 +20,9 @@ namespace LanguageML.Model
 
         public static void Init()
         {
-            FileInfo _dataRoot = new FileInfo(typeof(ModelBuilder).Assembly.Location);
-
-            string assemblyFolderPath = _dataRoot.Directory.FullName;
-
-            string fullPath = Path.Combine(assemblyFolderPath, Constants.ModelFilePath);
-
-            //var trainingDataView = LoadDataFromFile();
-            //CreateModel(trainingDataView);
-            //Evaulate();
+            var trainingDataView = LoadDataFromFile();
+            CreateModel(trainingDataView);
+            Evaulate();
         }
 
         public static void InitSQL()
@@ -52,13 +47,14 @@ namespace LanguageML.Model
         public static IDataView LoadDataFromSQL()
         {
             // Load Data
-            return mlContext.Data
-               .LoadFromTextFile<ModelInput>(
-                   path: Constants.TrainDataURL,
-                   hasHeader: true,
-                   separatorChar: '\t',
-                   allowQuoting: true,
-                   allowSparse: false);
+            DatabaseSource dbSource = new DatabaseSource(SqlClientFactory.Instance,
+                connectionString: "Server=.\\SQLEXPRESS;Database=Sentiment.DB;Integrated Security=True;",
+                commandText: "SELECT [Language], [Text] " +
+                    "FROM [Sentiment.DB].[dbo].[MLInputFeedbacks] " +
+                    "WHERE [Language] IS NOT NULL " +
+                    "ORDER BY [Language]");
+
+            return mlContext.Data.CreateDatabaseLoader<ModelInput>().Load(dbSource);
         }
 
         public static void CreateModel(IDataView trainingDataView)
@@ -70,7 +66,7 @@ namespace LanguageML.Model
             ITransformer mlModel = TrainModel(trainingDataView, trainingPipeline);
 
             // Evaluate quality of Model
-            Evaluate(mlContext, trainingDataView, trainingPipeline);
+            // Evaluate(mlContext, trainingDataView, trainingPipeline);
 
             // Save model
             SaveModel(mlContext, mlModel, Constants.ModelFilePath, trainingDataView.Schema);
@@ -87,8 +83,20 @@ namespace LanguageML.Model
                 .Append(mlContext.Transforms.NormalizeMinMax("Features", "Features"))
                 .AppendCacheCheckpoint(mlContext);
 
+            // LinearSvm is old comment for now
+            // var training = mlContext.BinaryClassification.Trainers
+            //         .LinearSvm(labelColumnName: "Language", featureColumnName: "Features");
+
+
+            // LbfgsLogisticRegression is old comment for now  DE is hard. :)
             var training = mlContext.BinaryClassification.Trainers
-                    .LinearSvm(labelColumnName: "Language", featureColumnName: "Features");
+                .LbfgsLogisticRegression(labelColumnName: "Language", featureColumnName: "Features");
+
+            // AveragedPerceptron DE is hard. :)
+            //var training = mlContext.BinaryClassification.Trainers.AveragedPerceptron(
+            //    labelColumnName: "Language",
+            //    numberOfIterations: 10,
+            //    featureColumnName: "Features");
 
             var transformator = mlContext.Transforms.Conversion
                 .MapKeyToValue("PredictedLabel", "PredictedLabel");
@@ -138,20 +146,29 @@ namespace LanguageML.Model
             string modelRelativePath,
             DataViewSchema modelInputSchema)
         {
+            FileInfo _dataRoot = new FileInfo(typeof(LanguageMLModelBuilder).Assembly.Location);
+
+            string assemblyFolderPath = _dataRoot.Directory.FullName;
+
+            string fullPath = Path.Combine(assemblyFolderPath, modelRelativePath);
+
+
             // Save/persist the trained model to a .ZIP file
             Console.WriteLine($"=============== Saving the model  ===============");
-            mlContext.Model.Save(mlModel, modelInputSchema, GetAbsolutePath(modelRelativePath));
-            Console.WriteLine("The model is saved to {0}", GetAbsolutePath(modelRelativePath));
+            mlContext.Model.Save(mlModel, modelInputSchema, GetAbsolutePath(fullPath));
+            Console.WriteLine("The model is saved to {0}", GetAbsolutePath(fullPath));
         }
 
         public static string GetAbsolutePath(string relativePath)
         {
-            //FileInfo _dataRoot = new FileInfo(typeof(Program).Assembly.Location);
-            //string assemblyFolderPath = _dataRoot.Directory.FullName;
+            FileInfo _dataRoot = new FileInfo(typeof(LanguageMLModelBuilder).Assembly.Location);
+            string assemblyFolderPath = _dataRoot.Directory.FullName;
 
-            //string fullPath = Path.Combine(assemblyFolderPath, relativePath);
+            string fullPath = Path.Combine(assemblyFolderPath, relativePath);
 
-            return relativePath;
+            Console.WriteLine("Full path to MLMODEL: "+ fullPath);
+
+            return fullPath;
         }
 
         public static void PrintMulticlassClassificationMetrics(

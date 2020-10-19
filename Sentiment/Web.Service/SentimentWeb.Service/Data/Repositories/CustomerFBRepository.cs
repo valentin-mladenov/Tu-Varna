@@ -42,7 +42,7 @@ namespace SentimentWeb.Service.Data.Repositories
             return feedbacks;
         }
 
-        public async Task<bool> PostFeedback(FeedbackModel feedback)
+        public async Task<CustomerFeedback> PostFeedback(FeedbackModel feedback)
         {
             var prediction = this.predictionService.Predict(feedback.Text);
             prediction.Text = feedback.Text;
@@ -50,9 +50,7 @@ namespace SentimentWeb.Service.Data.Repositories
             _dbContext.CustomerFeedbacks.Add(prediction);
             await _dbContext.SaveChangesAsync();
 
-            // TODO return the language
-
-            return prediction.Sentiment;
+            return prediction;
         }
 
 

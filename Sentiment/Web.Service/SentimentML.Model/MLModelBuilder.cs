@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Data.SqlClient;
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using static Microsoft.ML.DataOperationsCatalog;
 using SentimentML.Model.Models;
 using System.Data.Common;
+using System.Data.SqlClient;
 
 namespace SentimentML.Model
 {
@@ -161,7 +161,9 @@ namespace SentimentML.Model
             DbProviderFactories.RegisterFactory("System.Data.SqlClient", SqlClientFactory.Instance);
             var factory = DbProviderFactories.GetFactory("System.Data.SqlClient");
             var databaseSource = new DatabaseSource(factory, connectionString: "Server=.\\SQLEXPRESS;Database=Sentiment.DB;Integrated Security=True;",
-                commandText: "SELECT Sentiment, [Text] AS SentimentText FROM MLINPUTFEEDBACKS");
+                commandText: "SELECT [Sentiment], [Text] AS SentimentText " +
+                "FROM [Sentiment.DB].[dbo].[MLInputFeedbacks] " +
+                "WHERE [Sentiment] IS NOT NULL");
 
             var dataView = dataLoader.Load(databaseSource);
             var splitDataView = mlContext.Data.TrainTestSplit(dataView, testFraction: 0.2);

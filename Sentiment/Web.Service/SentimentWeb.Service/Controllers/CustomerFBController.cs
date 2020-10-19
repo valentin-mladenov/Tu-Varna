@@ -20,7 +20,8 @@ namespace SentimentWeb.Service.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]FeedbackModel feedback)
         {
-            var result =await _customerFBRepository.PostFeedback(feedback);
+            var result = await _customerFBRepository.PostFeedback(feedback);
+
             return Ok(result);
         }
 
@@ -29,7 +30,7 @@ namespace SentimentWeb.Service.Controllers
         {
             if (pageSize <= 0)
             {
-                pageSize = 50;
+                pageSize = 1000;
             }
 
             if (pageNumber < 0)

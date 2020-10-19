@@ -43,35 +43,57 @@
 
   <table class="w-100 mat-elevation-z8" mat-table [dataSource]="dataSource">    
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="getRecord(row)"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
     <!-- Feedback Column -->
     <ng-container matColumnDef="text">
       <th mat-header-cell *matHeaderCellDef>{{'FEEDBACK' | translate}} </th>
-      <td mat-cell *matCellDef="let element" class="w-75 text-`justify"> {{element.text}} </td>
+      <td mat-cell *matCellDef="let element" class="w-75 text-justify" (click)="getRecord(element)"> {{element.text}} </td>
+    </ng-container>
+
+    <!-- Language Column -->
+    <ng-container matColumnDef="lang">
+      <th mat-header-cell *matHeaderCellDef>{{'LANG' | translate}} </th>
+      <td mat-cell *matCellDef="let element" class="text-center"> {{element.language}} </td>
+    </ng-container>
+
+    <!-- Language score Column -->
+    <ng-container matColumnDef="langScore">
+      <th mat-header-cell *matHeaderCellDef>{{'LANG_SCORE' | translate}} </th>
+      <td mat-cell *matCellDef="let element" class="text-center">
+        <mat-form-field>
+          <mat-label>Marital status</mat-label>
+          <mat-select [(ngModel)]="element.confirmedLanguage">
+            <mat-option value="bg">{{element.languageScore.bg | percent:'2.5'}} BG</mat-option>
+            <mat-option value="de">{{element.languageScore.de | percent:'2.5'}} DE</mat-option>
+            <mat-option value="en">{{element.languageScore.en | percent:'2.5'}} EN</mat-option>
+            <mat-option value="ru">{{element.languageScore.ru | percent:'2.5'}} RU</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </td>
     </ng-container>
 
     <!-- probability Column -->
     <ng-container matColumnDef="probability">
       <th mat-header-cell *matHeaderCellDef>{{'PROBABILITY' | translate}} </th>
-      <td mat-cell *matCellDef="let element" class="text-center"> {{element.probability}} % </td>
+      <td mat-cell *matCellDef="let element" class="text-center"> {{element.sentimentProbability}} % </td>
     </ng-container>
 
     <!-- score Column -->
     <ng-container matColumnDef="score">
       <th mat-header-cell *matHeaderCellDef>{{'SCORE' | translate}} </th>
-      <td mat-cell *matCellDef="let element" class="text-center"> {{element.score}} </td>
+      <td mat-cell *matCellDef="let element" class="text-center"> {{element.sentimentScore}} </td>
     </ng-container>
 
     <!-- Sentimnet Column -->
     <ng-container matColumnDef="sentiment">
       <th mat-header-cell *matHeaderCellDef>{{'SENTIMENT' | translate}} </th>
       <td mat-cell *matCellDef="let element" class="text-center">
-        <i *ngIf="element.sentiment && element.score > 0.15"
+        <i *ngIf="element.sentiment && element.sentimentScore > 0.15"
             class="far fa-smile-wink d-block display-4 text-success"></i>
-        <i *ngIf="!element.sentiment && element.score < -0.15" 
+        <i *ngIf="!element.sentiment && element.sentimentScore < -0.15" 
             class="far fa-sad-tear d-block display-4 text-danger"></i>
-        <i *ngIf="element.score >= -0.15 && element.score <= 0.15" 
+        <i *ngIf="element.sentimentScore >= -0.15 && element.sentimentScore <= 0.15" 
             class="far fa-meh display-4 text-secondary"></i>
       </td>
     </ng-container>
@@ -110,5 +132,5 @@
     </ng-container>
   </table>
 
-  <mat-paginator class="mat-elevation-z8" [pageSizeOptions]="[15, 25, 50, 100]" showFirstLastButtons></mat-paginator>
+  <mat-paginator class="mat-elevation-z8 mb-4" [pageSize]="50" [pageSizeOptions]="[50, 100, 200]" showFirstLastButtons></mat-paginator>
 </div>

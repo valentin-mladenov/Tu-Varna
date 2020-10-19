@@ -1,12 +1,15 @@
 export class Feedback {
-  id: string;
-  maritalStatusType: number;
-  sex: number;
-  ageType: number;
-  text: string;
-  sentiment: boolean;
+  ageRange: number;
+  confirmedLanguage: string;
   confirmedSentiment: boolean;
-  probability: number;
-  score: number;
+  ident: string;
+  language: string;
+  languageScore: any;
+  maritalStatus: number;
   sentToML: boolean;
+  sentiment: boolean;
+  sentimentProbability: number;
+  sentimentScore: number;
+  sex: number;
+  text: string;
 }

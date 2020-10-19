@@ -14,6 +14,8 @@ namespace SentimentWeb.Service.Data.Entities
 		public AgeRange AgeRange { get; set; }
 		public string Text { get; set; }
 		public string Language { get; set; }
+
+		[JsonIgnore]
 		public string InternalLangScore { get; set; }
 
 		[NotMapped]
@@ -21,6 +23,10 @@ namespace SentimentWeb.Service.Data.Entities
 		{
 			get
 			{
+				if (InternalLangScore == null)
+				{
+					return new LanguageScore();
+				}
 				return JsonSerializer.Deserialize<LanguageScore>(InternalLangScore);
 			}
 			set

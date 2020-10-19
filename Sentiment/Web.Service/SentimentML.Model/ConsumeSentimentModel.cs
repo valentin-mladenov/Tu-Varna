@@ -11,10 +11,11 @@ namespace SentimentML.Model
             MLContext mlContext = new MLContext();
 
             // Load model & create prediction engine
-            string modelPath = Constants.ConsumeModelURL;
 
             ITransformer mlModel = mlContext.Model
-                .Load(modelPath, out var modelInputSchema);
+                .Load(Constants.ConsumeModelURL, out var modelInputSchema);
+
+            System.Console.WriteLine(modelInputSchema);
 
             var predEngine = mlContext.Model
                 .CreatePredictionEngine<SentimentData, SentimentPrediction>(mlModel);

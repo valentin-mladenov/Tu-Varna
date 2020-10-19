@@ -1,11 +1,11 @@
-<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap px-0 shadow">
+<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap px-0 shadow">
   <a class="navbar-brand col-sm-3 col-md-2 mr-0"  routerLink="/feedback">Company name</a>
 </nav>
 
 
 <div class="container-fluid">
   <div class="row">
-    <nav class="col-md-3 col-lg-2 d-sm-block d-none d-md-block bg-light sidebar" style="min-height: 93vh;">
+    <nav class="col-md-3 col-lg-2 d-sm-block d-none d-md-block bg-light sidebar" style="min-height: 100vh;">
       <div class="sticky-top sticky-offset">
         <ul class="nav flex-column">
           <li class="nav-item mt-2">
@@ -17,7 +17,7 @@
         </ul>
       </div>
     </nav>
-    <main role="main" class="col-md-9 col-lg-10 ml-sm-auto px-4">
+    <main role="main" class="mt-5 col-md-9 col-lg-10 ml-sm-auto px-4">
       <router-outlet></router-outlet>
     </main>
   </div>

@@ -16,7 +16,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class FeedbackResultsComponent implements OnInit {
   usersFeedback = [] as Feedback[];
-  displayedColumns: string[] = ['text', 'sentiment', 'score', 'probability', 'Actions'];
+  displayedColumns: string[] = ['text', 'lang', 'langScore', 'sentiment', 'score', 'probability', 'Actions'];
   dataSource: MatTableDataSource<Feedback>;
   @ViewChild('retrainStart') retrainStart: SwalComponent;
   @ViewChild('retrainError') retrainError: SwalComponent;
@@ -59,8 +59,8 @@ export class FeedbackResultsComponent implements OnInit {
       this.feedbackService.getAllFeedback().subscribe(result => {
         setTimeout(function() {
             result.forEach(r => {
-              r.probability = Math.round(r.probability * 100);
-              r.score = +r.score.toFixed(2);
+              r.sentimentProbability = Math.round(r.sentimentProbability * 100);
+              r.sentimentScore = +r.sentimentScore.toFixed(2);
             });
 
             this.usersFeedback = result;
@@ -102,9 +102,21 @@ export class FeedbackResultsComponent implements OnInit {
     });
   }
 
+  ala($event, row) {
+    console.log($event);
+    console.log(row);
+
+  }
+
   getRecord(row: Feedback) {
     console.log(row);
 
-    Swal.fire('Any fool can use a computer' + row.text);
+    this.translate.get('FEEDBACK_DISPLAY', row).subscribe(text => {
+      Swal.fire( {
+          title: this.translate.instant('FEEDBACK_DISPLAY_TITLE'),
+          html: text,
+          width: '40vw'
+      });
+    });
   }
 }

@@ -8,7 +8,7 @@ namespace SentimentWeb.Service.Data.Entities
 		[Key]
 		public long Ident { get; set; }
 		public string Text { get; set; }
-		public bool Sentiment { get; set; }
+		public bool? Sentiment { get; set; }
 		public string Language{ get; set; }
 	}
 }

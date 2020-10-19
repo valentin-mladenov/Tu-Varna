@@ -21,9 +21,10 @@ namespace LanguageML.Model
             MLContext mlContext = new MLContext();
 
             // Load model & create prediction engine
-            string modelPath = @"C:\Users\hudso\source\repos\Tu-Varna\Sentiment\Web.Service\LanguageML.Model\MLModel.zip";
             ITransformer mlModel = mlContext.Model
-                .Load(modelPath, out var modelInputSchema);
+                .Load(Constants.ConsumeModelURL, out var modelInputSchema);
+
+            Console.WriteLine(modelInputSchema.ToString());
 
             var predEngine = mlContext.Model
                 .CreatePredictionEngine<ModelInput, ModelOutput>(mlModel);

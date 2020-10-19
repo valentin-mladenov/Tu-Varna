@@ -1,9 +1,4 @@
-﻿using SentimentML.Model;
-using SentimentWeb.Service.Data;
-using SentimentWeb.Service.Data.Repositories;
-using SentimentWeb.Service.Data.Repositories.Interfaces;
-using SentimentWeb.Service.Data.Services;
-using SentimentWeb.Service.Data.Services.Interfaces;
+﻿using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
@@ -11,7 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using System.IO;
+using LanguageML.Model;
+using SentimentML.Model;
+using SentimentWeb.Service.Data;
+using SentimentWeb.Service.Data.Repositories;
+using SentimentWeb.Service.Data.Repositories.Interfaces;
+using SentimentWeb.Service.Data.Services;
+using SentimentWeb.Service.Data.Services.Interfaces;
 
 namespace SentimentWeb.Service
 {
@@ -49,11 +50,16 @@ namespace SentimentWeb.Service
 
             services.AddControllers();
 
-            if (!File.Exists(Constants.ConsumeModelURL))
+            if (!File.Exists(SentimentML.Constants.ConsumeModelURL))
             {
                 var serviceProvider = services.BuildServiceProvider();
                 var mlFabric = serviceProvider.GetService<MLModelBuilder>();
-                mlFabric.Init();
+                mlFabric.InitSQL();
+            }
+
+            if (!File.Exists(Constants.ConsumeModelURL))
+            {
+                LanguageMLModelBuilder.InitSQL();
             }
         }
 

@@ -11,9 +11,7 @@ namespace SentimentWeb.Service.Data.Repositories.Interfaces
 	{
 		CustomerFeedback Get(Guid id);
 		IEnumerable<CustomerFeedback> GetPage(int pageNumber, int pageSize);
-        Task<bool> PostFeedback(FeedbackModel feedback);
+		Task<CustomerFeedback> PostFeedback(FeedbackModel feedback);
 		IEnumerable<PieChartElement> GetChartData();
-
-
 	}
 }

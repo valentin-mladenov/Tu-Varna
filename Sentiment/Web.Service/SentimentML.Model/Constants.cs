@@ -1,5 +1,5 @@
 ﻿
-namespace SentimentML.Model
+namespace SentimentML
 {
     public static class Constants
     {
