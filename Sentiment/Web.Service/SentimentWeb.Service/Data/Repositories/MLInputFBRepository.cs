@@ -1,5 +1,6 @@
 ﻿using SentimentWeb.Service.Data.Entities;
 using SentimentWeb.Service.Data.Repositories.Interfaces;
+using SentimentWeb.Service.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,19 +40,21 @@ namespace SentimentWeb.Service.Data.Repositories
 		}
 
 
-		public bool ConfirmFeeback(long customerFeedbackId, bool sentiment)
+		public bool ConfirmFeeback(FeedbackModel customerFeedback)
 		{
-			var customerFb = _dbContext.CustomerFeedbacks.Find(customerFeedbackId);
+			var customerFb = _dbContext.CustomerFeedbacks.Find(customerFeedback.Ident);
 
 			var mli = new MLInputFeedback
 			{
-				Sentiment = customerFb.Sentiment,
+				Sentiment = customerFeedback.ConfirmedSentiment,
+				Language = customerFeedback.ConfirmedLanguage,
 				Text = customerFb.Text
 			};
 
 			_dbContext.MLInputFeedbacks.Add(mli);
 			customerFb.SentToML = true;
-			customerFb.ConfirmedSentiment = sentiment;
+			customerFb.ConfirmedSentiment = customerFeedback.ConfirmedSentiment;
+			customerFb.ConfirmedLanguage = customerFeedback.ConfirmedLanguage;
 			_dbContext.SaveChanges();
 
 			return true;

@@ -5,7 +5,7 @@ namespace SentimentWeb.Service.DTOs
 {
     public class FeedbackModel
     {
-        public long Id { get; set; }
+        public long Ident { get; set; }
         public string Text { get; set; }
         public bool Sentiment { get; set; }
         public bool ConfirmedSentiment { get; set; }

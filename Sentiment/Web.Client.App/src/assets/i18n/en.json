@@ -12,7 +12,7 @@
   "ENTER_FEEDBACK": "Please enter your feedback here",
   "RETRAIN_MODEL": "Retrain Model",
   "FILTER": "Filter",
-  "FEEDBACK_DISPLAY": "<div>Text: {{text}}, AgeType: {{ageRange}}, {{text}}, {{text}} </div>",
+  "FEEDBACK_DISPLAY": "<div>Text: '{{text}}', <div class=\"my-2\"> User data:</div>Age range: {{ageRangeString}}, marital status: {{MaritalStatusString}}, sex: {{SexString}} </div>",
   "USER_NAME": "User Name",
   "PROBABILITY": "Probability",
   "SCORE": "Score",
@@ -24,10 +24,33 @@
   "ARE_YOU_SURE_CONFIRM": "You are about the confirm the sentiment. Are you 100% sure about that? This cannot be reversed.",
   "ARE_YOU_SURE_DENY": "You are about the deny the sentiment. Are you 100% sure about that? This cannot be reversed.",
   "RETRAIN_MODEL_START": "Model Training started!",
-  "IT_WILL_TAKE_5": "It will take around 5min.",
+  "IT_WILL_TAKE_5": "Training started. It will take around 1 hour.",
   "RETRAIN_MODEL_FAILED": "Model Training failed!",
   "SOMETHING_WENT_WRONG": "Something went wrong!",
+  "LANG": "Language",
+  "LANG_SCORE": "Language score",
+  "CONFIRMED_LANG": "Confirmed language",
+  "FEEDBACK_CONFIRMED": "Feedback confirmed",
+  "CONFIRM_LANG": "The language must be confirmed!",
   "positives": "Positives",
   "negatives": "Negatives",
-  "neutrals": "Neutrals"
+  "neutrals": "Neutrals",
+  "sex": {
+    "0": "female",
+    "1": "male"
+  },
+  "maritalStatus": {
+    "0": {
+      "0": "unmarried",
+      "1": "married",
+      "2": "divorced",
+      "3": "widow"
+    },
+    "1": {
+      "0": "unmarried",
+      "1": "married",
+      "2": "divorced",
+      "3": "widower"
+    }
+  }
 }

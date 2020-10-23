@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using SentimentML.Model;
 using SentimentWeb.Service.Data.Repositories.Interfaces;
 using SentimentWeb.Service.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using LanguageML.Model;
+using Microsoft.Extensions.Hosting;
 
 namespace SentimentWeb.Service.Controllers
 {
@@ -15,10 +14,15 @@ namespace SentimentWeb.Service.Controllers
     {
 		private readonly IMLInputFBRepository _mlInputFBRepository;
 		private readonly MLModelBuilder _mlModelBuilder;
+		private IHostApplicationLifetime ApplicationLifetime;
 
 
-		public MLInputFBController(IMLInputFBRepository mlInputFBRepository, MLModelBuilder mlModelBuilder)
+		public MLInputFBController(
+			IMLInputFBRepository mlInputFBRepository,
+			MLModelBuilder mlModelBuilder,
+			IHostApplicationLifetime appLifetime)
 		{
+			ApplicationLifetime = appLifetime;
 			_mlInputFBRepository = mlInputFBRepository;
 			_mlModelBuilder = mlModelBuilder;
 		}
@@ -29,18 +33,24 @@ namespace SentimentWeb.Service.Controllers
 			return Ok(_mlInputFBRepository.TransferToMLInput());
 		}
 
-		[HttpPost("confirm")]
+		[HttpPut("confirm")]
 		public IActionResult ConfirmFeeback([FromBody] FeedbackModel model)
 		{
-			_mlInputFBRepository.ConfirmFeeback(model.Id, model.ConfirmedSentiment);
+			var result = _mlInputFBRepository.ConfirmFeeback(model);
 
-			return Ok();
+			return Ok(result);
 		}
 
 		[HttpPost("retrain")]
 		public IActionResult RetrainTheMachine()
 		{
-			Task.Run(() => _mlModelBuilder.InitSQL());
+			Task.Run(() => {
+				_mlModelBuilder.InitSQL();
+
+				LanguageMLModelBuilder.InitSQL();
+
+				ApplicationLifetime.StopApplication();
+			});
 
 			return Ok();
 		}

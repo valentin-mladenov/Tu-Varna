@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using SentimentWeb.Service.Data.Entities;
+﻿using SentimentWeb.Service.DTOs;
 
 namespace SentimentWeb.Service.Data.Repositories.Interfaces
 {
@@ -10,6 +6,6 @@ namespace SentimentWeb.Service.Data.Repositories.Interfaces
 	{
 		bool TransferToMLInput();
 
-		bool ConfirmFeeback(long customerFeedbackId, bool sentiment);
+		bool ConfirmFeeback(FeedbackModel feedback);
 	}
 }

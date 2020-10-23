@@ -33,9 +33,9 @@ export class FeedbackService {
   }
 
   updateUserFeedback(feedback: Feedback) {
-    const url = this.url + 'feedback?api-version=1.0';
+    const url = this.url + 'mlinputfb/confirm?api-version=1.0';
 
-    return this.httpClient.put<any>(url, feedback, {
+    return this.httpClient.put<boolean>(url, feedback, {
       headers: this.getHeader()
     });
   }

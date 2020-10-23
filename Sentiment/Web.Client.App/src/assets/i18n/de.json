@@ -12,6 +12,7 @@
     "ENTER_FEEDBACK": "Bitte geben Sie hier Ihr Feedback ein",
     "RETRAIN_MODEL": "Modell neu trainieren",
     "FILTER": "Filter",
+    "FEEDBACK_DISPLAY": "<div>Text: '{{text}}', <div class=\"my-2\"> Benutzerdaten:</div>Altersspanne: {{ageRangeString}}, Familienstand: {{MaritalStatusString}}, Geschlecht: {{SexString}} </div>",
     "USER_NAME": "Nutzername",
     "PROBABILITY": "Wahrscheinlichkeit",
     "SCORE": "Ergebnis",
@@ -23,7 +24,33 @@
     "ARE_YOU_SURE_CONFIRM": "Sie sind über die Bestätigung der Stimmung. Bist du dir da 100% sicher? Dies kann nicht rückgängig gemacht werden.",
     "ARE_YOU_SURE_DENY": "Du bist über das leugnen der Stimmung. Bist du dir da 100% sicher? Dies kann nicht rückgängig gemacht werden.",
     "RETRAIN_MODEL_START": "Das Modelltraining hat begonnen!",
-    "IT_WILL_TAKE_5": "Es dauert ungefähr 5 Minuten.",
+    "IT_WILL_TAKE_5": "Das Training hat begonnen. Es dauert ungefähr 1 Stunde.",
     "RETRAIN_MODEL_FAILED": "Model Training fehlgeschlagen!",
-    "SOMETHING_WENT_WRONG": "Etwas ist schief gelaufen!"
+    "SOMETHING_WENT_WRONG": "Etwas ist schief gelaufen!",
+    "LANG": "Sprache",
+    "LANG_SCORE": "Sprachpartitur",
+    "CONFIRMED_LANG": "Bestätigte Sprache",
+    "FEEDBACK_CONFIRMED": "Feedback bestätigt",
+    "CONFIRM_LANG": "Die Sprache muss bestätigt werden!",
+    "positives": "Positives",
+    "negatives": "Negatives",
+    "neutrals": "Neutrals",
+    "sex": {
+      "0": "weiblich",
+      "1": "männlich"
+    },
+    "maritalStatus": {
+      "0": {
+        "0": "unverheiratet",
+        "1": "verheiratet",
+        "2": "geschieden",
+        "3": "Witwe"
+      },
+      "1": {
+        "0": "unverheiratet",
+        "1": "verheiratet",
+        "2": "geschieden",
+        "3": "Witwer"
+      }
+    }
 }

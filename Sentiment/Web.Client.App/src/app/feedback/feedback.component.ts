@@ -3,10 +3,10 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ErrorStateMatcher } from '@angular/material/core';
 import { FeedbackService } from '../services/feedback/feedback.service';
 import { Feedback } from '../models/feedback';
+import { Ages } from '../models/enums';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { error } from 'console';
 
 @Component({
   selector: 'app-feedback',
@@ -21,19 +21,16 @@ export class FeedbackComponent implements OnInit {
   maritalStatusControl = new FormControl('', Validators.required);
   feedbackControl = new FormControl('', Validators.required);
   ageControl = new FormControl('', Validators.required);
-
-  ages: string[] = [
-    '10-15',
-    '16-19',
-    '20-25',
-    '26-35',
-    '36-45',
-    '46-45',
-    '56-45',
-    '66-∞'
-  ];
-
   feedbackForm: FormGroup;
+
+  ages = this.toArray(Ages);
+
+  // Turn enum into array
+  toArray(enumme) {
+    return Object.keys(enumme)
+      .filter(value => isNaN(Number(value)) === false)
+      .map(key => enumme[key]);
+  }
 
   constructor(
     private feedbackService: FeedbackService,

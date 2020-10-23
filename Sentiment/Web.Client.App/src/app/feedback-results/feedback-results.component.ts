@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FeedbackService } from '../services/feedback/feedback.service';
 import { Feedback } from '../models/feedback';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { NgOption } from '@ng-select/ng-select';
 import { ToastrService } from 'ngx-toastr';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { TranslateService } from '@ngx-translate/core';
+import { Ages, MaritalStatus, Sex } from '../models/enums';
 
 @Component({
   selector: 'app-feedback-results',
@@ -20,14 +20,13 @@ export class FeedbackResultsComponent implements OnInit {
   dataSource: MatTableDataSource<Feedback>;
   @ViewChild('retrainStart') retrainStart: SwalComponent;
   @ViewChild('retrainError') retrainError: SwalComponent;
-  @ViewChild('infoSwal') private infoSwal: SwalComponent;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   isLoading = false;
   isLoadingPie = false;
 
-  view: any[] = [700, 300];
+  view: any[] = [700, 200];
 
   // options
   gradient = true;
@@ -79,14 +78,26 @@ export class FeedbackResultsComponent implements OnInit {
   }
 
   confirmSentiment(element: Feedback, change: boolean) {
+    if (!element.confirmedLanguage) {
+      this.translate.get('CONFIRM_LANG').subscribe(res => {
+        this.toastr.error(res);
+      });
+
+      return false;
+    }
+
     element.confirmedSentiment = change ? !element.sentiment : element.sentiment;
 
     this.feedbackService.updateUserFeedback(element).subscribe(result => {
-      console.log(result);
-      if (result.success) {
-        this.toastr.success('Sentiment updated!');
-        element.sentToML = result.success;
+      if (result) {
+        element.sentToML = result;
+        this.translate.get('FEEDBACK_CONFIRMED').subscribe(res => {
+          this.toastr.success(res);
+        });
       }
+    },
+    err => {
+      this.toastr.error(err.error.message);
     });
   }
 
@@ -97,21 +108,20 @@ export class FeedbackResultsComponent implements OnInit {
   retrainModel() {
     this.feedbackService.retrainUserFeedbackModel().subscribe(result => {
       this.retrainStart.fire();
-    }, error => {
+    }, err => {
+      this.toastr.error(err.error.message);
       this.retrainError.fire();
     });
   }
 
-  ala($event, row) {
-    console.log($event);
-    console.log(row);
-
-  }
-
   getRecord(row: Feedback) {
-    console.log(row);
+    const deepClone = JSON.parse(JSON.stringify(row));
 
-    this.translate.get('FEEDBACK_DISPLAY', row).subscribe(text => {
+    deepClone.ageRangeString = Ages[row.ageRange];
+    deepClone.MaritalStatusString = this.translate.instant(`maritalStatus.${row.sex}.${row.maritalStatus}`);
+    deepClone.SexString = this.translate.instant('sex.' + row.sex);
+
+    this.translate.get('FEEDBACK_DISPLAY', deepClone).subscribe(text => {
       Swal.fire( {
           title: this.translate.instant('FEEDBACK_DISPLAY_TITLE'),
           html: text,
