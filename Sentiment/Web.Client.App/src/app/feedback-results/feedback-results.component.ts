@@ -86,7 +86,7 @@ export class FeedbackResultsComponent implements OnInit {
       return false;
     }
 
-    element.confirmedSentiment = change ? !element.sentiment : element.sentiment;
+    element.confirmedSentiment = change;
 
     this.feedbackService.updateUserFeedback(element).subscribe(result => {
       if (result) {

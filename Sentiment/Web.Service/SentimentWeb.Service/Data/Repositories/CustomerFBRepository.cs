@@ -56,8 +56,9 @@ namespace SentimentWeb.Service.Data.Repositories
 
         public IEnumerable<PieChartElement> GetChartData()
         {
-            var positives = _dbContext.CustomerFeedbacks.Count(f => f.SentimentScore > 0.15m);
-            var negatives = _dbContext.CustomerFeedbacks.Count(f => f.SentimentScore < -0.15m);
+            var positives = _dbContext.CustomerFeedbacks.Count(f => f.ConfirmedSentiment || f.SentimentScore > 0.15m);
+            var negatives = _dbContext.CustomerFeedbacks.Count(f => (f.SentToML && !f.ConfirmedSentiment) || f.SentimentScore < -0.15m);
+
             var neutrals = _dbContext.CustomerFeedbacks.Count() - positives - negatives;
 
             var chartDS = new List<PieChartElement>();

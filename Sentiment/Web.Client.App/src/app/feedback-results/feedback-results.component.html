@@ -151,7 +151,7 @@
             type="warning"
             reverseButtons="true"
             [showCancelButton]="true"
-            (confirm)="confirmSentiment(element, false)">
+            (confirm)="confirmSentiment(element, true)">
           </swal>
           <button [swal]="denySwal" class="ml-3 my-2 btn btn-danger" placement="left" ngbTooltip="{{'is-negative' | translate}}">
             <i class="fas fa-minus-circle"></i>
@@ -161,7 +161,7 @@
             type="warning"
             reverseButtons="true"
             [showCancelButton]="true"
-            (confirm)="confirmSentiment(element, true)">
+            (confirm)="confirmSentiment(element, false)">
           </swal>
         </div>
         <div *ngIf="element.sentToML">
