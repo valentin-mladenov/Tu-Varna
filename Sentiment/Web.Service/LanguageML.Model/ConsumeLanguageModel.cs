@@ -21,10 +21,9 @@ namespace LanguageML.Model
             MLContext mlContext = new MLContext();
 
             // Load model & create prediction engine
-            ITransformer mlModel = mlContext.Model
-                .Load(Constants.ConsumeModelURL, out var modelInputSchema);
-
-            Console.WriteLine(modelInputSchema.ToString());
+            ITransformer mlModel = mlContext.Model.Load(
+                LanguageMLModelBuilder.GetAbsolutePath(Constants.ModelFilePath), 
+                out var modelInputSchema);
 
             var predEngine = mlContext.Model
                 .CreatePredictionEngine<ModelInput, ModelOutput>(mlModel);

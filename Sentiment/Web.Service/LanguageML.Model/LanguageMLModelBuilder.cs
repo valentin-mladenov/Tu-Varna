@@ -11,24 +11,19 @@ namespace LanguageML.Model
 {
     public static class LanguageMLModelBuilder
     {
-        //private static string TRAIN_DATA_FILEPATH = @"C:\Users\hudso\source\repos\Tu-Varna\Sentiment\Web.Service\LanguageML.Model\Data\all_words1.tsv";
-        //private static string MODEL_FILEPATH = @"C:\Users\hudso\source\repos\Tu-Varna\Sentiment\Web.Service\LanguageML.Model\MLModel.zip";
-        //private static string MODEL_FILEPATH_RELATIVE = @"..\..\MLModel.zip";
         // Create MLContext to be shared across the model creation workflow objects 
         // Set a random seed for repeatable/deterministic results across multiple trainings.
         private static MLContext mlContext = new MLContext(seed: 1);
 
         public static void Init()
         {
-            var trainingDataView = LoadDataFromFile();
-            CreateModel(trainingDataView);
+            CreateModel(LoadDataFromFile());
             Evaulate();
         }
 
         public static void InitSQL()
         {
-            var trainingDataView = LoadDataFromSQL();
-            CreateModel(trainingDataView);
+            CreateModel(LoadDataFromSQL());
             Evaulate();
         }
 
@@ -83,20 +78,8 @@ namespace LanguageML.Model
                 .Append(mlContext.Transforms.NormalizeMinMax("Features", "Features"))
                 .AppendCacheCheckpoint(mlContext);
 
-            // LinearSvm is old comment for now
-            // var training = mlContext.BinaryClassification.Trainers
-            //         .LinearSvm(labelColumnName: "Language", featureColumnName: "Features");
-
-
-            // LbfgsLogisticRegression is old comment for now  DE is hard. :)
             var training = mlContext.BinaryClassification.Trainers
                 .LbfgsLogisticRegression(labelColumnName: "Language", featureColumnName: "Features");
-
-            // AveragedPerceptron DE is hard. :)
-            //var training = mlContext.BinaryClassification.Trainers.AveragedPerceptron(
-            //    labelColumnName: "Language",
-            //    numberOfIterations: 10,
-            //    featureColumnName: "Features");
 
             var transformator = mlContext.Transforms.Conversion
                 .MapKeyToValue("PredictedLabel", "PredictedLabel");
@@ -146,27 +129,18 @@ namespace LanguageML.Model
             string modelRelativePath,
             DataViewSchema modelInputSchema)
         {
-            FileInfo _dataRoot = new FileInfo(typeof(LanguageMLModelBuilder).Assembly.Location);
-
-            string assemblyFolderPath = _dataRoot.Directory.FullName;
-
-            string fullPath = Path.Combine(assemblyFolderPath, modelRelativePath);
-
-
             // Save/persist the trained model to a .ZIP file
             Console.WriteLine($"=============== Saving the model  ===============");
-            mlContext.Model.Save(mlModel, modelInputSchema, GetAbsolutePath(fullPath));
-            Console.WriteLine("The model is saved to {0}", GetAbsolutePath(fullPath));
+            mlContext.Model.Save(mlModel, modelInputSchema, GetAbsolutePath(modelRelativePath));
+            Console.WriteLine("The model is saved to {0}", GetAbsolutePath(modelRelativePath));
         }
 
         public static string GetAbsolutePath(string relativePath)
         {
-            FileInfo _dataRoot = new FileInfo(typeof(LanguageMLModelBuilder).Assembly.Location);
-            string assemblyFolderPath = _dataRoot.Directory.FullName;
+            FileInfo dataRoot = new FileInfo(typeof(LanguageMLModelBuilder).Assembly.Location);
+            string assemblyFolderPath = dataRoot.Directory.FullName;
 
             string fullPath = Path.Combine(assemblyFolderPath, relativePath);
-
-            Console.WriteLine("Full path to MLMODEL: "+ fullPath);
 
             return fullPath;
         }

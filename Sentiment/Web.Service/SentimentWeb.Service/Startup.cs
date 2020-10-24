@@ -50,14 +50,14 @@ namespace SentimentWeb.Service
 
             services.AddControllers();
 
-            if (!File.Exists(SentimentML.Constants.ConsumeModelURL))
+            if (!File.Exists(MLModelBuilder.GetAbsolutePath(SentimentML.Constants.ModelFilePath)))
             {
                 var serviceProvider = services.BuildServiceProvider();
                 var mlFabric = serviceProvider.GetService<MLModelBuilder>();
                 mlFabric.InitSQL();
             }
 
-            if (!File.Exists(Constants.ConsumeModelURL))
+            if (!File.Exists(LanguageMLModelBuilder.GetAbsolutePath(Constants.ModelFilePath)))
             {
                 LanguageMLModelBuilder.InitSQL();
             }

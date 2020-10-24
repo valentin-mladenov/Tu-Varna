@@ -27,6 +27,7 @@ export class FeedbackResultsComponent implements OnInit {
   isLoadingPie = false;
 
   view: any[] = [700, 200];
+  viewAges: any[] = [800, 200];
 
   // options
   gradient = true;
@@ -34,7 +35,10 @@ export class FeedbackResultsComponent implements OnInit {
   showLabels = true;
   isDoughnut = true;
 
-  singleData = [];
+  totalData = [];
+  maritalStatusData = [];
+  sexTypeData = [];
+  ageRangeData = [];
 
   constructor(
     public feedbackService: FeedbackService,
@@ -50,9 +54,18 @@ export class FeedbackResultsComponent implements OnInit {
         this.translate.get(element.name).subscribe((trans) => {
           element.name = trans;
         });
+        element.value.forEach(chart => {
+          this.translate.get(chart.name).subscribe((trans) => {
+            chart.name = trans;
+          });
+        });
       });
 
-      this.singleData = [...data];
+      this.totalData = [...data[0].value];
+      this.maritalStatusData = [...data[1].value];
+      this.sexTypeData = [...data[2].value];
+      this.ageRangeData = [...data[3].value];
+
       this.isLoadingPie = false;
 
       this.feedbackService.getAllFeedback().subscribe(result => {

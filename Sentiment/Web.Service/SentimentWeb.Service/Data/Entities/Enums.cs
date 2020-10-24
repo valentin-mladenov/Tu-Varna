@@ -9,7 +9,8 @@
     public enum AgeRange
     {
         From10Till15,
-        From16Till25,
+        From16Till19,
+        From20Till25,
         From26Till35,
         From36Till45,
         From46Till55,

@@ -52,6 +52,11 @@ export class FeedbackComponent implements OnInit {
 
   sendFeedback() {
     this.spinner.show();
+
+    this.feedback.ageRange = +this.feedback.ageRange;
+    this.feedback.sex = +this.feedback.sex;
+    this.feedback.maritalStatus = +this.feedback.maritalStatus;
+
     this.feedbackService.postFeedback(this.feedback).subscribe(res => {
       this.spinner.hide();
       this.feedback = new Feedback();

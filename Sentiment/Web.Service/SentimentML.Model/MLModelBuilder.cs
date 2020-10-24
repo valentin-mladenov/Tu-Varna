@@ -45,8 +45,8 @@ namespace SentimentML.Model
 
         public static string GetAbsolutePath(string relativePath)
         {
-            FileInfo _dataRoot = new FileInfo(typeof(MLModelBuilder).Assembly.Location);
-            string assemblyFolderPath = _dataRoot.Directory.FullName;
+            FileInfo dataRoot = new FileInfo(typeof(MLModelBuilder).Assembly.Location);
+            string assemblyFolderPath = dataRoot.Directory.FullName;
 
             string fullPath = Path.Combine(assemblyFolderPath, relativePath);
 
@@ -171,6 +171,5 @@ namespace SentimentML.Model
 
             return splitDataView;
         }
-
     }
 }

@@ -7,7 +7,7 @@
       class="d-inline-block"
       [view]="view"
       [scheme]="{domain: ['#5AA454', '#A10A28', '#C7B42C']}"
-      [results]="singleData"
+      [results]="totalData"
       [gradient]="gradient"
       [legend]="showLegend"
       [legendPosition]="legendPosition"
@@ -19,8 +19,8 @@
     <ngx-charts-advanced-pie-chart
       class="d-inline-block"
       [view]="view"
-      [scheme]="{domain: ['#5AA454', '#A10A28', '#C7B42C']}"
-      [results]="singleData"
+      [scheme]="{domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']}"
+      [results]="maritalStatusData"
       [gradient]="gradient"
       [legend]="showLegend"
       [legendPosition]="legendPosition"
@@ -32,8 +32,8 @@
     <ngx-charts-advanced-pie-chart
       class="d-inline-block"
       [view]="view"
-      [scheme]="{domain: ['#5AA454', '#A10A28', '#C7B42C']}"
-      [results]="singleData"
+      [scheme]="{domain: ['#5AA454', '#A10A28']}"
+      [results]="sexTypeData"
       [gradient]="gradient"
       [legend]="showLegend"
       [legendPosition]="legendPosition"
@@ -45,9 +45,9 @@
     <ngx-charts-advanced-pie-chart
       
     class="d-inline-block"
-      [view]="view"
-      [scheme]="{domain: ['#5AA454', '#A10A28', '#C7B42C']}"
-      [results]="singleData"
+      [view]="viewAges"
+      [scheme]="{domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA', 'magenta', 'blue', 'purple', 'black']}"
+      [results]="ageRangeData"
       [gradient]="gradient"
       [legend]="showLegend"
       [legendPosition]="legendPosition"
