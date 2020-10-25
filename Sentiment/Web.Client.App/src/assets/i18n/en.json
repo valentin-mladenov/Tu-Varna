@@ -35,6 +35,12 @@
   "positives": "Positives",
   "negatives": "Negatives",
   "neutrals": "Neutrals",
+  "single": "Unmarried",
+  "married": "Married",
+  "devorced": "Divorced",
+  "widowed": "Widows",
+  "female": "Women",
+  "male": "Men",
   "sex": {
     "0": "female",
     "1": "male"

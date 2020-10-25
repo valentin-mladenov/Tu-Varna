@@ -57,7 +57,6 @@ namespace SentimentWeb.Service.Data.Repositories
             return prediction;
         }
 
-
         public IEnumerable<PieChart> GetChartData()
         {
             var dbCustomerFeedback = _dbContext.CustomerFeedbacks;
