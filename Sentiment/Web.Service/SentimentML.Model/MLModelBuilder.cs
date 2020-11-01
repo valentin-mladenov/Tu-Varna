@@ -107,7 +107,8 @@ namespace SentimentML.Model
             Console.WriteLine();
         }
 
-        public static void Evaluate(MLContext mlContext, ITransformer model, IDataView splitTestSet)
+        public static void Evaluate(
+            MLContext mlContext, ITransformer model, IDataView splitTestSet)
         {
             Console.WriteLine("=============== Evaluating Model accuracy with Test data===============");
             IDataView predictions = model.Transform(splitTestSet);
@@ -148,8 +149,8 @@ namespace SentimentML.Model
                 hasHeader: true,
                 separatorChar: '\t',
                 allowQuoting: true);
-            var splitDataView = mlContext.Data.TrainTestSplit(dataView, testFraction: 0.2);
 
+            var splitDataView = mlContext.Data.TrainTestSplit(dataView, testFraction: 0.2);
 
             return splitDataView;
         }
@@ -166,8 +167,8 @@ namespace SentimentML.Model
                 "WHERE [Sentiment] IS NOT NULL");
 
             var dataView = dataLoader.Load(databaseSource);
-            var splitDataView = mlContext.Data.TrainTestSplit(dataView, testFraction: 0.2);
 
+            var splitDataView = mlContext.Data.TrainTestSplit(dataView, testFraction: 0.2);
 
             return splitDataView;
         }

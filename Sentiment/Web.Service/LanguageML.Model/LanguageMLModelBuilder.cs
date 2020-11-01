@@ -6,6 +6,7 @@ using LanguageML.Model.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.ML;
 using Microsoft.ML.Data;
+using static Microsoft.ML.DataOperationsCatalog;
 
 namespace LanguageML.Model
 {
@@ -27,19 +28,23 @@ namespace LanguageML.Model
             Evaulate();
         }
 
-        public static IDataView LoadDataFromFile()
+        public static TrainTestData LoadDataFromFile()
         {
             // Load Data
-             return mlContext.Data
+            var dataView = mlContext.Data
                 .LoadFromTextFile<ModelInput>(
                     path: Constants.TrainDataURL,
                     hasHeader: true,
                     separatorChar: '\t',
                     allowQuoting: true,
                     allowSparse: false);
+
+            var splitDataView = mlContext.Data.TrainTestSplit(dataView, testFraction: 0.2);
+
+            return splitDataView;
         }
 
-        public static IDataView LoadDataFromSQL()
+        public static TrainTestData LoadDataFromSQL()
         {
             // Load Data
             DatabaseSource dbSource = new DatabaseSource(SqlClientFactory.Instance,
@@ -49,22 +54,26 @@ namespace LanguageML.Model
                     "WHERE [Language] IS NOT NULL " +
                     "ORDER BY [Language]");
 
-            return mlContext.Data.CreateDatabaseLoader<ModelInput>().Load(dbSource);
+            var dataView = mlContext.Data.CreateDatabaseLoader<ModelInput>().Load(dbSource);
+
+            var splitDataView = mlContext.Data.TrainTestSplit(dataView, testFraction: 0.2);
+
+            return splitDataView;
         }
 
-        public static void CreateModel(IDataView trainingDataView)
+        public static void CreateModel(TrainTestData trainingTestDataView)
         {
             // Build training pipeline
             IEstimator<ITransformer> trainingPipeline = BuildTrainingPipeline(mlContext);
 
             // Train Model
-            ITransformer mlModel = TrainModel(trainingDataView, trainingPipeline);
+            ITransformer mlModel = TrainModel(trainingTestDataView.TrainSet, trainingPipeline);
 
             // Evaluate quality of Model
-            // Evaluate(mlContext, trainingDataView, trainingPipeline);
+            Evaluate(mlContext, trainingTestDataView.TestSet, trainingPipeline);
 
             // Save model
-            SaveModel(mlContext, mlModel, Constants.ModelFilePath, trainingDataView.Schema);
+            SaveModel(mlContext, mlModel, Constants.ModelFilePath, trainingTestDataView.TrainSet.Schema);
         }
 
         public static IEstimator<ITransformer> BuildTrainingPipeline(
@@ -120,6 +129,7 @@ namespace LanguageML.Model
                     trainingPipeline,
                     numberOfFolds: 5,
                     labelColumnName: "Language");
+
             PrintMulticlassClassificationFoldsAverageMetrics(crossValidationResults);
         }
 
