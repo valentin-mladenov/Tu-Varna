@@ -27,7 +27,7 @@ export class FeedbackResultsComponent implements OnInit {
   isLoadingPie = false;
 
   view: any[] = [700, 200];
-  viewAges: any[] = [800, 200];
+  viewAges: any[] = [850, 200];
 
   // options
   gradient = true;
