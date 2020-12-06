@@ -1,0 +1,6 @@
+@startuml
+interface IMLInputFBRepository {
+    TransferToMLInput() : bool
+    ConfirmFeeback(feedback:FeedbackModel) : bool
+}
+@enduml

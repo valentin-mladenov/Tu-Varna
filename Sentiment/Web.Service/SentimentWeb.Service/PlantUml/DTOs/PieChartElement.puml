@@ -1,0 +1,6 @@
+@startuml
+class PieChartElement {
+    + Name : string <<get>> <<set>>
+    + Value : int <<get>> <<set>>
+}
+@enduml

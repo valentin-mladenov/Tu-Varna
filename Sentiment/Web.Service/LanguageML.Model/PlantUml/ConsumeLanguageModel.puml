@@ -1,0 +1,9 @@
+@startuml
+class ConsumeLanguageModel {
+    + {static} Predict(input:ModelInput) : ModelOutput
+    + {static} CreatePredictionEngine() : PredictionEngine<ModelInput, ModelOutput>
+}
+class "Lazy`1"<T> {
+}
+ConsumeLanguageModel o-> "PredictionEngine<PredictionEngine<ModelInput, ModelOutput>>" "Lazy`1"
+@enduml

@@ -1,0 +1,14 @@
+@startuml
+class MLModelBuilder {
+    + Init() : void
+    + InitSQL() : void
+    - {static} SaveModel(mlContext:MLContext, mlModel:ITransformer, modelRelativePath:string, modelInputSchema:DataViewSchema) : void
+    + {static} GetAbsolutePath(relativePath:string) : string
+    + {static} UseModelWithBatchItems(mlContext:MLContext, model:ITransformer) : void
+    - {static} UseModelWithSingleItem(mlContext:MLContext, model:ITransformer) : void
+    + {static} Evaluate(mlContext:MLContext, model:ITransformer, splitTestSet:IDataView) : void
+    + {static} BuildAndTrainModel(mlContext:MLContext, splitTrainSet:IDataView) : ITransformer
+    + {static} LoadData(mlContext:MLContext) : TrainTestData
+    + {static} LoadDataFromSQL(mlContext:MLContext) : TrainTestData
+}
+@enduml

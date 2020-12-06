@@ -1,0 +1,8 @@
+@startuml
+class MLInputFeedback {
+    + Ident : long <<get>> <<set>>
+    + Text : string <<get>> <<set>>
+    + Sentiment : bool? <<get>> <<set>>
+    + Language : string <<get>> <<set>>
+}
+@enduml

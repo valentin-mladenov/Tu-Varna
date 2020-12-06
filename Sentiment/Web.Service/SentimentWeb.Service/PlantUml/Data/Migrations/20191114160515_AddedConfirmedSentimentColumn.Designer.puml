@@ -1,0 +1,5 @@
+@startuml
+class AddedConfirmedSentimentColumn <<partial>> {
+    # <<override>> BuildTargetModel(modelBuilder:ModelBuilder) : void
+}
+@enduml

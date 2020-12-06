@@ -1,0 +1,17 @@
+@startuml
+class FeedbackModel {
+    + Ident : long <<get>> <<set>>
+    + Text : string <<get>> <<set>>
+    + Sentiment : bool <<get>> <<set>>
+    + ConfirmedSentiment : bool <<get>> <<set>>
+    + Probability : decimal <<get>> <<set>>
+    + Score : decimal <<get>> <<set>>
+    + SentToML : bool <<get>> <<set>>
+    + Language : string <<get>> <<set>>
+    + ConfirmedLanguage : string <<get>> <<set>>
+}
+FeedbackModel --> "LanguageScore" LanguageScore
+FeedbackModel --> "Sex" Sex
+FeedbackModel --> "MaritalStatus" MaritalStatus
+FeedbackModel --> "AgeRange" AgeRange
+@enduml

@@ -1,0 +1,7 @@
+@startuml
+class MakeSentimentNullableBool <<partial>> {
+    # <<override>> Up(migrationBuilder:MigrationBuilder) : void
+    # <<override>> Down(migrationBuilder:MigrationBuilder) : void
+}
+Migration <|-- MakeSentimentNullableBool
+@enduml

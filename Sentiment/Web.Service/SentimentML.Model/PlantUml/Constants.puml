@@ -1,0 +1,6 @@
+@startuml
+class Constants <<static>> {
+    + {static} TrainDataURL : string <<get>> <<set>> = @"../SentimentML.Model/Data/train.data.tsv"
+    + {static} ModelFilePath : string <<get>> <<set>> = @"../../../../SentimentML.Model/MLModel.zip"
+}
+@enduml

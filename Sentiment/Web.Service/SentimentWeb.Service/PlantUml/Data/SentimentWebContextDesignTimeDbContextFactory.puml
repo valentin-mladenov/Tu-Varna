@@ -1,0 +1,8 @@
+@startuml
+class SentimentWebContextDesignTimeDbContextFactory {
+    + CreateDbContext(args:string[]) : SentimentWebContext
+}
+class "IDesignTimeDbContextFactory`1"<T> {
+}
+"IDesignTimeDbContextFactory`1" "<SentimentWebContext>" <|-- SentimentWebContextDesignTimeDbContextFactory
+@enduml

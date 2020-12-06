@@ -1,0 +1,5 @@
+@startuml
+interface IPredictionService {
+    Predict(feedback:string) : CustomerFeedback
+}
+@enduml

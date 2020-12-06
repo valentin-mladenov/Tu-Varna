@@ -1,0 +1,28 @@
+@startuml
+enum Sex {
+    Female,
+    Male,
+}
+enum AgeRange {
+    From10Till15,
+    From16Till19,
+    From20Till25,
+    From26Till35,
+    From36Till45,
+    From46Till55,
+    From56Till65,
+    From66ToInfinity,
+}
+enum MaritalStatus {
+    Single,
+    Married,
+    Devorced,
+    Widowed,
+}
+class LanguageScore {
+    + BG : float <<get>> <<set>>
+    + DE : float <<get>> <<set>>
+    + EN : float <<get>> <<set>>
+    + RU : float <<get>> <<set>>
+}
+@enduml

@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SentimentML.Model.Models.SentimentData">
+    <Position X="7.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAIAAAAAAAAA=</HashCode>
+      <FileName>Models\SentimentData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SentimentML.Model.Models.SentimentPrediction">
+    <Position X="7.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAgAAAAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\SentimentPrediction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SentimentML.Constants">
+    <Position X="5.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Constants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SentimentML.Model.ConsumeSentimentModel">
+    <Position X="5.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ConsumeSentimentModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SentimentML.Model.MLModelBuilder">
+    <Position X="9" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAQABAAAAAABgAAAAAAIAAAAIASAAAAAAA=</HashCode>
+      <FileName>MLModelBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

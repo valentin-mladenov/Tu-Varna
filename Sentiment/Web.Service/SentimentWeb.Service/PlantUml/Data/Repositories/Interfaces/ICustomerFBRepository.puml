@@ -1,0 +1,8 @@
+@startuml
+interface ICustomerFBRepository {
+    Get(id:Guid) : CustomerFeedback
+    GetPage(pageNumber:int, pageSize:int) : IEnumerable<CustomerFeedback>
+    PostFeedback(feedback:FeedbackModel) : Task<CustomerFeedback>
+    GetChartData() : IEnumerable<PieChart>
+}
+@enduml

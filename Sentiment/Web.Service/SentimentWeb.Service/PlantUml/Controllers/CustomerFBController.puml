@@ -1,0 +1,10 @@
+@startuml
+class CustomerFBController {
+    + CustomerFBController(customerFBRepository:ICustomerFBRepository)
+    + <<async>> Post(feedback:FeedbackModel) : Task<IActionResult>
+    + GetPage(pageNumber:int, pageSize:int) : IActionResult
+    + GetChartData() : IActionResult
+}
+ControllerBase <|-- CustomerFBController
+CustomerFBController --> "_customerFBRepository" ICustomerFBRepository
+@enduml

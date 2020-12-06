@@ -1,0 +1,5 @@
+@startuml
+class ChangeGUIDtoLong <<partial>> {
+    # <<override>> BuildTargetModel(modelBuilder:ModelBuilder) : void
+}
+@enduml

@@ -1,0 +1,30 @@
+@startuml
+class Constants <<static>> {
+    + {static} TrainDataURL : string <<get>> <<set>> = @"../SentimentML.Model/Data/train.data.tsv"
+    + {static} ModelFilePath : string <<get>> <<set>> = @"../../../../SentimentML.Model/MLModel.zip"
+}
+class ConsumeSentimentModel {
+    + {static} Predict(input:SentimentData) : SentimentPrediction
+}
+class MLModelBuilder {
+    + Init() : void
+    + InitSQL() : void
+    - {static} SaveModel(mlContext:MLContext, mlModel:ITransformer, modelRelativePath:string, modelInputSchema:DataViewSchema) : void
+    + {static} GetAbsolutePath(relativePath:string) : string
+    + {static} UseModelWithBatchItems(mlContext:MLContext, model:ITransformer) : void
+    - {static} UseModelWithSingleItem(mlContext:MLContext, model:ITransformer) : void
+    + {static} Evaluate(mlContext:MLContext, model:ITransformer, splitTestSet:IDataView) : void
+    + {static} BuildAndTrainModel(mlContext:MLContext, splitTrainSet:IDataView) : ITransformer
+    + {static} LoadData(mlContext:MLContext) : TrainTestData
+    + {static} LoadDataFromSQL(mlContext:MLContext) : TrainTestData
+}
+class SentimentData {
+    + Sentiment : bool
+    + SentimentText : string
+}
+class SentimentPrediction {
+    + Prediction : bool <<get>> <<set>>
+    + Probability : float <<get>> <<set>>
+    + Score : float <<get>> <<set>>
+}
+@enduml

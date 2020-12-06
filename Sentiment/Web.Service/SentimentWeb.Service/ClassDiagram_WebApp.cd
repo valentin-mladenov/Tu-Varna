@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SentimentWeb.Service.Data.Services.PredictionService">
+    <Position X="9.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Services\PredictionService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SentimentWeb.Service.Data.Entities.CustomerFeedback">
+    <Position X="4.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gIAAAAAADAAABAAAABQAAAAAAAAAAGAAiAgACAAgAAA=</HashCode>
+      <FileName>Data\Entities\CustomerFeedback.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SentimentWeb.Service.Data.Entities.LanguageScore">
+    <Position X="7.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAACAAAAAAAAAAAAgACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Entities\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SentimentWeb.Service.Data.Entities.MLInputFeedback">
+    <Position X="8.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAAAAAAAAAAAAEAAAAgACAAAAAA=</HashCode>
+      <FileName>Data\Entities\MLInputFeedback.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SentimentWeb.Service.Data.Repositories.CustomerFBRepository" BaseTypeListCollapsed="true">
+    <Position X="13.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAABEAIQAAAAAAhAAAAAAAAAABEQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Repositories\CustomerFBRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SentimentWeb.Service.Data.Repositories.MLInputFBRepository" BaseTypeListCollapsed="true">
+    <Position X="11.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAACAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Repositories\MLInputFBRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SentimentWeb.Service.Data.SentimentWebContext">
+    <Position X="7.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAEAAAAAAAAAAgIAAAAAA=</HashCode>
+      <FileName>Data\SentimentWebContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SentimentWeb.Service.Data.SentimentWebContextDesignTimeDbContextFactory" BaseTypeListCollapsed="true">
+    <Position X="10" Y="7" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\SentimentWebContextDesignTimeDbContextFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SentimentWeb.Service.DTOs.FeedbackModel">
+    <Position X="6.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gIAAAAAADAAABAgAABQAAIAAAAAAAEAACAgACAAAAAA=</HashCode>
+      <FileName>DTOs\FeedbackModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SentimentWeb.Service.DTOs.PieChart">
+    <Position X="3.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>DTOs\PieChart.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SentimentWeb.Service.DTOs.PieChartElement">
+    <Position X="5.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>DTOs\PieChartElement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SentimentWeb.Service.Controllers.CustomerFBController">
+    <Position X="1" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAgAAAAAAAAAAAAAACAAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\CustomerFBController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SentimentWeb.Service.Controllers.MLInputFBController">
+    <Position X="2.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAIAACAQAAAAAAAAAAAAAAAAAAEAAAQAAAAAAA=</HashCode>
+      <FileName>Controllers\MLInputFBController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SentimentWeb.Service.Program">
+    <Position X="9.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SentimentWeb.Service.Startup">
+    <Position X="0.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAgAAACAAAAAA=</HashCode>
+      <FileName>Startup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="SentimentWeb.Service.Data.Services.Interfaces.IPredictionService">
+    <Position X="9.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Services\Interfaces\IPredictionService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="SentimentWeb.Service.Data.Repositories.Interfaces.ICustomerFBRepository">
+    <Position X="13.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAABAAAAAAAAAABAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Repositories\Interfaces\ICustomerFBRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="SentimentWeb.Service.Data.Repositories.Interfaces.IMLInputFBRepository">
+    <Position X="11.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Repositories\Interfaces\IMLInputFBRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="SentimentWeb.Service.Data.Entities.Sex">
+    <Position X="5.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Data\Entities\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SentimentWeb.Service.Data.Entities.AgeRange">
+    <Position X="1.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEgAAAAAAAAAAAAAAAACAAQAAAIAAAAAgEAA=</HashCode>
+      <FileName>Data\Entities\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SentimentWeb.Service.Data.Entities.MaritalStatus">
+    <Position X="3.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIKAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Data\Entities\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

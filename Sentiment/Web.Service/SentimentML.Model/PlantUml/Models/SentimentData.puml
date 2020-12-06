@@ -1,0 +1,6 @@
+@startuml
+class SentimentData {
+    + Sentiment : bool
+    + SentimentText : string
+}
+@enduml

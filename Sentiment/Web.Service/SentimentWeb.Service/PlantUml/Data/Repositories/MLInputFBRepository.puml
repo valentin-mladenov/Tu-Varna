@@ -1,0 +1,9 @@
+@startuml
+class MLInputFBRepository {
+    + MLInputFBRepository(context:SentimentWebContext)
+    + TransferToMLInput() : bool
+    + ConfirmFeeback(customerFeedback:FeedbackModel) : bool
+}
+IMLInputFBRepository <|-- MLInputFBRepository
+MLInputFBRepository o-> "_dbContext" SentimentWebContext
+@enduml

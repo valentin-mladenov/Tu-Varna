@@ -1,0 +1,7 @@
+@startuml
+class SentimentPrediction {
+    + Prediction : bool <<get>> <<set>>
+    + Probability : float <<get>> <<set>>
+    + Score : float <<get>> <<set>>
+}
+@enduml

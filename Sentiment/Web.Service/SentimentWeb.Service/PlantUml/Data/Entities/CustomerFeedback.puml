@@ -1,0 +1,18 @@
+@startuml
+class CustomerFeedback {
+    + Ident : long <<get>> <<set>>
+    + Text : string <<get>> <<set>>
+    + Language : string <<get>> <<set>>
+    + InternalLangScore : string <<get>> <<set>>
+    + ConfirmedLanguage : string <<get>> <<set>>
+    + Sentiment : bool <<get>> <<set>>
+    + SentimentProbability : decimal <<get>> <<set>>
+    + SentimentScore : decimal <<get>> <<set>>
+    + ConfirmedSentiment : bool <<get>> <<set>>
+    + SentToML : bool <<get>> <<set>>
+}
+CustomerFeedback --> "Sex" Sex
+CustomerFeedback --> "MaritalStatus" MaritalStatus
+CustomerFeedback --> "AgeRange" AgeRange
+CustomerFeedback --> "LanguageScore" LanguageScore
+@enduml

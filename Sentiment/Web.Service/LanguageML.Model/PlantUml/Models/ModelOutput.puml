@@ -1,0 +1,5 @@
+@startuml
+class ModelOutput {
+    + Prediction : string <<get>> <<set>>
+}
+@enduml

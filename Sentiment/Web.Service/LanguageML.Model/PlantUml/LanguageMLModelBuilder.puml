@@ -1,0 +1,20 @@
+@startuml
+class LanguageMLModelBuilder <<static>> {
+    + {static} Init() : void
+    + {static} InitSQL() : void
+    + {static} LoadDataFromFile() : TrainTestData
+    + {static} LoadDataFromSQL() : TrainTestData
+    + {static} CreateModel(trainingTestDataView:TrainTestData) : void
+    + {static} BuildTrainingPipeline(mlContext:MLContext) : IEstimator<ITransformer>
+    + {static} TrainModel(trainingDataView:IDataView, trainingPipeline:IEstimator<ITransformer>) : ITransformer
+    - {static} Evaluate(mlContext:MLContext, trainingDataView:IDataView, trainingPipeline:IEstimator<ITransformer>) : void
+    - {static} SaveModel(mlContext:MLContext, mlModel:ITransformer, modelRelativePath:string, modelInputSchema:DataViewSchema) : void
+    + {static} GetAbsolutePath(relativePath:string) : string
+    + {static} PrintMulticlassClassificationMetrics(metrics:MulticlassClassificationMetrics) : void
+    + {static} PrintMulticlassClassificationFoldsAverageMetrics(crossValResults:IEnumerable<TrainCatalogBase.CrossValidationResult<MulticlassClassificationMetrics>>) : void
+    + {static} CalculateStandardDeviation(values:IEnumerable<double>) : double
+    + {static} CalculateConfidenceInterval95(values:IEnumerable<double>) : double
+    + {static} Evaulate() : void
+}
+LanguageMLModelBuilder o-> "mlContext" MLContext
+@enduml

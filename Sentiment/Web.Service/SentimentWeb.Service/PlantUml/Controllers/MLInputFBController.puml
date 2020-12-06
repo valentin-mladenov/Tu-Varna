@@ -1,0 +1,13 @@
+@startuml
+class MLInputFBController {
+    + MLInputFBController(mlInputFBRepository:IMLInputFBRepository, 
+        mlModelBuilder:MLModelBuilder, appLifetime:IHostApplicationLifetime)
+    + TransferToMLInput() : IActionResult
+    + ConfirmFeeback(model:FeedbackModel) : IActionResult
+    + RetrainTheMachine() : IActionResult
+}
+ControllerBase <|-- MLInputFBController
+MLInputFBController --> "_mlInputFBRepository" IMLInputFBRepository
+MLInputFBController --> "_mlModelBuilder" MLModelBuilder
+MLInputFBController --> "ApplicationLifetime" IHostApplicationLifetime
+@enduml

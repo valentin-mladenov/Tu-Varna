@@ -1,0 +1,5 @@
+@startuml
+class AddUserDataToCustomerFeedback <<partial>> {
+    # <<override>> BuildTargetModel(modelBuilder:ModelBuilder) : void
+}
+@enduml

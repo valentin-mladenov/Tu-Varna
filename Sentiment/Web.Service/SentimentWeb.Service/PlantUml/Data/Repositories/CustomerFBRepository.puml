@@ -1,0 +1,16 @@
+@startuml
+class CustomerFBRepository {
+    + CustomerFBRepository(context:SentimentWebContext, predictionService:IPredictionService)
+    + Get(id:Guid) : CustomerFeedback
+    + GetPage(pageNumber:int, pageSize:int) : IEnumerable<CustomerFeedback>
+    + <<async>> PostFeedback(feedback:FeedbackModel) : Task<CustomerFeedback>
+    + GetChartData() : IEnumerable<PieChart>
+    - GetTotalsChart(dbCustomerFeedback:DbSet<CustomerFeedback>) : PieChart
+    - GetMaritalStatusChart(dbCustomerFeedback:DbSet<CustomerFeedback>) : PieChart
+    - GetGenderChart(dbCustomerFeedback:DbSet<CustomerFeedback>) : PieChart
+    - GetAgeRangeChart(dbCustomerFeedback:DbSet<CustomerFeedback>) : PieChart
+}
+ICustomerFBRepository <|-- CustomerFBRepository
+CustomerFBRepository o-> "_dbContext" SentimentWebContext
+CustomerFBRepository --> "predictionService" IPredictionService
+@enduml

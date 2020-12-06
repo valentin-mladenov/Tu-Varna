@@ -1,0 +1,12 @@
+@startuml
+class SentimentWebContext {
+    + SentimentWebContext(options:DbContextOptions<SentimentWebContext>)
+    # <<override>> OnModelCreating(builder:ModelBuilder) : void
+}
+class "DbSet`1"<T> {
+}
+DbContext <|-- SentimentWebContext
+SentimentWebContext --> "TenantId" Guid
+SentimentWebContext --> "MLInputFeedbacks<MLInputFeedback>" "DbSet`1"
+SentimentWebContext --> "CustomerFeedbacks<CustomerFeedback>" "DbSet`1"
+@enduml

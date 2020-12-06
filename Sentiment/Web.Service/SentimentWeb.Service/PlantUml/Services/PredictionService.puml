@@ -1,0 +1,6 @@
+@startuml
+class PredictionService {
+    + Predict(feedback:string) : CustomerFeedback
+}
+IPredictionService <|-- PredictionService
+@enduml

@@ -1,0 +1,69 @@
+@startuml
+class CustomerFBController {
+    + CustomerFBController(customerFBRepository:ICustomerFBRepository)
+    + <<async>> Post(feedback:FeedbackModel) : Task<IActionResult>
+    + GetPage(pageNumber:int, pageSize:int) : IActionResult
+    + GetChartData() : IActionResult
+}
+ControllerBase <|-- CustomerFBController
+CustomerFBController --> "_customerFBRepository" ICustomerFBRepository
+class MLInputFBController {
+    + MLInputFBController(mlInputFBRepository:IMLInputFBRepository,
+        mlModelBuilder:MLModelBuilder, appLifetime:IHostApplicationLifetime)
+    + TransferToMLInput() : IActionResult
+    + ConfirmFeeback(model:FeedbackModel) : IActionResult
+    + RetrainTheMachine() : IActionResult
+}
+ControllerBase <|-- MLInputFBController
+MLInputFBController --> "_mlInputFBRepository" IMLInputFBRepository
+MLInputFBController --> "_mlModelBuilder" MLModelBuilder
+MLInputFBController --> "ApplicationLifetime" IHostApplicationLifetime
+class SentimentWebContext {
+    + SentimentWebContext(options:DbContextOptions<SentimentWebContext>)
+    # <<override>> OnModelCreating(builder:ModelBuilder) : void
+}
+class "DbSet`1"<T> {
+}
+DbContext <|-- SentimentWebContext
+SentimentWebContext --> "TenantId" Guid
+SentimentWebContext --> "MLInputFeedbacks<MLInputFeedback>" "DbSet`1"
+SentimentWebContext --> "CustomerFeedbacks<CustomerFeedback>" "DbSet`1"
+class PredictionService {
+    + Predict(feedback:string) : CustomerFeedback
+}
+IPredictionService <|-- PredictionService
+class CustomerFBRepository {
+    + CustomerFBRepository(context:SentimentWebContext, predictionService:IPredictionService)
+    + Get(id:Guid) : CustomerFeedback
+    + GetPage(pageNumber:int, pageSize:int) : IEnumerable<CustomerFeedback>
+    + <<async>> PostFeedback(feedback:FeedbackModel) : Task<CustomerFeedback>
+    + GetChartData() : IEnumerable<PieChart>
+    - GetTotalsChart(dbCustomerFeedback:DbSet<CustomerFeedback>) : PieChart
+    - GetMaritalStatusChart(dbCustomerFeedback:DbSet<CustomerFeedback>) : PieChart
+    - GetGenderChart(dbCustomerFeedback:DbSet<CustomerFeedback>) : PieChart
+    - GetAgeRangeChart(dbCustomerFeedback:DbSet<CustomerFeedback>) : PieChart
+}
+ICustomerFBRepository <|-- CustomerFBRepository
+CustomerFBRepository o-> "_dbContext" SentimentWebContext
+CustomerFBRepository --> "predictionService" IPredictionService
+class MLInputFBRepository {
+    + MLInputFBRepository(context:SentimentWebContext)
+    + TransferToMLInput() : bool
+    + ConfirmFeeback(customerFeedback:FeedbackModel) : bool
+}
+IMLInputFBRepository <|-- MLInputFBRepository
+MLInputFBRepository o-> "_dbContext" SentimentWebContext
+interface IPredictionService {
+    Predict(feedback:string) : CustomerFeedback
+}
+interface ICustomerFBRepository {
+    Get(id:Guid) : CustomerFeedback
+    GetPage(pageNumber:int, pageSize:int) : IEnumerable<CustomerFeedback>
+    PostFeedback(feedback:FeedbackModel) : Task<CustomerFeedback>
+    GetChartData() : IEnumerable<PieChart>
+}
+interface IMLInputFBRepository {
+    TransferToMLInput() : bool
+    ConfirmFeeback(feedback:FeedbackModel) : bool
+}
+@enduml

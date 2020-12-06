@@ -1,0 +1,8 @@
+@startuml
+class PieChart {
+    + Name : string <<get>> <<set>>
+}
+class "IList`1"<T> {
+}
+PieChart --> "Value<PieChartElement>" "IList`1"
+@enduml
