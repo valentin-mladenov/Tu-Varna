@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "AFE.Service": {
+    "SentimentWeb.Service": {
       "commandName": "Project",
       "launchBrowser": false,
       "launchUrl": "api/customerFB",

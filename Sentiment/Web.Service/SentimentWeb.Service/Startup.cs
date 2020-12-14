@@ -29,7 +29,7 @@ namespace SentimentWeb.Service
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContextPool<SentimentWebContext>(
-                options => options.UseSqlServer(Configuration.GetConnectionString("AfeDb"),
+                options => options.UseSqlServer(Configuration.GetConnectionString("SentimentDb"),
                 providerOptions => providerOptions.CommandTimeout(30)));
 
             services.AddScoped<ICustomerFBRepository, CustomerFBRepository>();
@@ -37,11 +37,9 @@ namespace SentimentWeb.Service
             services.AddScoped<IPredictionService, PredictionService>();
             services.AddSingleton<MLModelBuilder>();
 
-            services.AddCors(options =>
-            {
+            services.AddCors(options => {
                 options.AddPolicy("policy",
-                    builder =>
-                    {
+                    builder => {
                         builder.WithOrigins("http://localhost:4200")
                             .AllowAnyHeader()
                             .AllowAnyMethod();
@@ -50,15 +48,13 @@ namespace SentimentWeb.Service
 
             services.AddControllers();
 
-            if (!File.Exists(MLModelBuilder.GetAbsolutePath(SentimentML.Constants.ModelFilePath)))
-            {
+            if (!File.Exists(MLModelBuilder.GetAbsolutePath(SentimentML.Constants.ModelFilePath))) {
                 var serviceProvider = services.BuildServiceProvider();
                 var mlFabric = serviceProvider.GetService<MLModelBuilder>();
                 mlFabric.InitSQL();
             }
 
-            if (!File.Exists(LanguageMLModelBuilder.GetAbsolutePath(Constants.ModelFilePath)))
-            {
+            if (!File.Exists(LanguageMLModelBuilder.GetAbsolutePath(Constants.ModelFilePath))) {
                 LanguageMLModelBuilder.InitSQL();
             }
         }
@@ -66,25 +62,19 @@ namespace SentimentWeb.Service
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
+            if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            else {
                 app.UseHsts();
             }
 
-            app.UseCors("policy");
-
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseEndpoints(e => {
-                e.MapControllers();
-            });
+            app.UseCors("policy")
+                .UseHttpsRedirection()
+                .UseRouting()
+                .UseEndpoints(e => {
+                    e.MapControllers();
+                });
         }
     }
 }

@@ -112,8 +112,8 @@ namespace SentimentML.Model
         {
             Console.WriteLine("=============== Evaluating Model accuracy with Test data===============");
             IDataView predictions = model.Transform(splitTestSet);
-            CalibratedBinaryClassificationMetrics metrics = mlContext
-                .BinaryClassification.Evaluate(predictions, "Sentiment");
+            BinaryClassificationMetrics metrics = mlContext.BinaryClassification
+                .EvaluateNonCalibrated(predictions, "Sentiment");
 
             Console.WriteLine();
             Console.WriteLine("Model quality metrics evaluation");
@@ -121,6 +121,13 @@ namespace SentimentML.Model
             Console.WriteLine($"Accuracy: {metrics.Accuracy:P2}");
             Console.WriteLine($"Auc: {metrics.AreaUnderRocCurve:P2}");
             Console.WriteLine($"F1Score: {metrics.F1Score:P2}");
+            Console.WriteLine($"Negative Precision: {metrics.NegativePrecision:F2}");
+
+            Console.WriteLine($"Negative Recall: {metrics.NegativeRecall:F2}");
+            Console.WriteLine($"Positive Precision: {metrics.PositivePrecision:F2}");
+
+            Console.WriteLine($"Positive Recall: {metrics.PositiveRecall:F2}\n");
+            Console.WriteLine(metrics.ConfusionMatrix.GetFormattedConfusionTable());
             Console.WriteLine("=============== End of model evaluation ===============");
         }
 
@@ -130,7 +137,7 @@ namespace SentimentML.Model
                 outputColumnName: "Features",
                 inputColumnName: nameof(SentimentData.SentimentText))
             .Append(
-                mlContext.BinaryClassification.Trainers.LbfgsLogisticRegression(
+                mlContext.BinaryClassification.Trainers.AveragedPerceptron(
                     labelColumnName: "Sentiment",
                     featureColumnName: "Features"));
 
